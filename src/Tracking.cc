@@ -1620,6 +1620,12 @@ void Tracking::GrabImuData(const IMU::Point &imuMeasurement)
     unique_lock<mutex> lock(mMutexImuQueue);
     mlQueueImuData.push_back(imuMeasurement);
 }
+//code by ghz
+void Tracking::GrabPressureData(const IMU::PressureData &pressMeasurement)
+{
+    unique_lock<mutex> lock(mMutexPressQueue);// 对压力数据队列加锁
+    mlQueuePressData.push_back(pressMeasurement);// 插入数据
+}
 
 void Tracking::PreintegrateIMU()
 {

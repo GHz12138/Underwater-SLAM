@@ -1,0 +1,117 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# System config
+#--------------------------------------------------------------------------------------------
+
+# When the variables are commented, the system doesn't load a previous session or not store the current one
+
+# If the LoadFile doesn't exist, the system give a message and create a new Atlas from scratch
+# System.LoadAtlasFromFile: "Session_MH01_MH02_MH03_Stereo60_Pseudo"
+
+# The store file is created from the current session, if a file with the same name exists it is deleted
+# System.SaveAtlasToFile: "Session_MH01_MH02_MH03_Stereo60_Pseudo"
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+# Camera calibration and distortion parameters (OpenCV) 
+Camera1.fx: 1167.87421447215
+Camera1.fy: 1166.9553764645004
+Camera1.cx: 771.763112280329
+Camera1.cy: 589.9626482585169
+
+Camera1.k1: -0.16610165879624592
+Camera1.k2: 0.1156504557423161
+Camera1.p1: -5.9407782773707644e-05
+Camera1.p2: 0.0018508320481282106
+
+Camera2.fx: 1165.9493476066016
+Camera2.fy: 1167.2556820541186
+Camera2.cx: 752.2788466729131
+Camera2.cy: 580.9613365661235
+
+Camera2.k1: -0.17863115239034907
+Camera2.k2: 0.13121795689445712
+Camera2.p1: -6.741741965147593e-05
+Camera2.p2: -0.002580879117584875
+
+
+Camera.width: 1600
+Camera.height: 1200
+
+
+
+# Camera frames per second 
+Camera.fps: 13
+
+# Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+Camera.RGB: 1
+
+# Close/Far threshold. Baseline times.
+Stereo.ThDepth: 60.0
+Stereo.T_c1_c2: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [9.98819110e-01 , 3.26987925e-02 ,-3.59329153e-02 , 2.31667702e-01,
+        -3.26539967e-02 , 9.99465035e-01 , 1.83296923e-03 ,-4.39087199e-03,
+         3.59736284e-02 ,-6.57451395e-04 , 9.99352523e-01 , 5.83468502e-03,
+         0.00000000e+00 , 0.00000000e+00 , 0.00000000e+00  ,1.00000000e+00]
+
+# Transformation from camera 0 to body-frame (imu)
+IMU.T_b_c1: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [ -0.0204017431055, -0.000775486330789, 0.999791562026, 0.191223742056,
+         0.999705395678, -0.0131673485818, 0.0203897715677, -0.0327723324671,
+         0.0131487920172, 0.999913005992, 0.00104389473231, -0.159324369284,
+          0.0, 0.0, 0.0, 1.0]
+
+# IMU noise
+IMU.NoiseGyro: 0.0016017 # 1.6968e-04
+IMU.NoiseAcc: 0.0071376 # 2.0000e-3
+IMU.GyroWalk:  0.0000165
+IMU.AccWalk: 0.0002874 # 3.0000e-3
+IMU.Frequency: 100.0
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+
+# ORB Extractor: Number of features per image
+ORBextractor.nFeatures: 1500
+
+# ORB Extractor: Scale factor between levels in the scale pyramid 	
+ORBextractor.scaleFactor: 1.2
+
+# ORB Extractor: Number of levels in the scale pyramid	
+ORBextractor.nLevels: 8
+
+# ORB Extractor: Fast threshold
+# Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# You can lower these values if your images have low contrast			
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500.0
+Viewer.imageViewScale: 0.7
+

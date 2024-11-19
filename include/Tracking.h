@@ -74,6 +74,7 @@ public:
     Sophus::SE3f GrabImageMonocular(const cv::Mat &im, const double &timestamp, string filename);
 
     void GrabImuData(const IMU::Point &imuMeasurement);
+    void GrabPressureData(const IMU::PressureData &PressMeasurement);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
     void SetLoopClosing(LoopClosing* pLoopClosing);
@@ -236,6 +237,10 @@ protected:
 
     // Queue of IMU measurements between frames
     std::list<IMU::Point> mlQueueImuData;
+
+    // Queue of Pressure measurements between frames
+    std::list<IMU::PressureData> mlQueuePressData;
+    std::mutex mMutexPressQueue;
 
     // Vector of IMU measurements from previous to current frame (to be filled by PreintegrateIMU)
     std::vector<IMU::Point> mvImuFromLastFrame;

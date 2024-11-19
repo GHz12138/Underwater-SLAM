@@ -42,6 +42,21 @@ namespace IMU
 
 const float GRAVITY_VALUE=9.81;
 
+
+
+// Pressure measurement
+class PressureData {
+public:
+    double timestamp;   // 时间戳
+    float depth;        // 深度值
+
+    PressureData(double ts, float d) : timestamp(ts), depth(d) {}
+    // EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
+
+
+
+
 //IMU measurement (gyro, accelerometer and timestamp)
 class Point
 {

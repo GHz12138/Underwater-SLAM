@@ -127,15 +127,18 @@ void LocalMapping::Run()
                 {
 
                     if(mbInertial && mpCurrentKeyFrame->GetMap()->isImuInitialized())
-                    {
+                    {   //计算当前帧与上一帧，上一帧与上上一帧的距离之和
                         float dist = (mpCurrentKeyFrame->mPrevKF->GetCameraCenter() - mpCurrentKeyFrame->GetCameraCenter()).norm() +
                                 (mpCurrentKeyFrame->mPrevKF->mPrevKF->GetCameraCenter() - mpCurrentKeyFrame->mPrevKF->GetCameraCenter()).norm();
 
                         if(dist>0.05)
+                            //累积上一帧到当前帧的时间差
                             mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp;
+                            cout<<"mTnit1="<< mTinit<< endl;
                         if(!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
                         {
-                            if((mTinit<10.f) && (dist<0.02))
+                            //累积时间小于10s并且距离小于0.02m
+                            if((mTinit>10.f) && (dist<0.02))
                             {
                                 cout << "Not enough motion for initializing. Reseting..." << endl;
                                 unique_lock<mutex> lock(mMutexReset);
@@ -279,7 +282,7 @@ void LocalMapping::Run()
     }
 
     SetFinish();
-}
+}//
 
 void LocalMapping::InsertKeyFrame(KeyFrame *pKF)
 {
@@ -1251,6 +1254,7 @@ void LocalMapping::InitializeIMU(float priorG, float priorA, bool bFIBA)
         Rwg = Sophus::SO3f::exp(vzg).matrix();
         mRwg = Rwg.cast<double>();
         mTinit = mpCurrentKeyFrame->mTimeStamp-mFirstTs;
+        cout<<"mTnit2="<< mTinit<< endl;
     }
     else
     {

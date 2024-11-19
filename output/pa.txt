@@ -1,0 +1,7083 @@
+header: 
+  seq: 1143
+  stamp: 
+    secs: 1523957675
+    nsecs: 698724406
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1144
+  stamp: 
+    secs: 1523957675
+    nsecs: 902461737
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1145
+  stamp: 
+    secs: 1523957676
+    nsecs: 108044561
+  frame_id: "base_link"
+fluid_pressure: 126300.0
+variance: 0.0
+---
+header: 
+  seq: 1146
+  stamp: 
+    secs: 1523957676
+    nsecs: 312203454
+  frame_id: "base_link"
+fluid_pressure: 126480.0
+variance: 0.0
+---
+header: 
+  seq: 1147
+  stamp: 
+    secs: 1523957676
+    nsecs: 517142027
+  frame_id: "base_link"
+fluid_pressure: 126230.0
+variance: 0.0
+---
+header: 
+  seq: 1148
+  stamp: 
+    secs: 1523957676
+    nsecs: 722118820
+  frame_id: "base_link"
+fluid_pressure: 126100.0
+variance: 0.0
+---
+header: 
+  seq: 1149
+  stamp: 
+    secs: 1523957676
+    nsecs: 926810274
+  frame_id: "base_link"
+fluid_pressure: 126030.0
+variance: 0.0
+---
+header: 
+  seq: 1150
+  stamp: 
+    secs: 1523957677
+    nsecs: 136020118
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1151
+  stamp: 
+    secs: 1523957677
+    nsecs: 340335344
+  frame_id: "base_link"
+fluid_pressure: 125730.0
+variance: 0.0
+---
+header: 
+  seq: 1152
+  stamp: 
+    secs: 1523957677
+    nsecs: 544734316
+  frame_id: "base_link"
+fluid_pressure: 125820.0
+variance: 0.0
+---
+header: 
+  seq: 1153
+  stamp: 
+    secs: 1523957677
+    nsecs: 749359315
+  frame_id: "base_link"
+fluid_pressure: 125690.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1154
+  stamp: 
+    secs: 1523957677
+    nsecs: 954192759
+  frame_id: "base_link"
+fluid_pressure: 125559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1155
+  stamp: 
+    secs: 1523957678
+    nsecs: 158751279
+  frame_id: "base_link"
+fluid_pressure: 125720.0
+variance: 0.0
+---
+header: 
+  seq: 1156
+  stamp: 
+    secs: 1523957678
+    nsecs: 363728917
+  frame_id: "base_link"
+fluid_pressure: 125709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1157
+  stamp: 
+    secs: 1523957678
+    nsecs: 568510188
+  frame_id: "base_link"
+fluid_pressure: 125759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1158
+  stamp: 
+    secs: 1523957678
+    nsecs: 773141382
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1159
+  stamp: 
+    secs: 1523957678
+    nsecs: 977928889
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1160
+  stamp: 
+    secs: 1523957679
+    nsecs: 183121618
+  frame_id: "base_link"
+fluid_pressure: 126300.0
+variance: 0.0
+---
+header: 
+  seq: 1161
+  stamp: 
+    secs: 1523957679
+    nsecs: 386938143
+  frame_id: "base_link"
+fluid_pressure: 126380.0
+variance: 0.0
+---
+header: 
+  seq: 1162
+  stamp: 
+    secs: 1523957679
+    nsecs: 591881233
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1163
+  stamp: 
+    secs: 1523957679
+    nsecs: 796451541
+  frame_id: "base_link"
+fluid_pressure: 126720.0
+variance: 0.0
+---
+header: 
+  seq: 1164
+  stamp: 
+    secs: 1523957680
+    nsecs:   1585518
+  frame_id: "base_link"
+fluid_pressure: 126700.0
+variance: 0.0
+---
+header: 
+  seq: 1165
+  stamp: 
+    secs: 1523957680
+    nsecs: 205667071
+  frame_id: "base_link"
+fluid_pressure: 126550.0
+variance: 0.0
+---
+header: 
+  seq: 1166
+  stamp: 
+    secs: 1523957680
+    nsecs: 410416258
+  frame_id: "base_link"
+fluid_pressure: 126480.0
+variance: 0.0
+---
+header: 
+  seq: 1167
+  stamp: 
+    secs: 1523957680
+    nsecs: 615242243
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1168
+  stamp: 
+    secs: 1523957680
+    nsecs: 820648993
+  frame_id: "base_link"
+fluid_pressure: 126490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1169
+  stamp: 
+    secs: 1523957681
+    nsecs:  24686288
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1170
+  stamp: 
+    secs: 1523957681
+    nsecs: 228273217
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1171
+  stamp: 
+    secs: 1523957681
+    nsecs: 433003726
+  frame_id: "base_link"
+fluid_pressure: 126780.0
+variance: 0.0
+---
+header: 
+  seq: 1172
+  stamp: 
+    secs: 1523957681
+    nsecs: 638144481
+  frame_id: "base_link"
+fluid_pressure: 126820.0
+variance: 0.0
+---
+header: 
+  seq: 1173
+  stamp: 
+    secs: 1523957681
+    nsecs: 842426536
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1174
+  stamp: 
+    secs: 1523957682
+    nsecs:  47460035
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1175
+  stamp: 
+    secs: 1523957682
+    nsecs: 252078043
+  frame_id: "base_link"
+fluid_pressure: 127220.0
+variance: 0.0
+---
+header: 
+  seq: 1176
+  stamp: 
+    secs: 1523957682
+    nsecs: 457287833
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1177
+  stamp: 
+    secs: 1523957682
+    nsecs: 661289935
+  frame_id: "base_link"
+fluid_pressure: 127280.0
+variance: 0.0
+---
+header: 
+  seq: 1178
+  stamp: 
+    secs: 1523957682
+    nsecs: 866506763
+  frame_id: "base_link"
+fluid_pressure: 127250.0
+variance: 0.0
+---
+header: 
+  seq: 1179
+  stamp: 
+    secs: 1523957683
+    nsecs:  71332332
+  frame_id: "base_link"
+fluid_pressure: 127240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1180
+  stamp: 
+    secs: 1523957683
+    nsecs: 275957217
+  frame_id: "base_link"
+fluid_pressure: 127330.0
+variance: 0.0
+---
+header: 
+  seq: 1181
+  stamp: 
+    secs: 1523957683
+    nsecs: 482186368
+  frame_id: "base_link"
+fluid_pressure: 127100.0
+variance: 0.0
+---
+header: 
+  seq: 1182
+  stamp: 
+    secs: 1523957683
+    nsecs: 686286376
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1183
+  stamp: 
+    secs: 1523957683
+    nsecs: 891318632
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1184
+  stamp: 
+    secs: 1523957684
+    nsecs:  96932544
+  frame_id: "base_link"
+fluid_pressure: 127170.0
+variance: 0.0
+---
+header: 
+  seq: 1185
+  stamp: 
+    secs: 1523957684
+    nsecs: 301371002
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1186
+  stamp: 
+    secs: 1523957684
+    nsecs: 505983063
+  frame_id: "base_link"
+fluid_pressure: 127180.0
+variance: 0.0
+---
+header: 
+  seq: 1187
+  stamp: 
+    secs: 1523957684
+    nsecs: 711343172
+  frame_id: "base_link"
+fluid_pressure: 127200.0
+variance: 0.0
+---
+header: 
+  seq: 1188
+  stamp: 
+    secs: 1523957684
+    nsecs: 916713385
+  frame_id: "base_link"
+fluid_pressure: 127330.0
+variance: 0.0
+---
+header: 
+  seq: 1189
+  stamp: 
+    secs: 1523957685
+    nsecs: 120881791
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1190
+  stamp: 
+    secs: 1523957685
+    nsecs: 326242285
+  frame_id: "base_link"
+fluid_pressure: 127380.0
+variance: 0.0
+---
+header: 
+  seq: 1191
+  stamp: 
+    secs: 1523957685
+    nsecs: 529971746
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1192
+  stamp: 
+    secs: 1523957685
+    nsecs: 735111377
+  frame_id: "base_link"
+fluid_pressure: 127500.0
+variance: 0.0
+---
+header: 
+  seq: 1193
+  stamp: 
+    secs: 1523957685
+    nsecs: 939784300
+  frame_id: "base_link"
+fluid_pressure: 127550.0
+variance: 0.0
+---
+header: 
+  seq: 1194
+  stamp: 
+    secs: 1523957686
+    nsecs: 144603966
+  frame_id: "base_link"
+fluid_pressure: 127520.0
+variance: 0.0
+---
+header: 
+  seq: 1195
+  stamp: 
+    secs: 1523957686
+    nsecs: 349501807
+  frame_id: "base_link"
+fluid_pressure: 127280.0
+variance: 0.0
+---
+header: 
+  seq: 1196
+  stamp: 
+    secs: 1523957686
+    nsecs: 554750101
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1197
+  stamp: 
+    secs: 1523957686
+    nsecs: 759095901
+  frame_id: "base_link"
+fluid_pressure: 127400.0
+variance: 0.0
+---
+header: 
+  seq: 1198
+  stamp: 
+    secs: 1523957686
+    nsecs: 963964826
+  frame_id: "base_link"
+fluid_pressure: 127580.0
+variance: 0.0
+---
+header: 
+  seq: 1199
+  stamp: 
+    secs: 1523957687
+    nsecs: 168849826
+  frame_id: "base_link"
+fluid_pressure: 127370.0
+variance: 0.0
+---
+header: 
+  seq: 1200
+  stamp: 
+    secs: 1523957687
+    nsecs: 373963609
+  frame_id: "base_link"
+fluid_pressure: 127590.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1201
+  stamp: 
+    secs: 1523957687
+    nsecs: 577908992
+  frame_id: "base_link"
+fluid_pressure: 127550.0
+variance: 0.0
+---
+header: 
+  seq: 1202
+  stamp: 
+    secs: 1523957687
+    nsecs: 783900533
+  frame_id: "base_link"
+fluid_pressure: 127320.0
+variance: 0.0
+---
+header: 
+  seq: 1203
+  stamp: 
+    secs: 1523957687
+    nsecs: 989308036
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1204
+  stamp: 
+    secs: 1523957688
+    nsecs: 194285635
+  frame_id: "base_link"
+fluid_pressure: 127290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1205
+  stamp: 
+    secs: 1523957688
+    nsecs: 399588360
+  frame_id: "base_link"
+fluid_pressure: 127259.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1206
+  stamp: 
+    secs: 1523957688
+    nsecs: 603862592
+  frame_id: "base_link"
+fluid_pressure: 127140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1207
+  stamp: 
+    secs: 1523957688
+    nsecs: 808591825
+  frame_id: "base_link"
+fluid_pressure: 127009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1208
+  stamp: 
+    secs: 1523957689
+    nsecs:  13291622
+  frame_id: "base_link"
+fluid_pressure: 126980.0
+variance: 0.0
+---
+header: 
+  seq: 1209
+  stamp: 
+    secs: 1523957689
+    nsecs: 217999487
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1210
+  stamp: 
+    secs: 1523957689
+    nsecs: 422442623
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1211
+  stamp: 
+    secs: 1523957689
+    nsecs: 627145620
+  frame_id: "base_link"
+fluid_pressure: 126980.0
+variance: 0.0
+---
+header: 
+  seq: 1212
+  stamp: 
+    secs: 1523957689
+    nsecs: 832140146
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1213
+  stamp: 
+    secs: 1523957690
+    nsecs:  36719767
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1214
+  stamp: 
+    secs: 1523957690
+    nsecs: 242008599
+  frame_id: "base_link"
+fluid_pressure: 126970.0
+variance: 0.0
+---
+header: 
+  seq: 1215
+  stamp: 
+    secs: 1523957690
+    nsecs: 446042849
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1216
+  stamp: 
+    secs: 1523957690
+    nsecs: 651333804
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1217
+  stamp: 
+    secs: 1523957690
+    nsecs: 855723851
+  frame_id: "base_link"
+fluid_pressure: 127090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1218
+  stamp: 
+    secs: 1523957691
+    nsecs:  60774787
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1219
+  stamp: 
+    secs: 1523957691
+    nsecs: 264774232
+  frame_id: "base_link"
+fluid_pressure: 127100.0
+variance: 0.0
+---
+header: 
+  seq: 1220
+  stamp: 
+    secs: 1523957691
+    nsecs: 469451524
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1221
+  stamp: 
+    secs: 1523957691
+    nsecs: 674206007
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1222
+  stamp: 
+    secs: 1523957691
+    nsecs: 879210398
+  frame_id: "base_link"
+fluid_pressure: 127430.0
+variance: 0.0
+---
+header: 
+  seq: 1223
+  stamp: 
+    secs: 1523957692
+    nsecs:  83798164
+  frame_id: "base_link"
+fluid_pressure: 127040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1224
+  stamp: 
+    secs: 1523957692
+    nsecs: 288463193
+  frame_id: "base_link"
+fluid_pressure: 127380.0
+variance: 0.0
+---
+header: 
+  seq: 1225
+  stamp: 
+    secs: 1523957692
+    nsecs: 493599803
+  frame_id: "base_link"
+fluid_pressure: 127280.0
+variance: 0.0
+---
+header: 
+  seq: 1226
+  stamp: 
+    secs: 1523957692
+    nsecs: 698329452
+  frame_id: "base_link"
+fluid_pressure: 127390.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1227
+  stamp: 
+    secs: 1523957692
+    nsecs: 903080274
+  frame_id: "base_link"
+fluid_pressure: 127420.0
+variance: 0.0
+---
+header: 
+  seq: 1228
+  stamp: 
+    secs: 1523957693
+    nsecs: 108251643
+  frame_id: "base_link"
+fluid_pressure: 127390.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1229
+  stamp: 
+    secs: 1523957693
+    nsecs: 312815448
+  frame_id: "base_link"
+fluid_pressure: 127440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1230
+  stamp: 
+    secs: 1523957693
+    nsecs: 517427741
+  frame_id: "base_link"
+fluid_pressure: 127330.0
+variance: 0.0
+---
+header: 
+  seq: 1231
+  stamp: 
+    secs: 1523957693
+    nsecs: 722166055
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1232
+  stamp: 
+    secs: 1523957693
+    nsecs: 927011240
+  frame_id: "base_link"
+fluid_pressure: 127409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1233
+  stamp: 
+    secs: 1523957694
+    nsecs: 131681286
+  frame_id: "base_link"
+fluid_pressure: 127500.0
+variance: 0.0
+---
+header: 
+  seq: 1234
+  stamp: 
+    secs: 1523957694
+    nsecs: 338112535
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1235
+  stamp: 
+    secs: 1523957694
+    nsecs: 541762012
+  frame_id: "base_link"
+fluid_pressure: 127340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1236
+  stamp: 
+    secs: 1523957694
+    nsecs: 747087447
+  frame_id: "base_link"
+fluid_pressure: 127320.0
+variance: 0.0
+---
+header: 
+  seq: 1237
+  stamp: 
+    secs: 1523957694
+    nsecs: 951347155
+  frame_id: "base_link"
+fluid_pressure: 127430.0
+variance: 0.0
+---
+header: 
+  seq: 1238
+  stamp: 
+    secs: 1523957695
+    nsecs: 157054548
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1239
+  stamp: 
+    secs: 1523957695
+    nsecs: 360773809
+  frame_id: "base_link"
+fluid_pressure: 127309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1240
+  stamp: 
+    secs: 1523957695
+    nsecs: 573220923
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1241
+  stamp: 
+    secs: 1523957695
+    nsecs: 778429493
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1242
+  stamp: 
+    secs: 1523957695
+    nsecs: 982554154
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1243
+  stamp: 
+    secs: 1523957696
+    nsecs: 187562995
+  frame_id: "base_link"
+fluid_pressure: 127120.0
+variance: 0.0
+---
+header: 
+  seq: 1244
+  stamp: 
+    secs: 1523957696
+    nsecs: 391868043
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1245
+  stamp: 
+    secs: 1523957696
+    nsecs: 596481337
+  frame_id: "base_link"
+fluid_pressure: 127220.0
+variance: 0.0
+---
+header: 
+  seq: 1246
+  stamp: 
+    secs: 1523957696
+    nsecs: 801446513
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1247
+  stamp: 
+    secs: 1523957697
+    nsecs:   5708741
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1248
+  stamp: 
+    secs: 1523957697
+    nsecs: 210773872
+  frame_id: "base_link"
+fluid_pressure: 126830.0
+variance: 0.0
+---
+header: 
+  seq: 1249
+  stamp: 
+    secs: 1523957697
+    nsecs: 415466166
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1250
+  stamp: 
+    secs: 1523957697
+    nsecs: 621170126
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1251
+  stamp: 
+    secs: 1523957697
+    nsecs: 825988991
+  frame_id: "base_link"
+fluid_pressure: 126980.0
+variance: 0.0
+---
+header: 
+  seq: 1252
+  stamp: 
+    secs: 1523957698
+    nsecs:  30969842
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1253
+  stamp: 
+    secs: 1523957698
+    nsecs: 235758754
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1254
+  stamp: 
+    secs: 1523957698
+    nsecs: 440244625
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1255
+  stamp: 
+    secs: 1523957698
+    nsecs: 644409985
+  frame_id: "base_link"
+fluid_pressure: 127100.0
+variance: 0.0
+---
+header: 
+  seq: 1256
+  stamp: 
+    secs: 1523957698
+    nsecs: 849006934
+  frame_id: "base_link"
+fluid_pressure: 127159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1257
+  stamp: 
+    secs: 1523957699
+    nsecs:  54384261
+  frame_id: "base_link"
+fluid_pressure: 127200.0
+variance: 0.0
+---
+header: 
+  seq: 1258
+  stamp: 
+    secs: 1523957699
+    nsecs: 257337696
+  frame_id: "base_link"
+fluid_pressure: 127350.0
+variance: 0.0
+---
+header: 
+  seq: 1259
+  stamp: 
+    secs: 1523957699
+    nsecs: 461689484
+  frame_id: "base_link"
+fluid_pressure: 127470.0
+variance: 0.0
+---
+header: 
+  seq: 1260
+  stamp: 
+    secs: 1523957699
+    nsecs: 666708551
+  frame_id: "base_link"
+fluid_pressure: 127530.0
+variance: 0.0
+---
+header: 
+  seq: 1261
+  stamp: 
+    secs: 1523957699
+    nsecs: 871329843
+  frame_id: "base_link"
+fluid_pressure: 127630.0
+variance: 0.0
+---
+header: 
+  seq: 1262
+  stamp: 
+    secs: 1523957700
+    nsecs:  76230286
+  frame_id: "base_link"
+fluid_pressure: 127540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1263
+  stamp: 
+    secs: 1523957700
+    nsecs: 281157589
+  frame_id: "base_link"
+fluid_pressure: 127759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1264
+  stamp: 
+    secs: 1523957700
+    nsecs: 485826295
+  frame_id: "base_link"
+fluid_pressure: 127700.0
+variance: 0.0
+---
+header: 
+  seq: 1265
+  stamp: 
+    secs: 1523957700
+    nsecs: 691160456
+  frame_id: "base_link"
+fluid_pressure: 127550.0
+variance: 0.0
+---
+header: 
+  seq: 1266
+  stamp: 
+    secs: 1523957700
+    nsecs: 895162651
+  frame_id: "base_link"
+fluid_pressure: 127640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1267
+  stamp: 
+    secs: 1523957701
+    nsecs:  99438149
+  frame_id: "base_link"
+fluid_pressure: 127559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1268
+  stamp: 
+    secs: 1523957701
+    nsecs: 304368911
+  frame_id: "base_link"
+fluid_pressure: 127540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1269
+  stamp: 
+    secs: 1523957701
+    nsecs: 509010829
+  frame_id: "base_link"
+fluid_pressure: 127470.0
+variance: 0.0
+---
+header: 
+  seq: 1270
+  stamp: 
+    secs: 1523957701
+    nsecs: 713822848
+  frame_id: "base_link"
+fluid_pressure: 127409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1271
+  stamp: 
+    secs: 1523957701
+    nsecs: 918742926
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1272
+  stamp: 
+    secs: 1523957702
+    nsecs: 123843575
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1273
+  stamp: 
+    secs: 1523957702
+    nsecs: 328281092
+  frame_id: "base_link"
+fluid_pressure: 127250.0
+variance: 0.0
+---
+header: 
+  seq: 1274
+  stamp: 
+    secs: 1523957702
+    nsecs: 533067692
+  frame_id: "base_link"
+fluid_pressure: 127240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1275
+  stamp: 
+    secs: 1523957702
+    nsecs: 739240146
+  frame_id: "base_link"
+fluid_pressure: 127350.0
+variance: 0.0
+---
+header: 
+  seq: 1276
+  stamp: 
+    secs: 1523957702
+    nsecs: 944013275
+  frame_id: "base_link"
+fluid_pressure: 127280.0
+variance: 0.0
+---
+header: 
+  seq: 1277
+  stamp: 
+    secs: 1523957703
+    nsecs: 149588832
+  frame_id: "base_link"
+fluid_pressure: 127490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1278
+  stamp: 
+    secs: 1523957703
+    nsecs: 353426764
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1279
+  stamp: 
+    secs: 1523957703
+    nsecs: 557980879
+  frame_id: "base_link"
+fluid_pressure: 127390.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1280
+  stamp: 
+    secs: 1523957703
+    nsecs: 763423922
+  frame_id: "base_link"
+fluid_pressure: 127130.0
+variance: 0.0
+---
+header: 
+  seq: 1281
+  stamp: 
+    secs: 1523957703
+    nsecs: 967364750
+  frame_id: "base_link"
+fluid_pressure: 127290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1282
+  stamp: 
+    secs: 1523957704
+    nsecs: 172018222
+  frame_id: "base_link"
+fluid_pressure: 127370.0
+variance: 0.0
+---
+header: 
+  seq: 1283
+  stamp: 
+    secs: 1523957704
+    nsecs: 376584671
+  frame_id: "base_link"
+fluid_pressure: 127290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1284
+  stamp: 
+    secs: 1523957704
+    nsecs: 581186766
+  frame_id: "base_link"
+fluid_pressure: 127140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1285
+  stamp: 
+    secs: 1523957704
+    nsecs: 785847509
+  frame_id: "base_link"
+fluid_pressure: 127309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1286
+  stamp: 
+    secs: 1523957704
+    nsecs: 990568839
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1287
+  stamp: 
+    secs: 1523957705
+    nsecs: 195402271
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1288
+  stamp: 
+    secs: 1523957705
+    nsecs: 400406434
+  frame_id: "base_link"
+fluid_pressure: 126759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1289
+  stamp: 
+    secs: 1523957705
+    nsecs: 605806152
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1290
+  stamp: 
+    secs: 1523957705
+    nsecs: 810244882
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1291
+  stamp: 
+    secs: 1523957706
+    nsecs:  14995321
+  frame_id: "base_link"
+fluid_pressure: 126740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1292
+  stamp: 
+    secs: 1523957706
+    nsecs: 220052210
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1293
+  stamp: 
+    secs: 1523957706
+    nsecs: 424918131
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1294
+  stamp: 
+    secs: 1523957706
+    nsecs: 629591488
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1295
+  stamp: 
+    secs: 1523957706
+    nsecs: 834757514
+  frame_id: "base_link"
+fluid_pressure: 126840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1296
+  stamp: 
+    secs: 1523957707
+    nsecs:  39422822
+  frame_id: "base_link"
+fluid_pressure: 126750.0
+variance: 0.0
+---
+header: 
+  seq: 1297
+  stamp: 
+    secs: 1523957707
+    nsecs: 244214205
+  frame_id: "base_link"
+fluid_pressure: 126870.0
+variance: 0.0
+---
+header: 
+  seq: 1298
+  stamp: 
+    secs: 1523957707
+    nsecs: 449277865
+  frame_id: "base_link"
+fluid_pressure: 126840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1299
+  stamp: 
+    secs: 1523957707
+    nsecs: 653320794
+  frame_id: "base_link"
+fluid_pressure: 126970.0
+variance: 0.0
+---
+header: 
+  seq: 1300
+  stamp: 
+    secs: 1523957707
+    nsecs: 858177653
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1301
+  stamp: 
+    secs: 1523957708
+    nsecs:  63281346
+  frame_id: "base_link"
+fluid_pressure: 127009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1302
+  stamp: 
+    secs: 1523957708
+    nsecs: 268218315
+  frame_id: "base_link"
+fluid_pressure: 126980.0
+variance: 0.0
+---
+header: 
+  seq: 1303
+  stamp: 
+    secs: 1523957708
+    nsecs: 472522971
+  frame_id: "base_link"
+fluid_pressure: 127090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1304
+  stamp: 
+    secs: 1523957708
+    nsecs: 676866632
+  frame_id: "base_link"
+fluid_pressure: 127120.0
+variance: 0.0
+---
+header: 
+  seq: 1305
+  stamp: 
+    secs: 1523957708
+    nsecs: 881948818
+  frame_id: "base_link"
+fluid_pressure: 127170.0
+variance: 0.0
+---
+header: 
+  seq: 1306
+  stamp: 
+    secs: 1523957709
+    nsecs:  86881070
+  frame_id: "base_link"
+fluid_pressure: 127130.0
+variance: 0.0
+---
+header: 
+  seq: 1307
+  stamp: 
+    secs: 1523957709
+    nsecs: 291062921
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1308
+  stamp: 
+    secs: 1523957709
+    nsecs: 495844144
+  frame_id: "base_link"
+fluid_pressure: 127090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1309
+  stamp: 
+    secs: 1523957709
+    nsecs: 700699986
+  frame_id: "base_link"
+fluid_pressure: 127240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1310
+  stamp: 
+    secs: 1523957709
+    nsecs: 906120435
+  frame_id: "base_link"
+fluid_pressure: 127190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1311
+  stamp: 
+    secs: 1523957710
+    nsecs: 110424555
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1312
+  stamp: 
+    secs: 1523957710
+    nsecs: 314861659
+  frame_id: "base_link"
+fluid_pressure: 127209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1313
+  stamp: 
+    secs: 1523957710
+    nsecs: 519610293
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1314
+  stamp: 
+    secs: 1523957710
+    nsecs: 725287277
+  frame_id: "base_link"
+fluid_pressure: 127130.0
+variance: 0.0
+---
+header: 
+  seq: 1315
+  stamp: 
+    secs: 1523957710
+    nsecs: 929318101
+  frame_id: "base_link"
+fluid_pressure: 127209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1316
+  stamp: 
+    secs: 1523957711
+    nsecs: 134369142
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1317
+  stamp: 
+    secs: 1523957711
+    nsecs: 338769656
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1318
+  stamp: 
+    secs: 1523957711
+    nsecs: 544066149
+  frame_id: "base_link"
+fluid_pressure: 127159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1319
+  stamp: 
+    secs: 1523957711
+    nsecs: 749548181
+  frame_id: "base_link"
+fluid_pressure: 127040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1320
+  stamp: 
+    secs: 1523957711
+    nsecs: 954074484
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1321
+  stamp: 
+    secs: 1523957712
+    nsecs: 158827069
+  frame_id: "base_link"
+fluid_pressure: 127000.0
+variance: 0.0
+---
+header: 
+  seq: 1322
+  stamp: 
+    secs: 1523957712
+    nsecs: 363945645
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1323
+  stamp: 
+    secs: 1523957712
+    nsecs: 568622356
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1324
+  stamp: 
+    secs: 1523957712
+    nsecs: 773023550
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1325
+  stamp: 
+    secs: 1523957712
+    nsecs: 977790620
+  frame_id: "base_link"
+fluid_pressure: 126840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1326
+  stamp: 
+    secs: 1523957713
+    nsecs: 182742169
+  frame_id: "base_link"
+fluid_pressure: 126659.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1327
+  stamp: 
+    secs: 1523957713
+    nsecs: 388203905
+  frame_id: "base_link"
+fluid_pressure: 126900.0
+variance: 0.0
+---
+header: 
+  seq: 1328
+  stamp: 
+    secs: 1523957713
+    nsecs: 591968730
+  frame_id: "base_link"
+fluid_pressure: 126680.0
+variance: 0.0
+---
+header: 
+  seq: 1329
+  stamp: 
+    secs: 1523957713
+    nsecs: 796840891
+  frame_id: "base_link"
+fluid_pressure: 126940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1330
+  stamp: 
+    secs: 1523957714
+    nsecs:   1687104
+  frame_id: "base_link"
+fluid_pressure: 126800.0
+variance: 0.0
+---
+header: 
+  seq: 1331
+  stamp: 
+    secs: 1523957714
+    nsecs: 206444537
+  frame_id: "base_link"
+fluid_pressure: 126870.0
+variance: 0.0
+---
+header: 
+  seq: 1332
+  stamp: 
+    secs: 1523957714
+    nsecs: 411299055
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1333
+  stamp: 
+    secs: 1523957714
+    nsecs: 616436810
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1334
+  stamp: 
+    secs: 1523957714
+    nsecs: 821076214
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1335
+  stamp: 
+    secs: 1523957715
+    nsecs:  26168690
+  frame_id: "base_link"
+fluid_pressure: 127220.0
+variance: 0.0
+---
+header: 
+  seq: 1336
+  stamp: 
+    secs: 1523957715
+    nsecs: 231177872
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1337
+  stamp: 
+    secs: 1523957715
+    nsecs: 435472152
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1338
+  stamp: 
+    secs: 1523957715
+    nsecs: 639722549
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1339
+  stamp: 
+    secs: 1523957715
+    nsecs: 845061292
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1340
+  stamp: 
+    secs: 1523957716
+    nsecs:  50654420
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1341
+  stamp: 
+    secs: 1523957716
+    nsecs: 254320988
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1342
+  stamp: 
+    secs: 1523957716
+    nsecs: 459113983
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1343
+  stamp: 
+    secs: 1523957716
+    nsecs: 663927107
+  frame_id: "base_link"
+fluid_pressure: 127120.0
+variance: 0.0
+---
+header: 
+  seq: 1344
+  stamp: 
+    secs: 1523957716
+    nsecs: 869381335
+  frame_id: "base_link"
+fluid_pressure: 126980.0
+variance: 0.0
+---
+header: 
+  seq: 1345
+  stamp: 
+    secs: 1523957717
+    nsecs:  73898595
+  frame_id: "base_link"
+fluid_pressure: 126900.0
+variance: 0.0
+---
+header: 
+  seq: 1346
+  stamp: 
+    secs: 1523957717
+    nsecs: 278127375
+  frame_id: "base_link"
+fluid_pressure: 127340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1347
+  stamp: 
+    secs: 1523957717
+    nsecs: 482602455
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1348
+  stamp: 
+    secs: 1523957717
+    nsecs: 687270619
+  frame_id: "base_link"
+fluid_pressure: 127190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1349
+  stamp: 
+    secs: 1523957717
+    nsecs: 891928105
+  frame_id: "base_link"
+fluid_pressure: 127209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1350
+  stamp: 
+    secs: 1523957718
+    nsecs:  97220803
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1351
+  stamp: 
+    secs: 1523957718
+    nsecs: 302695945
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1352
+  stamp: 
+    secs: 1523957718
+    nsecs: 507621043
+  frame_id: "base_link"
+fluid_pressure: 127000.0
+variance: 0.0
+---
+header: 
+  seq: 1353
+  stamp: 
+    secs: 1523957718
+    nsecs: 712479297
+  frame_id: "base_link"
+fluid_pressure: 127100.0
+variance: 0.0
+---
+header: 
+  seq: 1354
+  stamp: 
+    secs: 1523957718
+    nsecs: 917187504
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1355
+  stamp: 
+    secs: 1523957719
+    nsecs: 121975646
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1356
+  stamp: 
+    secs: 1523957719
+    nsecs: 326981108
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1357
+  stamp: 
+    secs: 1523957719
+    nsecs: 531840320
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1358
+  stamp: 
+    secs: 1523957719
+    nsecs: 736318144
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1359
+  stamp: 
+    secs: 1523957719
+    nsecs: 941669961
+  frame_id: "base_link"
+fluid_pressure: 126859.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1360
+  stamp: 
+    secs: 1523957720
+    nsecs: 145954899
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1361
+  stamp: 
+    secs: 1523957720
+    nsecs: 351467853
+  frame_id: "base_link"
+fluid_pressure: 126900.0
+variance: 0.0
+---
+header: 
+  seq: 1362
+  stamp: 
+    secs: 1523957720
+    nsecs: 555005063
+  frame_id: "base_link"
+fluid_pressure: 126840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1363
+  stamp: 
+    secs: 1523957720
+    nsecs: 760134748
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1364
+  stamp: 
+    secs: 1523957720
+    nsecs: 964695186
+  frame_id: "base_link"
+fluid_pressure: 127000.0
+variance: 0.0
+---
+header: 
+  seq: 1365
+  stamp: 
+    secs: 1523957721
+    nsecs: 169130969
+  frame_id: "base_link"
+fluid_pressure: 126690.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1366
+  stamp: 
+    secs: 1523957721
+    nsecs: 373999109
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1367
+  stamp: 
+    secs: 1523957721
+    nsecs: 578458586
+  frame_id: "base_link"
+fluid_pressure: 127009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1368
+  stamp: 
+    secs: 1523957721
+    nsecs: 783267939
+  frame_id: "base_link"
+fluid_pressure: 126920.0
+variance: 0.0
+---
+header: 
+  seq: 1369
+  stamp: 
+    secs: 1523957721
+    nsecs: 988007297
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1370
+  stamp: 
+    secs: 1523957722
+    nsecs: 192998724
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1371
+  stamp: 
+    secs: 1523957722
+    nsecs: 398107735
+  frame_id: "base_link"
+fluid_pressure: 127040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1372
+  stamp: 
+    secs: 1523957722
+    nsecs: 602710782
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1373
+  stamp: 
+    secs: 1523957722
+    nsecs: 806396088
+  frame_id: "base_link"
+fluid_pressure: 127200.0
+variance: 0.0
+---
+header: 
+  seq: 1374
+  stamp: 
+    secs: 1523957723
+    nsecs:  11169928
+  frame_id: "base_link"
+fluid_pressure: 127270.0
+variance: 0.0
+---
+header: 
+  seq: 1375
+  stamp: 
+    secs: 1523957723
+    nsecs: 215971172
+  frame_id: "base_link"
+fluid_pressure: 127209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1376
+  stamp: 
+    secs: 1523957723
+    nsecs: 422038269
+  frame_id: "base_link"
+fluid_pressure: 126990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1377
+  stamp: 
+    secs: 1523957723
+    nsecs: 627361867
+  frame_id: "base_link"
+fluid_pressure: 127140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1378
+  stamp: 
+    secs: 1523957723
+    nsecs: 832148356
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1379
+  stamp: 
+    secs: 1523957724
+    nsecs:  36943725
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1380
+  stamp: 
+    secs: 1523957724
+    nsecs: 240761257
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1381
+  stamp: 
+    secs: 1523957724
+    nsecs: 445411369
+  frame_id: "base_link"
+fluid_pressure: 127000.0
+variance: 0.0
+---
+header: 
+  seq: 1382
+  stamp: 
+    secs: 1523957724
+    nsecs: 650116744
+  frame_id: "base_link"
+fluid_pressure: 126780.0
+variance: 0.0
+---
+header: 
+  seq: 1383
+  stamp: 
+    secs: 1523957724
+    nsecs: 855177270
+  frame_id: "base_link"
+fluid_pressure: 126770.0
+variance: 0.0
+---
+header: 
+  seq: 1384
+  stamp: 
+    secs: 1523957725
+    nsecs:  60739557
+  frame_id: "base_link"
+fluid_pressure: 126690.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1385
+  stamp: 
+    secs: 1523957725
+    nsecs: 265153975
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1386
+  stamp: 
+    secs: 1523957725
+    nsecs: 470573094
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1387
+  stamp: 
+    secs: 1523957725
+    nsecs: 675123346
+  frame_id: "base_link"
+fluid_pressure: 126600.0
+variance: 0.0
+---
+header: 
+  seq: 1388
+  stamp: 
+    secs: 1523957725
+    nsecs: 879896720
+  frame_id: "base_link"
+fluid_pressure: 126680.0
+variance: 0.0
+---
+header: 
+  seq: 1389
+  stamp: 
+    secs: 1523957726
+    nsecs:  84824793
+  frame_id: "base_link"
+fluid_pressure: 126970.0
+variance: 0.0
+---
+header: 
+  seq: 1390
+  stamp: 
+    secs: 1523957726
+    nsecs: 289540509
+  frame_id: "base_link"
+fluid_pressure: 126859.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1391
+  stamp: 
+    secs: 1523957726
+    nsecs: 493902995
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1392
+  stamp: 
+    secs: 1523957726
+    nsecs: 698614054
+  frame_id: "base_link"
+fluid_pressure: 126820.0
+variance: 0.0
+---
+header: 
+  seq: 1393
+  stamp: 
+    secs: 1523957726
+    nsecs: 902922201
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1394
+  stamp: 
+    secs: 1523957727
+    nsecs: 108163209
+  frame_id: "base_link"
+fluid_pressure: 126870.0
+variance: 0.0
+---
+header: 
+  seq: 1395
+  stamp: 
+    secs: 1523957727
+    nsecs: 313121074
+  frame_id: "base_link"
+fluid_pressure: 126809.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1396
+  stamp: 
+    secs: 1523957727
+    nsecs: 517572514
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1397
+  stamp: 
+    secs: 1523957727
+    nsecs: 722416639
+  frame_id: "base_link"
+fluid_pressure: 127190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1398
+  stamp: 
+    secs: 1523957727
+    nsecs: 927298674
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1399
+  stamp: 
+    secs: 1523957728
+    nsecs: 131884666
+  frame_id: "base_link"
+fluid_pressure: 127109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1400
+  stamp: 
+    secs: 1523957728
+    nsecs: 336808706
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1401
+  stamp: 
+    secs: 1523957728
+    nsecs: 543662168
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1402
+  stamp: 
+    secs: 1523957728
+    nsecs: 747699519
+  frame_id: "base_link"
+fluid_pressure: 127159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1403
+  stamp: 
+    secs: 1523957728
+    nsecs: 954198695
+  frame_id: "base_link"
+fluid_pressure: 127159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1404
+  stamp: 
+    secs: 1523957729
+    nsecs: 157197659
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1405
+  stamp: 
+    secs: 1523957729
+    nsecs: 362126755
+  frame_id: "base_link"
+fluid_pressure: 127300.0
+variance: 0.0
+---
+header: 
+  seq: 1406
+  stamp: 
+    secs: 1523957729
+    nsecs: 566650995
+  frame_id: "base_link"
+fluid_pressure: 127240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1407
+  stamp: 
+    secs: 1523957729
+    nsecs: 772408091
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1408
+  stamp: 
+    secs: 1523957729
+    nsecs: 976990104
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1409
+  stamp: 
+    secs: 1523957730
+    nsecs: 182192035
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1410
+  stamp: 
+    secs: 1523957730
+    nsecs: 386610759
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1411
+  stamp: 
+    secs: 1523957730
+    nsecs: 592067150
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1412
+  stamp: 
+    secs: 1523957730
+    nsecs: 796521685
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1413
+  stamp: 
+    secs: 1523957731
+    nsecs:   1083412
+  frame_id: "base_link"
+fluid_pressure: 126730.0
+variance: 0.0
+---
+header: 
+  seq: 1414
+  stamp: 
+    secs: 1523957731
+    nsecs: 207792175
+  frame_id: "base_link"
+fluid_pressure: 126540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1415
+  stamp: 
+    secs: 1523957731
+    nsecs: 412362714
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1416
+  stamp: 
+    secs: 1523957731
+    nsecs: 617287175
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1417
+  stamp: 
+    secs: 1523957731
+    nsecs: 821475656
+  frame_id: "base_link"
+fluid_pressure: 126320.0
+variance: 0.0
+---
+header: 
+  seq: 1418
+  stamp: 
+    secs: 1523957732
+    nsecs:  26240502
+  frame_id: "base_link"
+fluid_pressure: 126170.0
+variance: 0.0
+---
+header: 
+  seq: 1419
+  stamp: 
+    secs: 1523957732
+    nsecs: 229464107
+  frame_id: "base_link"
+fluid_pressure: 126020.0
+variance: 0.0
+---
+header: 
+  seq: 1420
+  stamp: 
+    secs: 1523957732
+    nsecs: 434347028
+  frame_id: "base_link"
+fluid_pressure: 126080.0
+variance: 0.0
+---
+header: 
+  seq: 1421
+  stamp: 
+    secs: 1523957732
+    nsecs: 638844864
+  frame_id: "base_link"
+fluid_pressure: 125970.0
+variance: 0.0
+---
+header: 
+  seq: 1422
+  stamp: 
+    secs: 1523957732
+    nsecs: 843527535
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1423
+  stamp: 
+    secs: 1523957733
+    nsecs:  48192968
+  frame_id: "base_link"
+fluid_pressure: 126130.0
+variance: 0.0
+---
+header: 
+  seq: 1424
+  stamp: 
+    secs: 1523957733
+    nsecs: 253587060
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1425
+  stamp: 
+    secs: 1523957733
+    nsecs: 458680211
+  frame_id: "base_link"
+fluid_pressure: 126420.0
+variance: 0.0
+---
+header: 
+  seq: 1426
+  stamp: 
+    secs: 1523957733
+    nsecs: 663840409
+  frame_id: "base_link"
+fluid_pressure: 126459.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1427
+  stamp: 
+    secs: 1523957733
+    nsecs: 868646722
+  frame_id: "base_link"
+fluid_pressure: 126370.0
+variance: 0.0
+---
+header: 
+  seq: 1428
+  stamp: 
+    secs: 1523957734
+    nsecs:  74320894
+  frame_id: "base_link"
+fluid_pressure: 126370.0
+variance: 0.0
+---
+header: 
+  seq: 1429
+  stamp: 
+    secs: 1523957734
+    nsecs: 278316604
+  frame_id: "base_link"
+fluid_pressure: 126600.0
+variance: 0.0
+---
+header: 
+  seq: 1430
+  stamp: 
+    secs: 1523957734
+    nsecs: 484267071
+  frame_id: "base_link"
+fluid_pressure: 126430.0
+variance: 0.0
+---
+header: 
+  seq: 1431
+  stamp: 
+    secs: 1523957734
+    nsecs: 688493628
+  frame_id: "base_link"
+fluid_pressure: 126620.0
+variance: 0.0
+---
+header: 
+  seq: 1432
+  stamp: 
+    secs: 1523957734
+    nsecs: 893007538
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1433
+  stamp: 
+    secs: 1523957735
+    nsecs:  98011344
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1434
+  stamp: 
+    secs: 1523957735
+    nsecs: 303509541
+  frame_id: "base_link"
+fluid_pressure: 126659.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1435
+  stamp: 
+    secs: 1523957735
+    nsecs: 507910973
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1436
+  stamp: 
+    secs: 1523957735
+    nsecs: 712366367
+  frame_id: "base_link"
+fluid_pressure: 126740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1437
+  stamp: 
+    secs: 1523957735
+    nsecs: 917293288
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1438
+  stamp: 
+    secs: 1523957736
+    nsecs: 121957994
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1439
+  stamp: 
+    secs: 1523957736
+    nsecs: 327643344
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1440
+  stamp: 
+    secs: 1523957736
+    nsecs: 532511615
+  frame_id: "base_link"
+fluid_pressure: 127009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1441
+  stamp: 
+    secs: 1523957736
+    nsecs: 736697496
+  frame_id: "base_link"
+fluid_pressure: 127180.0
+variance: 0.0
+---
+header: 
+  seq: 1442
+  stamp: 
+    secs: 1523957736
+    nsecs: 941415938
+  frame_id: "base_link"
+fluid_pressure: 127170.0
+variance: 0.0
+---
+header: 
+  seq: 1443
+  stamp: 
+    secs: 1523957737
+    nsecs: 146105384
+  frame_id: "base_link"
+fluid_pressure: 127190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1444
+  stamp: 
+    secs: 1523957737
+    nsecs: 351618633
+  frame_id: "base_link"
+fluid_pressure: 127470.0
+variance: 0.0
+---
+header: 
+  seq: 1445
+  stamp: 
+    secs: 1523957737
+    nsecs: 556627250
+  frame_id: "base_link"
+fluid_pressure: 127340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1446
+  stamp: 
+    secs: 1523957737
+    nsecs: 760569067
+  frame_id: "base_link"
+fluid_pressure: 127450.0
+variance: 0.0
+---
+header: 
+  seq: 1447
+  stamp: 
+    secs: 1523957737
+    nsecs: 965563978
+  frame_id: "base_link"
+fluid_pressure: 127400.0
+variance: 0.0
+---
+header: 
+  seq: 1448
+  stamp: 
+    secs: 1523957738
+    nsecs: 170297475
+  frame_id: "base_link"
+fluid_pressure: 127440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1449
+  stamp: 
+    secs: 1523957738
+    nsecs: 375465965
+  frame_id: "base_link"
+fluid_pressure: 127620.0
+variance: 0.0
+---
+header: 
+  seq: 1450
+  stamp: 
+    secs: 1523957738
+    nsecs: 579312848
+  frame_id: "base_link"
+fluid_pressure: 127359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1451
+  stamp: 
+    secs: 1523957738
+    nsecs: 784750354
+  frame_id: "base_link"
+fluid_pressure: 127509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1452
+  stamp: 
+    secs: 1523957738
+    nsecs: 989316895
+  frame_id: "base_link"
+fluid_pressure: 127250.0
+variance: 0.0
+---
+header: 
+  seq: 1453
+  stamp: 
+    secs: 1523957739
+    nsecs: 194192399
+  frame_id: "base_link"
+fluid_pressure: 127340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1454
+  stamp: 
+    secs: 1523957739
+    nsecs: 399131423
+  frame_id: "base_link"
+fluid_pressure: 126800.0
+variance: 0.0
+---
+header: 
+  seq: 1455
+  stamp: 
+    secs: 1523957739
+    nsecs: 603651287
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1456
+  stamp: 
+    secs: 1523957739
+    nsecs: 808015904
+  frame_id: "base_link"
+fluid_pressure: 126759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1457
+  stamp: 
+    secs: 1523957740
+    nsecs:  14184528
+  frame_id: "base_link"
+fluid_pressure: 126450.0
+variance: 0.0
+---
+header: 
+  seq: 1458
+  stamp: 
+    secs: 1523957740
+    nsecs: 218265483
+  frame_id: "base_link"
+fluid_pressure: 126509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1459
+  stamp: 
+    secs: 1523957740
+    nsecs: 423187942
+  frame_id: "base_link"
+fluid_pressure: 126290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1460
+  stamp: 
+    secs: 1523957740
+    nsecs: 628377678
+  frame_id: "base_link"
+fluid_pressure: 126120.0
+variance: 0.0
+---
+header: 
+  seq: 1461
+  stamp: 
+    secs: 1523957740
+    nsecs: 833788683
+  frame_id: "base_link"
+fluid_pressure: 126100.0
+variance: 0.0
+---
+header: 
+  seq: 1462
+  stamp: 
+    secs: 1523957741
+    nsecs:  37702303
+  frame_id: "base_link"
+fluid_pressure: 126090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1463
+  stamp: 
+    secs: 1523957741
+    nsecs: 242171695
+  frame_id: "base_link"
+fluid_pressure: 126100.0
+variance: 0.0
+---
+header: 
+  seq: 1464
+  stamp: 
+    secs: 1523957741
+    nsecs: 446830584
+  frame_id: "base_link"
+fluid_pressure: 126050.0
+variance: 0.0
+---
+header: 
+  seq: 1465
+  stamp: 
+    secs: 1523957741
+    nsecs: 651461043
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1466
+  stamp: 
+    secs: 1523957741
+    nsecs: 856492769
+  frame_id: "base_link"
+fluid_pressure: 126100.0
+variance: 0.0
+---
+header: 
+  seq: 1467
+  stamp: 
+    secs: 1523957742
+    nsecs:  62548292
+  frame_id: "base_link"
+fluid_pressure: 126200.0
+variance: 0.0
+---
+header: 
+  seq: 1468
+  stamp: 
+    secs: 1523957742
+    nsecs: 266884512
+  frame_id: "base_link"
+fluid_pressure: 126059.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1469
+  stamp: 
+    secs: 1523957742
+    nsecs: 471814552
+  frame_id: "base_link"
+fluid_pressure: 126400.0
+variance: 0.0
+---
+header: 
+  seq: 1470
+  stamp: 
+    secs: 1523957742
+    nsecs: 677334844
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1471
+  stamp: 
+    secs: 1523957742
+    nsecs: 882014469
+  frame_id: "base_link"
+fluid_pressure: 126359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1472
+  stamp: 
+    secs: 1523957743
+    nsecs:  86405352
+  frame_id: "base_link"
+fluid_pressure: 126380.0
+variance: 0.0
+---
+header: 
+  seq: 1473
+  stamp: 
+    secs: 1523957743
+    nsecs: 291024731
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1474
+  stamp: 
+    secs: 1523957743
+    nsecs: 495953057
+  frame_id: "base_link"
+fluid_pressure: 126600.0
+variance: 0.0
+---
+header: 
+  seq: 1475
+  stamp: 
+    secs: 1523957743
+    nsecs: 700565954
+  frame_id: "base_link"
+fluid_pressure: 126780.0
+variance: 0.0
+---
+header: 
+  seq: 1476
+  stamp: 
+    secs: 1523957743
+    nsecs: 907480611
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1477
+  stamp: 
+    secs: 1523957744
+    nsecs: 112768490
+  frame_id: "base_link"
+fluid_pressure: 126800.0
+variance: 0.0
+---
+header: 
+  seq: 1478
+  stamp: 
+    secs: 1523957744
+    nsecs: 317725363
+  frame_id: "base_link"
+fluid_pressure: 126809.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1479
+  stamp: 
+    secs: 1523957744
+    nsecs: 522745404
+  frame_id: "base_link"
+fluid_pressure: 126800.0
+variance: 0.0
+---
+header: 
+  seq: 1480
+  stamp: 
+    secs: 1523957744
+    nsecs: 727262719
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1481
+  stamp: 
+    secs: 1523957744
+    nsecs: 931973479
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1482
+  stamp: 
+    secs: 1523957745
+    nsecs: 136759867
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1483
+  stamp: 
+    secs: 1523957745
+    nsecs: 341672172
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1484
+  stamp: 
+    secs: 1523957745
+    nsecs: 546261405
+  frame_id: "base_link"
+fluid_pressure: 127070.0
+variance: 0.0
+---
+header: 
+  seq: 1485
+  stamp: 
+    secs: 1523957745
+    nsecs: 751859752
+  frame_id: "base_link"
+fluid_pressure: 127020.0
+variance: 0.0
+---
+header: 
+  seq: 1486
+  stamp: 
+    secs: 1523957745
+    nsecs: 955856352
+  frame_id: "base_link"
+fluid_pressure: 127220.0
+variance: 0.0
+---
+header: 
+  seq: 1487
+  stamp: 
+    secs: 1523957746
+    nsecs: 160792842
+  frame_id: "base_link"
+fluid_pressure: 127100.0
+variance: 0.0
+---
+header: 
+  seq: 1488
+  stamp: 
+    secs: 1523957746
+    nsecs: 365497084
+  frame_id: "base_link"
+fluid_pressure: 126909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1489
+  stamp: 
+    secs: 1523957746
+    nsecs: 570620723
+  frame_id: "base_link"
+fluid_pressure: 127209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1490
+  stamp: 
+    secs: 1523957746
+    nsecs: 775205677
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1491
+  stamp: 
+    secs: 1523957746
+    nsecs: 979976978
+  frame_id: "base_link"
+fluid_pressure: 126850.0
+variance: 0.0
+---
+header: 
+  seq: 1492
+  stamp: 
+    secs: 1523957747
+    nsecs: 184944076
+  frame_id: "base_link"
+fluid_pressure: 127120.0
+variance: 0.0
+---
+header: 
+  seq: 1493
+  stamp: 
+    secs: 1523957747
+    nsecs: 389990214
+  frame_id: "base_link"
+fluid_pressure: 126670.0
+variance: 0.0
+---
+header: 
+  seq: 1494
+  stamp: 
+    secs: 1523957747
+    nsecs: 594291777
+  frame_id: "base_link"
+fluid_pressure: 126740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1495
+  stamp: 
+    secs: 1523957747
+    nsecs: 799150531
+  frame_id: "base_link"
+fluid_pressure: 126950.0
+variance: 0.0
+---
+header: 
+  seq: 1496
+  stamp: 
+    secs: 1523957748
+    nsecs:   4038623
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1497
+  stamp: 
+    secs: 1523957748
+    nsecs: 209049907
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1498
+  stamp: 
+    secs: 1523957748
+    nsecs: 414987211
+  frame_id: "base_link"
+fluid_pressure: 126500.0
+variance: 0.0
+---
+header: 
+  seq: 1499
+  stamp: 
+    secs: 1523957748
+    nsecs: 618364596
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1500
+  stamp: 
+    secs: 1523957748
+    nsecs: 823308149
+  frame_id: "base_link"
+fluid_pressure: 126450.0
+variance: 0.0
+---
+header: 
+  seq: 1501
+  stamp: 
+    secs: 1523957749
+    nsecs:  28001512
+  frame_id: "base_link"
+fluid_pressure: 126550.0
+variance: 0.0
+---
+header: 
+  seq: 1502
+  stamp: 
+    secs: 1523957749
+    nsecs: 232427845
+  frame_id: "base_link"
+fluid_pressure: 126190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1503
+  stamp: 
+    secs: 1523957749
+    nsecs: 437600303
+  frame_id: "base_link"
+fluid_pressure: 126340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1504
+  stamp: 
+    secs: 1523957749
+    nsecs: 642364200
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1505
+  stamp: 
+    secs: 1523957749
+    nsecs: 847789550
+  frame_id: "base_link"
+fluid_pressure: 126770.0
+variance: 0.0
+---
+header: 
+  seq: 1506
+  stamp: 
+    secs: 1523957750
+    nsecs:  51594189
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1507
+  stamp: 
+    secs: 1523957750
+    nsecs: 256180715
+  frame_id: "base_link"
+fluid_pressure: 126850.0
+variance: 0.0
+---
+header: 
+  seq: 1508
+  stamp: 
+    secs: 1523957750
+    nsecs: 460925083
+  frame_id: "base_link"
+fluid_pressure: 126900.0
+variance: 0.0
+---
+header: 
+  seq: 1509
+  stamp: 
+    secs: 1523957750
+    nsecs: 667533727
+  frame_id: "base_link"
+fluid_pressure: 127150.0
+variance: 0.0
+---
+header: 
+  seq: 1510
+  stamp: 
+    secs: 1523957750
+    nsecs: 872304085
+  frame_id: "base_link"
+fluid_pressure: 127220.0
+variance: 0.0
+---
+header: 
+  seq: 1511
+  stamp: 
+    secs: 1523957751
+    nsecs:  77288633
+  frame_id: "base_link"
+fluid_pressure: 127050.0
+variance: 0.0
+---
+header: 
+  seq: 1512
+  stamp: 
+    secs: 1523957751
+    nsecs: 281800499
+  frame_id: "base_link"
+fluid_pressure: 127340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1513
+  stamp: 
+    secs: 1523957751
+    nsecs: 486631982
+  frame_id: "base_link"
+fluid_pressure: 127580.0
+variance: 0.0
+---
+header: 
+  seq: 1514
+  stamp: 
+    secs: 1523957751
+    nsecs: 691584678
+  frame_id: "base_link"
+fluid_pressure: 127680.0
+variance: 0.0
+---
+header: 
+  seq: 1515
+  stamp: 
+    secs: 1523957751
+    nsecs: 896128743
+  frame_id: "base_link"
+fluid_pressure: 127770.0
+variance: 0.0
+---
+header: 
+  seq: 1516
+  stamp: 
+    secs: 1523957752
+    nsecs: 101081656
+  frame_id: "base_link"
+fluid_pressure: 127890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1517
+  stamp: 
+    secs: 1523957752
+    nsecs: 305616584
+  frame_id: "base_link"
+fluid_pressure: 127959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1518
+  stamp: 
+    secs: 1523957752
+    nsecs: 510382643
+  frame_id: "base_link"
+fluid_pressure: 128109.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1519
+  stamp: 
+    secs: 1523957752
+    nsecs: 716277797
+  frame_id: "base_link"
+fluid_pressure: 128159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1520
+  stamp: 
+    secs: 1523957752
+    nsecs: 920568782
+  frame_id: "base_link"
+fluid_pressure: 128280.0
+variance: 0.0
+---
+header: 
+  seq: 1521
+  stamp: 
+    secs: 1523957753
+    nsecs: 126072633
+  frame_id: "base_link"
+fluid_pressure: 128470.0
+variance: 0.0
+---
+header: 
+  seq: 1522
+  stamp: 
+    secs: 1523957753
+    nsecs: 330236803
+  frame_id: "base_link"
+fluid_pressure: 128440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1523
+  stamp: 
+    secs: 1523957753
+    nsecs: 535210461
+  frame_id: "base_link"
+fluid_pressure: 128280.0
+variance: 0.0
+---
+header: 
+  seq: 1524
+  stamp: 
+    secs: 1523957753
+    nsecs: 739888238
+  frame_id: "base_link"
+fluid_pressure: 128090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1525
+  stamp: 
+    secs: 1523957753
+    nsecs: 944624642
+  frame_id: "base_link"
+fluid_pressure: 128050.0
+variance: 0.0
+---
+header: 
+  seq: 1526
+  stamp: 
+    secs: 1523957754
+    nsecs: 149687740
+  frame_id: "base_link"
+fluid_pressure: 127840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1527
+  stamp: 
+    secs: 1523957754
+    nsecs: 354620828
+  frame_id: "base_link"
+fluid_pressure: 127800.0
+variance: 0.0
+---
+header: 
+  seq: 1528
+  stamp: 
+    secs: 1523957754
+    nsecs: 559254042
+  frame_id: "base_link"
+fluid_pressure: 127440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1529
+  stamp: 
+    secs: 1523957754
+    nsecs: 764359960
+  frame_id: "base_link"
+fluid_pressure: 127400.0
+variance: 0.0
+---
+header: 
+  seq: 1530
+  stamp: 
+    secs: 1523957754
+    nsecs: 968362565
+  frame_id: "base_link"
+fluid_pressure: 127330.0
+variance: 0.0
+---
+header: 
+  seq: 1531
+  stamp: 
+    secs: 1523957755
+    nsecs: 172892550
+  frame_id: "base_link"
+fluid_pressure: 127320.0
+variance: 0.0
+---
+header: 
+  seq: 1532
+  stamp: 
+    secs: 1523957755
+    nsecs: 377759972
+  frame_id: "base_link"
+fluid_pressure: 126940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1533
+  stamp: 
+    secs: 1523957755
+    nsecs: 582501522
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1534
+  stamp: 
+    secs: 1523957755
+    nsecs: 787308586
+  frame_id: "base_link"
+fluid_pressure: 126490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1535
+  stamp: 
+    secs: 1523957755
+    nsecs: 992241624
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1536
+  stamp: 
+    secs: 1523957756
+    nsecs: 196891953
+  frame_id: "base_link"
+fluid_pressure: 126750.0
+variance: 0.0
+---
+header: 
+  seq: 1537
+  stamp: 
+    secs: 1523957756
+    nsecs: 401336852
+  frame_id: "base_link"
+fluid_pressure: 126509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1538
+  stamp: 
+    secs: 1523957756
+    nsecs: 606297497
+  frame_id: "base_link"
+fluid_pressure: 126409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1539
+  stamp: 
+    secs: 1523957756
+    nsecs: 812105333
+  frame_id: "base_link"
+fluid_pressure: 126459.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1540
+  stamp: 
+    secs: 1523957757
+    nsecs:  15041886
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1541
+  stamp: 
+    secs: 1523957757
+    nsecs: 219473054
+  frame_id: "base_link"
+fluid_pressure: 126940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1542
+  stamp: 
+    secs: 1523957757
+    nsecs: 424292938
+  frame_id: "base_link"
+fluid_pressure: 126890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1543
+  stamp: 
+    secs: 1523957757
+    nsecs: 627477996
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1544
+  stamp: 
+    secs: 1523957757
+    nsecs: 830651939
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1545
+  stamp: 
+    secs: 1523957758
+    nsecs:  35087799
+  frame_id: "base_link"
+fluid_pressure: 127040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1546
+  stamp: 
+    secs: 1523957758
+    nsecs: 240160139
+  frame_id: "base_link"
+fluid_pressure: 127320.0
+variance: 0.0
+---
+header: 
+  seq: 1547
+  stamp: 
+    secs: 1523957758
+    nsecs: 445753482
+  frame_id: "base_link"
+fluid_pressure: 127380.0
+variance: 0.0
+---
+header: 
+  seq: 1548
+  stamp: 
+    secs: 1523957758
+    nsecs: 649803175
+  frame_id: "base_link"
+fluid_pressure: 127240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1549
+  stamp: 
+    secs: 1523957758
+    nsecs: 854230731
+  frame_id: "base_link"
+fluid_pressure: 127440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1550
+  stamp: 
+    secs: 1523957759
+    nsecs:  58902735
+  frame_id: "base_link"
+fluid_pressure: 127580.0
+variance: 0.0
+---
+header: 
+  seq: 1551
+  stamp: 
+    secs: 1523957759
+    nsecs: 265234263
+  frame_id: "base_link"
+fluid_pressure: 127480.0
+variance: 0.0
+---
+header: 
+  seq: 1552
+  stamp: 
+    secs: 1523957759
+    nsecs: 469677489
+  frame_id: "base_link"
+fluid_pressure: 127480.0
+variance: 0.0
+---
+header: 
+  seq: 1553
+  stamp: 
+    secs: 1523957759
+    nsecs: 674955794
+  frame_id: "base_link"
+fluid_pressure: 127840.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1554
+  stamp: 
+    secs: 1523957759
+    nsecs: 879041273
+  frame_id: "base_link"
+fluid_pressure: 127780.0
+variance: 0.0
+---
+header: 
+  seq: 1555
+  stamp: 
+    secs: 1523957760
+    nsecs:  84327800
+  frame_id: "base_link"
+fluid_pressure: 127730.0
+variance: 0.0
+---
+header: 
+  seq: 1556
+  stamp: 
+    secs: 1523957760
+    nsecs: 288759954
+  frame_id: "base_link"
+fluid_pressure: 127790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1557
+  stamp: 
+    secs: 1523957760
+    nsecs: 493913492
+  frame_id: "base_link"
+fluid_pressure: 127930.0
+variance: 0.0
+---
+header: 
+  seq: 1558
+  stamp: 
+    secs: 1523957760
+    nsecs: 698283234
+  frame_id: "base_link"
+fluid_pressure: 128030.0
+variance: 0.0
+---
+header: 
+  seq: 1559
+  stamp: 
+    secs: 1523957760
+    nsecs: 902828274
+  frame_id: "base_link"
+fluid_pressure: 127980.0
+variance: 0.0
+---
+header: 
+  seq: 1560
+  stamp: 
+    secs: 1523957761
+    nsecs: 107611626
+  frame_id: "base_link"
+fluid_pressure: 127909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1561
+  stamp: 
+    secs: 1523957761
+    nsecs: 312224237
+  frame_id: "base_link"
+fluid_pressure: 127520.0
+variance: 0.0
+---
+header: 
+  seq: 1562
+  stamp: 
+    secs: 1523957761
+    nsecs: 516700532
+  frame_id: "base_link"
+fluid_pressure: 127230.0
+variance: 0.0
+---
+header: 
+  seq: 1563
+  stamp: 
+    secs: 1523957761
+    nsecs: 721770153
+  frame_id: "base_link"
+fluid_pressure: 127080.0
+variance: 0.0
+---
+header: 
+  seq: 1564
+  stamp: 
+    secs: 1523957761
+    nsecs: 926262716
+  frame_id: "base_link"
+fluid_pressure: 126540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1565
+  stamp: 
+    secs: 1523957762
+    nsecs: 131322238
+  frame_id: "base_link"
+fluid_pressure: 126380.0
+variance: 0.0
+---
+header: 
+  seq: 1566
+  stamp: 
+    secs: 1523957762
+    nsecs: 336086977
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1567
+  stamp: 
+    secs: 1523957762
+    nsecs: 541336982
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1568
+  stamp: 
+    secs: 1523957762
+    nsecs: 745966304
+  frame_id: "base_link"
+fluid_pressure: 125830.0
+variance: 0.0
+---
+header: 
+  seq: 1569
+  stamp: 
+    secs: 1523957762
+    nsecs: 950562499
+  frame_id: "base_link"
+fluid_pressure: 125620.0
+variance: 0.0
+---
+header: 
+  seq: 1570
+  stamp: 
+    secs: 1523957763
+    nsecs: 155518198
+  frame_id: "base_link"
+fluid_pressure: 125420.0
+variance: 0.0
+---
+header: 
+  seq: 1571
+  stamp: 
+    secs: 1523957763
+    nsecs: 359936074
+  frame_id: "base_link"
+fluid_pressure: 125509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1572
+  stamp: 
+    secs: 1523957763
+    nsecs: 564814081
+  frame_id: "base_link"
+fluid_pressure: 125200.0
+variance: 0.0
+---
+header: 
+  seq: 1573
+  stamp: 
+    secs: 1523957763
+    nsecs: 771166561
+  frame_id: "base_link"
+fluid_pressure: 125380.0
+variance: 0.0
+---
+header: 
+  seq: 1574
+  stamp: 
+    secs: 1523957763
+    nsecs: 975512079
+  frame_id: "base_link"
+fluid_pressure: 125200.0
+variance: 0.0
+---
+header: 
+  seq: 1575
+  stamp: 
+    secs: 1523957764
+    nsecs: 179942302
+  frame_id: "base_link"
+fluid_pressure: 125500.0
+variance: 0.0
+---
+header: 
+  seq: 1576
+  stamp: 
+    secs: 1523957764
+    nsecs: 386110597
+  frame_id: "base_link"
+fluid_pressure: 125740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1577
+  stamp: 
+    secs: 1523957764
+    nsecs: 590481390
+  frame_id: "base_link"
+fluid_pressure: 125740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1578
+  stamp: 
+    secs: 1523957764
+    nsecs: 795703552
+  frame_id: "base_link"
+fluid_pressure: 125720.0
+variance: 0.0
+---
+header: 
+  seq: 1579
+  stamp: 
+    secs: 1523957765
+    nsecs:    190038
+  frame_id: "base_link"
+fluid_pressure: 125850.0
+variance: 0.0
+---
+header: 
+  seq: 1580
+  stamp: 
+    secs: 1523957765
+    nsecs: 204558522
+  frame_id: "base_link"
+fluid_pressure: 125790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1581
+  stamp: 
+    secs: 1523957765
+    nsecs: 408926612
+  frame_id: "base_link"
+fluid_pressure: 126250.0
+variance: 0.0
+---
+header: 
+  seq: 1582
+  stamp: 
+    secs: 1523957765
+    nsecs: 613622074
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1583
+  stamp: 
+    secs: 1523957765
+    nsecs: 818287614
+  frame_id: "base_link"
+fluid_pressure: 126230.0
+variance: 0.0
+---
+header: 
+  seq: 1584
+  stamp: 
+    secs: 1523957766
+    nsecs:  22870004
+  frame_id: "base_link"
+fluid_pressure: 126380.0
+variance: 0.0
+---
+header: 
+  seq: 1585
+  stamp: 
+    secs: 1523957766
+    nsecs: 227647118
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1586
+  stamp: 
+    secs: 1523957766
+    nsecs: 432355849
+  frame_id: "base_link"
+fluid_pressure: 126600.0
+variance: 0.0
+---
+header: 
+  seq: 1587
+  stamp: 
+    secs: 1523957766
+    nsecs: 637416676
+  frame_id: "base_link"
+fluid_pressure: 126490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1588
+  stamp: 
+    secs: 1523957766
+    nsecs: 842138274
+  frame_id: "base_link"
+fluid_pressure: 126459.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1589
+  stamp: 
+    secs: 1523957767
+    nsecs:  46720847
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1590
+  stamp: 
+    secs: 1523957767
+    nsecs: 251363938
+  frame_id: "base_link"
+fluid_pressure: 126559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1591
+  stamp: 
+    secs: 1523957767
+    nsecs: 456008859
+  frame_id: "base_link"
+fluid_pressure: 126500.0
+variance: 0.0
+---
+header: 
+  seq: 1592
+  stamp: 
+    secs: 1523957767
+    nsecs: 660851744
+  frame_id: "base_link"
+fluid_pressure: 126240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1593
+  stamp: 
+    secs: 1523957767
+    nsecs: 865891894
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1594
+  stamp: 
+    secs: 1523957768
+    nsecs:  71090864
+  frame_id: "base_link"
+fluid_pressure: 126200.0
+variance: 0.0
+---
+header: 
+  seq: 1595
+  stamp: 
+    secs: 1523957768
+    nsecs: 276445363
+  frame_id: "base_link"
+fluid_pressure: 126190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1596
+  stamp: 
+    secs: 1523957768
+    nsecs: 481435013
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1597
+  stamp: 
+    secs: 1523957768
+    nsecs: 685826339
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1598
+  stamp: 
+    secs: 1523957768
+    nsecs: 890708059
+  frame_id: "base_link"
+fluid_pressure: 126180.0
+variance: 0.0
+---
+header: 
+  seq: 1599
+  stamp: 
+    secs: 1523957769
+    nsecs:  95167826
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1600
+  stamp: 
+    secs: 1523957769
+    nsecs: 300089495
+  frame_id: "base_link"
+fluid_pressure: 126209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1601
+  stamp: 
+    secs: 1523957769
+    nsecs: 506224251
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1602
+  stamp: 
+    secs: 1523957769
+    nsecs: 711519192
+  frame_id: "base_link"
+fluid_pressure: 126050.0
+variance: 0.0
+---
+header: 
+  seq: 1603
+  stamp: 
+    secs: 1523957769
+    nsecs: 915869933
+  frame_id: "base_link"
+fluid_pressure: 126280.0
+variance: 0.0
+---
+header: 
+  seq: 1604
+  stamp: 
+    secs: 1523957770
+    nsecs: 120405711
+  frame_id: "base_link"
+fluid_pressure: 126180.0
+variance: 0.0
+---
+header: 
+  seq: 1605
+  stamp: 
+    secs: 1523957770
+    nsecs: 326205228
+  frame_id: "base_link"
+fluid_pressure: 126130.0
+variance: 0.0
+---
+header: 
+  seq: 1606
+  stamp: 
+    secs: 1523957770
+    nsecs: 531118726
+  frame_id: "base_link"
+fluid_pressure: 126030.0
+variance: 0.0
+---
+header: 
+  seq: 1607
+  stamp: 
+    secs: 1523957770
+    nsecs: 735798301
+  frame_id: "base_link"
+fluid_pressure: 126180.0
+variance: 0.0
+---
+header: 
+  seq: 1608
+  stamp: 
+    secs: 1523957770
+    nsecs: 941044614
+  frame_id: "base_link"
+fluid_pressure: 126120.0
+variance: 0.0
+---
+header: 
+  seq: 1609
+  stamp: 
+    secs: 1523957771
+    nsecs: 145429525
+  frame_id: "base_link"
+fluid_pressure: 125909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1610
+  stamp: 
+    secs: 1523957771
+    nsecs: 349431364
+  frame_id: "base_link"
+fluid_pressure: 126020.0
+variance: 0.0
+---
+header: 
+  seq: 1611
+  stamp: 
+    secs: 1523957771
+    nsecs: 554011899
+  frame_id: "base_link"
+fluid_pressure: 125809.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1612
+  stamp: 
+    secs: 1523957771
+    nsecs: 759078104
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1613
+  stamp: 
+    secs: 1523957771
+    nsecs: 963447578
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1614
+  stamp: 
+    secs: 1523957772
+    nsecs: 169014844
+  frame_id: "base_link"
+fluid_pressure: 126080.0
+variance: 0.0
+---
+header: 
+  seq: 1615
+  stamp: 
+    secs: 1523957772
+    nsecs: 373857794
+  frame_id: "base_link"
+fluid_pressure: 125990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1616
+  stamp: 
+    secs: 1523957772
+    nsecs: 578436881
+  frame_id: "base_link"
+fluid_pressure: 126040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1617
+  stamp: 
+    secs: 1523957772
+    nsecs: 782977244
+  frame_id: "base_link"
+fluid_pressure: 125959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1618
+  stamp: 
+    secs: 1523957772
+    nsecs: 988278138
+  frame_id: "base_link"
+fluid_pressure: 126009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1619
+  stamp: 
+    secs: 1523957773
+    nsecs: 192633344
+  frame_id: "base_link"
+fluid_pressure: 126009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1620
+  stamp: 
+    secs: 1523957773
+    nsecs: 397577684
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1621
+  stamp: 
+    secs: 1523957773
+    nsecs: 602224296
+  frame_id: "base_link"
+fluid_pressure: 126450.0
+variance: 0.0
+---
+header: 
+  seq: 1622
+  stamp: 
+    secs: 1523957773
+    nsecs: 806869365
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1623
+  stamp: 
+    secs: 1523957774
+    nsecs:  11439008
+  frame_id: "base_link"
+fluid_pressure: 126320.0
+variance: 0.0
+---
+header: 
+  seq: 1624
+  stamp: 
+    secs: 1523957774
+    nsecs: 216126716
+  frame_id: "base_link"
+fluid_pressure: 126030.0
+variance: 0.0
+---
+header: 
+  seq: 1625
+  stamp: 
+    secs: 1523957774
+    nsecs: 422592588
+  frame_id: "base_link"
+fluid_pressure: 126320.0
+variance: 0.0
+---
+header: 
+  seq: 1626
+  stamp: 
+    secs: 1523957774
+    nsecs: 629909923
+  frame_id: "base_link"
+fluid_pressure: 126159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1627
+  stamp: 
+    secs: 1523957774
+    nsecs: 833955308
+  frame_id: "base_link"
+fluid_pressure: 126259.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1628
+  stamp: 
+    secs: 1523957775
+    nsecs:  39255049
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1629
+  stamp: 
+    secs: 1523957775
+    nsecs: 244117416
+  frame_id: "base_link"
+fluid_pressure: 126170.0
+variance: 0.0
+---
+header: 
+  seq: 1630
+  stamp: 
+    secs: 1523957775
+    nsecs: 448018078
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1631
+  stamp: 
+    secs: 1523957775
+    nsecs: 652587597
+  frame_id: "base_link"
+fluid_pressure: 126200.0
+variance: 0.0
+---
+header: 
+  seq: 1632
+  stamp: 
+    secs: 1523957775
+    nsecs: 857757747
+  frame_id: "base_link"
+fluid_pressure: 126259.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1633
+  stamp: 
+    secs: 1523957776
+    nsecs:  62526706
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1634
+  stamp: 
+    secs: 1523957776
+    nsecs: 267315844
+  frame_id: "base_link"
+fluid_pressure: 126400.0
+variance: 0.0
+---
+header: 
+  seq: 1635
+  stamp: 
+    secs: 1523957776
+    nsecs: 473253659
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1636
+  stamp: 
+    secs: 1523957776
+    nsecs: 675910188
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1637
+  stamp: 
+    secs: 1523957776
+    nsecs: 880796222
+  frame_id: "base_link"
+fluid_pressure: 126620.0
+variance: 0.0
+---
+header: 
+  seq: 1638
+  stamp: 
+    secs: 1523957777
+    nsecs:  86351161
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1639
+  stamp: 
+    secs: 1523957777
+    nsecs: 290279554
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1640
+  stamp: 
+    secs: 1523957777
+    nsecs: 495218175
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1641
+  stamp: 
+    secs: 1523957777
+    nsecs: 699620263
+  frame_id: "base_link"
+fluid_pressure: 126500.0
+variance: 0.0
+---
+header: 
+  seq: 1642
+  stamp: 
+    secs: 1523957777
+    nsecs: 905399461
+  frame_id: "base_link"
+fluid_pressure: 126540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1643
+  stamp: 
+    secs: 1523957778
+    nsecs: 109729617
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1644
+  stamp: 
+    secs: 1523957778
+    nsecs: 313852288
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1645
+  stamp: 
+    secs: 1523957778
+    nsecs: 518978588
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1646
+  stamp: 
+    secs: 1523957778
+    nsecs: 723249136
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1647
+  stamp: 
+    secs: 1523957778
+    nsecs: 928620771
+  frame_id: "base_link"
+fluid_pressure: 126270.0
+variance: 0.0
+---
+header: 
+  seq: 1648
+  stamp: 
+    secs: 1523957779
+    nsecs: 133527448
+  frame_id: "base_link"
+fluid_pressure: 126190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1649
+  stamp: 
+    secs: 1523957779
+    nsecs: 338904357
+  frame_id: "base_link"
+fluid_pressure: 125930.0
+variance: 0.0
+---
+header: 
+  seq: 1650
+  stamp: 
+    secs: 1523957779
+    nsecs: 543293054
+  frame_id: "base_link"
+fluid_pressure: 126070.0
+variance: 0.0
+---
+header: 
+  seq: 1651
+  stamp: 
+    secs: 1523957779
+    nsecs: 748176357
+  frame_id: "base_link"
+fluid_pressure: 126120.0
+variance: 0.0
+---
+header: 
+  seq: 1652
+  stamp: 
+    secs: 1523957779
+    nsecs: 953147047
+  frame_id: "base_link"
+fluid_pressure: 126209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1653
+  stamp: 
+    secs: 1523957780
+    nsecs: 157903932
+  frame_id: "base_link"
+fluid_pressure: 126380.0
+variance: 0.0
+---
+header: 
+  seq: 1654
+  stamp: 
+    secs: 1523957780
+    nsecs: 362560983
+  frame_id: "base_link"
+fluid_pressure: 126400.0
+variance: 0.0
+---
+header: 
+  seq: 1655
+  stamp: 
+    secs: 1523957780
+    nsecs: 567221021
+  frame_id: "base_link"
+fluid_pressure: 126530.0
+variance: 0.0
+---
+header: 
+  seq: 1656
+  stamp: 
+    secs: 1523957780
+    nsecs: 771556960
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1657
+  stamp: 
+    secs: 1523957780
+    nsecs: 976393021
+  frame_id: "base_link"
+fluid_pressure: 126770.0
+variance: 0.0
+---
+header: 
+  seq: 1658
+  stamp: 
+    secs: 1523957781
+    nsecs: 183660538
+  frame_id: "base_link"
+fluid_pressure: 126550.0
+variance: 0.0
+---
+header: 
+  seq: 1659
+  stamp: 
+    secs: 1523957781
+    nsecs: 388580748
+  frame_id: "base_link"
+fluid_pressure: 126750.0
+variance: 0.0
+---
+header: 
+  seq: 1660
+  stamp: 
+    secs: 1523957781
+    nsecs: 593511992
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1661
+  stamp: 
+    secs: 1523957781
+    nsecs: 798033821
+  frame_id: "base_link"
+fluid_pressure: 126700.0
+variance: 0.0
+---
+header: 
+  seq: 1662
+  stamp: 
+    secs: 1523957782
+    nsecs:   3064420
+  frame_id: "base_link"
+fluid_pressure: 126759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1663
+  stamp: 
+    secs: 1523957782
+    nsecs: 207697869
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1664
+  stamp: 
+    secs: 1523957782
+    nsecs: 412579038
+  frame_id: "base_link"
+fluid_pressure: 126500.0
+variance: 0.0
+---
+header: 
+  seq: 1665
+  stamp: 
+    secs: 1523957782
+    nsecs: 617411516
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1666
+  stamp: 
+    secs: 1523957782
+    nsecs: 821965276
+  frame_id: "base_link"
+fluid_pressure: 126240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1667
+  stamp: 
+    secs: 1523957783
+    nsecs:  27092143
+  frame_id: "base_link"
+fluid_pressure: 126350.0
+variance: 0.0
+---
+header: 
+  seq: 1668
+  stamp: 
+    secs: 1523957783
+    nsecs: 230865336
+  frame_id: "base_link"
+fluid_pressure: 126509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1669
+  stamp: 
+    secs: 1523957783
+    nsecs: 434826141
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1670
+  stamp: 
+    secs: 1523957783
+    nsecs: 639664650
+  frame_id: "base_link"
+fluid_pressure: 126450.0
+variance: 0.0
+---
+header: 
+  seq: 1671
+  stamp: 
+    secs: 1523957783
+    nsecs: 845423827
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1672
+  stamp: 
+    secs: 1523957784
+    nsecs:  49506789
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1673
+  stamp: 
+    secs: 1523957784
+    nsecs: 254259223
+  frame_id: "base_link"
+fluid_pressure: 126290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1674
+  stamp: 
+    secs: 1523957784
+    nsecs: 458671057
+  frame_id: "base_link"
+fluid_pressure: 126080.0
+variance: 0.0
+---
+header: 
+  seq: 1675
+  stamp: 
+    secs: 1523957784
+    nsecs: 663527623
+  frame_id: "base_link"
+fluid_pressure: 126209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1676
+  stamp: 
+    secs: 1523957784
+    nsecs: 869550031
+  frame_id: "base_link"
+fluid_pressure: 126020.0
+variance: 0.0
+---
+header: 
+  seq: 1677
+  stamp: 
+    secs: 1523957785
+    nsecs:  76027616
+  frame_id: "base_link"
+fluid_pressure: 126230.0
+variance: 0.0
+---
+header: 
+  seq: 1678
+  stamp: 
+    secs: 1523957785
+    nsecs: 279130867
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1679
+  stamp: 
+    secs: 1523957785
+    nsecs: 483818314
+  frame_id: "base_link"
+fluid_pressure: 126190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1680
+  stamp: 
+    secs: 1523957785
+    nsecs: 688808083
+  frame_id: "base_link"
+fluid_pressure: 126540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1681
+  stamp: 
+    secs: 1523957785
+    nsecs: 893897593
+  frame_id: "base_link"
+fluid_pressure: 126440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1682
+  stamp: 
+    secs: 1523957786
+    nsecs:  98379394
+  frame_id: "base_link"
+fluid_pressure: 126459.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1683
+  stamp: 
+    secs: 1523957786
+    nsecs: 303160792
+  frame_id: "base_link"
+fluid_pressure: 126559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1684
+  stamp: 
+    secs: 1523957786
+    nsecs: 508267882
+  frame_id: "base_link"
+fluid_pressure: 126540.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1685
+  stamp: 
+    secs: 1523957786
+    nsecs: 712481189
+  frame_id: "base_link"
+fluid_pressure: 126570.0
+variance: 0.0
+---
+header: 
+  seq: 1686
+  stamp: 
+    secs: 1523957786
+    nsecs: 917883550
+  frame_id: "base_link"
+fluid_pressure: 126580.0
+variance: 0.0
+---
+header: 
+  seq: 1687
+  stamp: 
+    secs: 1523957787
+    nsecs: 121742455
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1688
+  stamp: 
+    secs: 1523957787
+    nsecs: 327792969
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1689
+  stamp: 
+    secs: 1523957787
+    nsecs: 531578246
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1690
+  stamp: 
+    secs: 1523957787
+    nsecs: 736473308
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1691
+  stamp: 
+    secs: 1523957787
+    nsecs: 941130525
+  frame_id: "base_link"
+fluid_pressure: 126409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1692
+  stamp: 
+    secs: 1523957788
+    nsecs: 145792119
+  frame_id: "base_link"
+fluid_pressure: 126300.0
+variance: 0.0
+---
+header: 
+  seq: 1693
+  stamp: 
+    secs: 1523957788
+    nsecs: 350603847
+  frame_id: "base_link"
+fluid_pressure: 126250.0
+variance: 0.0
+---
+header: 
+  seq: 1694
+  stamp: 
+    secs: 1523957788
+    nsecs: 555751612
+  frame_id: "base_link"
+fluid_pressure: 126300.0
+variance: 0.0
+---
+header: 
+  seq: 1695
+  stamp: 
+    secs: 1523957788
+    nsecs: 760449762
+  frame_id: "base_link"
+fluid_pressure: 126209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1696
+  stamp: 
+    secs: 1523957788
+    nsecs: 965205604
+  frame_id: "base_link"
+fluid_pressure: 126370.0
+variance: 0.0
+---
+header: 
+  seq: 1697
+  stamp: 
+    secs: 1523957789
+    nsecs: 171039577
+  frame_id: "base_link"
+fluid_pressure: 126430.0
+variance: 0.0
+---
+header: 
+  seq: 1698
+  stamp: 
+    secs: 1523957789
+    nsecs: 374740046
+  frame_id: "base_link"
+fluid_pressure: 126200.0
+variance: 0.0
+---
+header: 
+  seq: 1699
+  stamp: 
+    secs: 1523957789
+    nsecs: 580607664
+  frame_id: "base_link"
+fluid_pressure: 126209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1700
+  stamp: 
+    secs: 1523957789
+    nsecs: 784213923
+  frame_id: "base_link"
+fluid_pressure: 126070.0
+variance: 0.0
+---
+header: 
+  seq: 1701
+  stamp: 
+    secs: 1523957789
+    nsecs: 989524087
+  frame_id: "base_link"
+fluid_pressure: 126159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1702
+  stamp: 
+    secs: 1523957790
+    nsecs: 222092667
+  frame_id: "base_link"
+fluid_pressure: -2582640.0
+variance: 0.0
+---
+header: 
+  seq: 1703
+  stamp: 
+    secs: 1523957790
+    nsecs: 426282107
+  frame_id: "base_link"
+fluid_pressure: 126359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1704
+  stamp: 
+    secs: 1523957790
+    nsecs: 631525536
+  frame_id: "base_link"
+fluid_pressure: 126120.0
+variance: 0.0
+---
+header: 
+  seq: 1705
+  stamp: 
+    secs: 1523957790
+    nsecs: 835940264
+  frame_id: "base_link"
+fluid_pressure: 126280.0
+variance: 0.0
+---
+header: 
+  seq: 1706
+  stamp: 
+    secs: 1523957791
+    nsecs:  40767631
+  frame_id: "base_link"
+fluid_pressure: 126270.0
+variance: 0.0
+---
+header: 
+  seq: 1707
+  stamp: 
+    secs: 1523957791
+    nsecs: 245191277
+  frame_id: "base_link"
+fluid_pressure: 126290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1708
+  stamp: 
+    secs: 1523957791
+    nsecs: 450110560
+  frame_id: "base_link"
+fluid_pressure: 126470.0
+variance: 0.0
+---
+header: 
+  seq: 1709
+  stamp: 
+    secs: 1523957791
+    nsecs: 654865854
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1710
+  stamp: 
+    secs: 1523957791
+    nsecs: 859598105
+  frame_id: "base_link"
+fluid_pressure: 126450.0
+variance: 0.0
+---
+header: 
+  seq: 1711
+  stamp: 
+    secs: 1523957792
+    nsecs:  64115376
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1712
+  stamp: 
+    secs: 1523957792
+    nsecs: 269036785
+  frame_id: "base_link"
+fluid_pressure: 126750.0
+variance: 0.0
+---
+header: 
+  seq: 1713
+  stamp: 
+    secs: 1523957792
+    nsecs: 473676177
+  frame_id: "base_link"
+fluid_pressure: 126850.0
+variance: 0.0
+---
+header: 
+  seq: 1714
+  stamp: 
+    secs: 1523957792
+    nsecs: 678783805
+  frame_id: "base_link"
+fluid_pressure: 126680.0
+variance: 0.0
+---
+header: 
+  seq: 1715
+  stamp: 
+    secs: 1523957792
+    nsecs: 885254264
+  frame_id: "base_link"
+fluid_pressure: 126809.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1716
+  stamp: 
+    secs: 1523957793
+    nsecs:  89525566
+  frame_id: "base_link"
+fluid_pressure: 126920.0
+variance: 0.0
+---
+header: 
+  seq: 1717
+  stamp: 
+    secs: 1523957793
+    nsecs: 294222432
+  frame_id: "base_link"
+fluid_pressure: 126730.0
+variance: 0.0
+---
+header: 
+  seq: 1718
+  stamp: 
+    secs: 1523957793
+    nsecs: 499527080
+  frame_id: "base_link"
+fluid_pressure: 126770.0
+variance: 0.0
+---
+header: 
+  seq: 1719
+  stamp: 
+    secs: 1523957793
+    nsecs: 703874887
+  frame_id: "base_link"
+fluid_pressure: 126830.0
+variance: 0.0
+---
+header: 
+  seq: 1720
+  stamp: 
+    secs: 1523957793
+    nsecs: 909184866
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1721
+  stamp: 
+    secs: 1523957794
+    nsecs: 113028671
+  frame_id: "base_link"
+fluid_pressure: 126680.0
+variance: 0.0
+---
+header: 
+  seq: 1722
+  stamp: 
+    secs: 1523957794
+    nsecs: 317675366
+  frame_id: "base_link"
+fluid_pressure: 126720.0
+variance: 0.0
+---
+header: 
+  seq: 1723
+  stamp: 
+    secs: 1523957794
+    nsecs: 522318797
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1724
+  stamp: 
+    secs: 1523957794
+    nsecs: 727044324
+  frame_id: "base_link"
+fluid_pressure: 126359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1725
+  stamp: 
+    secs: 1523957794
+    nsecs: 931133408
+  frame_id: "base_link"
+fluid_pressure: 126259.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1726
+  stamp: 
+    secs: 1523957795
+    nsecs: 136994911
+  frame_id: "base_link"
+fluid_pressure: 126159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1727
+  stamp: 
+    secs: 1523957795
+    nsecs: 341866012
+  frame_id: "base_link"
+fluid_pressure: 125980.0
+variance: 0.0
+---
+header: 
+  seq: 1728
+  stamp: 
+    secs: 1523957795
+    nsecs: 546301215
+  frame_id: "base_link"
+fluid_pressure: 126020.0
+variance: 0.0
+---
+header: 
+  seq: 1729
+  stamp: 
+    secs: 1523957795
+    nsecs: 750973533
+  frame_id: "base_link"
+fluid_pressure: 126040.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1730
+  stamp: 
+    secs: 1523957795
+    nsecs: 955754746
+  frame_id: "base_link"
+fluid_pressure: 125859.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1731
+  stamp: 
+    secs: 1523957796
+    nsecs: 160749754
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1732
+  stamp: 
+    secs: 1523957796
+    nsecs: 365662761
+  frame_id: "base_link"
+fluid_pressure: 125950.0
+variance: 0.0
+---
+header: 
+  seq: 1733
+  stamp: 
+    secs: 1523957796
+    nsecs: 570117300
+  frame_id: "base_link"
+fluid_pressure: 125990.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1734
+  stamp: 
+    secs: 1523957796
+    nsecs: 774768024
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1735
+  stamp: 
+    secs: 1523957796
+    nsecs: 979980982
+  frame_id: "base_link"
+fluid_pressure: 126009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1736
+  stamp: 
+    secs: 1523957797
+    nsecs: 184337447
+  frame_id: "base_link"
+fluid_pressure: 126250.0
+variance: 0.0
+---
+header: 
+  seq: 1737
+  stamp: 
+    secs: 1523957797
+    nsecs: 389833011
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1738
+  stamp: 
+    secs: 1523957797
+    nsecs: 594886494
+  frame_id: "base_link"
+fluid_pressure: 126090.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1739
+  stamp: 
+    secs: 1523957797
+    nsecs: 799810946
+  frame_id: "base_link"
+fluid_pressure: 126500.0
+variance: 0.0
+---
+header: 
+  seq: 1740
+  stamp: 
+    secs: 1523957798
+    nsecs:   4320444
+  frame_id: "base_link"
+fluid_pressure: 126409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1741
+  stamp: 
+    secs: 1523957798
+    nsecs: 209147587
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1742
+  stamp: 
+    secs: 1523957798
+    nsecs: 414609919
+  frame_id: "base_link"
+fluid_pressure: 126650.0
+variance: 0.0
+---
+header: 
+  seq: 1743
+  stamp: 
+    secs: 1523957798
+    nsecs: 618498019
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1744
+  stamp: 
+    secs: 1523957798
+    nsecs: 823373672
+  frame_id: "base_link"
+fluid_pressure: 126670.0
+variance: 0.0
+---
+header: 
+  seq: 1745
+  stamp: 
+    secs: 1523957799
+    nsecs:  28429756
+  frame_id: "base_link"
+fluid_pressure: 126740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1746
+  stamp: 
+    secs: 1523957799
+    nsecs: 232844902
+  frame_id: "base_link"
+fluid_pressure: 126759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1747
+  stamp: 
+    secs: 1523957799
+    nsecs: 439519557
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1748
+  stamp: 
+    secs: 1523957799
+    nsecs: 644563807
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1749
+  stamp: 
+    secs: 1523957799
+    nsecs: 849310189
+  frame_id: "base_link"
+fluid_pressure: 126559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1750
+  stamp: 
+    secs: 1523957800
+    nsecs:  54295451
+  frame_id: "base_link"
+fluid_pressure: 126509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1751
+  stamp: 
+    secs: 1523957800
+    nsecs: 259479320
+  frame_id: "base_link"
+fluid_pressure: 126559.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1752
+  stamp: 
+    secs: 1523957800
+    nsecs: 464223781
+  frame_id: "base_link"
+fluid_pressure: 126550.0
+variance: 0.0
+---
+header: 
+  seq: 1753
+  stamp: 
+    secs: 1523957800
+    nsecs: 668921427
+  frame_id: "base_link"
+fluid_pressure: 126640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1754
+  stamp: 
+    secs: 1523957800
+    nsecs: 873495948
+  frame_id: "base_link"
+fluid_pressure: 126420.0
+variance: 0.0
+---
+header: 
+  seq: 1755
+  stamp: 
+    secs: 1523957801
+    nsecs:  78307083
+  frame_id: "base_link"
+fluid_pressure: 126270.0
+variance: 0.0
+---
+header: 
+  seq: 1756
+  stamp: 
+    secs: 1523957801
+    nsecs: 283254027
+  frame_id: "base_link"
+fluid_pressure: 126240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1757
+  stamp: 
+    secs: 1523957801
+    nsecs: 489107262
+  frame_id: "base_link"
+fluid_pressure: 126170.0
+variance: 0.0
+---
+header: 
+  seq: 1758
+  stamp: 
+    secs: 1523957801
+    nsecs: 693809510
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1759
+  stamp: 
+    secs: 1523957801
+    nsecs: 898611637
+  frame_id: "base_link"
+fluid_pressure: 126340.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1760
+  stamp: 
+    secs: 1523957802
+    nsecs: 103465425
+  frame_id: "base_link"
+fluid_pressure: 126230.0
+variance: 0.0
+---
+header: 
+  seq: 1761
+  stamp: 
+    secs: 1523957802
+    nsecs: 308551996
+  frame_id: "base_link"
+fluid_pressure: 126220.0
+variance: 0.0
+---
+header: 
+  seq: 1762
+  stamp: 
+    secs: 1523957802
+    nsecs: 512947781
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1763
+  stamp: 
+    secs: 1523957802
+    nsecs: 717658475
+  frame_id: "base_link"
+fluid_pressure: 126080.0
+variance: 0.0
+---
+header: 
+  seq: 1764
+  stamp: 
+    secs: 1523957802
+    nsecs: 922728186
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1765
+  stamp: 
+    secs: 1523957803
+    nsecs: 127297681
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1766
+  stamp: 
+    secs: 1523957803
+    nsecs: 332272905
+  frame_id: "base_link"
+fluid_pressure: 126170.0
+variance: 0.0
+---
+header: 
+  seq: 1767
+  stamp: 
+    secs: 1523957803
+    nsecs: 537272068
+  frame_id: "base_link"
+fluid_pressure: 125970.0
+variance: 0.0
+---
+header: 
+  seq: 1768
+  stamp: 
+    secs: 1523957803
+    nsecs: 740520113
+  frame_id: "base_link"
+fluid_pressure: 126070.0
+variance: 0.0
+---
+header: 
+  seq: 1769
+  stamp: 
+    secs: 1523957803
+    nsecs: 945191241
+  frame_id: "base_link"
+fluid_pressure: 125959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1770
+  stamp: 
+    secs: 1523957804
+    nsecs: 150044472
+  frame_id: "base_link"
+fluid_pressure: 125930.0
+variance: 0.0
+---
+header: 
+  seq: 1771
+  stamp: 
+    secs: 1523957804
+    nsecs: 355231083
+  frame_id: "base_link"
+fluid_pressure: 125970.0
+variance: 0.0
+---
+header: 
+  seq: 1772
+  stamp: 
+    secs: 1523957804
+    nsecs: 560009475
+  frame_id: "base_link"
+fluid_pressure: 126030.0
+variance: 0.0
+---
+header: 
+  seq: 1773
+  stamp: 
+    secs: 1523957804
+    nsecs: 764592523
+  frame_id: "base_link"
+fluid_pressure: 125930.0
+variance: 0.0
+---
+header: 
+  seq: 1774
+  stamp: 
+    secs: 1523957804
+    nsecs: 969516013
+  frame_id: "base_link"
+fluid_pressure: 125930.0
+variance: 0.0
+---
+header: 
+  seq: 1775
+  stamp: 
+    secs: 1523957805
+    nsecs: 174142115
+  frame_id: "base_link"
+fluid_pressure: 125870.0
+variance: 0.0
+---
+header: 
+  seq: 1776
+  stamp: 
+    secs: 1523957805
+    nsecs: 380471985
+  frame_id: "base_link"
+fluid_pressure: 125680.0
+variance: 0.0
+---
+header: 
+  seq: 1777
+  stamp: 
+    secs: 1523957805
+    nsecs: 585086265
+  frame_id: "base_link"
+fluid_pressure: 125800.0
+variance: 0.0
+---
+header: 
+  seq: 1778
+  stamp: 
+    secs: 1523957805
+    nsecs: 791261132
+  frame_id: "base_link"
+fluid_pressure: 125730.0
+variance: 0.0
+---
+header: 
+  seq: 1779
+  stamp: 
+    secs: 1523957805
+    nsecs: 995068435
+  frame_id: "base_link"
+fluid_pressure: 125950.0
+variance: 0.0
+---
+header: 
+  seq: 1780
+  stamp: 
+    secs: 1523957806
+    nsecs: 200114185
+  frame_id: "base_link"
+fluid_pressure: 125940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1781
+  stamp: 
+    secs: 1523957806
+    nsecs: 405095959
+  frame_id: "base_link"
+fluid_pressure: 125890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1782
+  stamp: 
+    secs: 1523957806
+    nsecs: 609587647
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1783
+  stamp: 
+    secs: 1523957806
+    nsecs: 814244048
+  frame_id: "base_link"
+fluid_pressure: 126009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1784
+  stamp: 
+    secs: 1523957807
+    nsecs:  19019469
+  frame_id: "base_link"
+fluid_pressure: 126130.0
+variance: 0.0
+---
+header: 
+  seq: 1785
+  stamp: 
+    secs: 1523957807
+    nsecs: 224383928
+  frame_id: "base_link"
+fluid_pressure: 125890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1786
+  stamp: 
+    secs: 1523957807
+    nsecs: 428597624
+  frame_id: "base_link"
+fluid_pressure: 125950.0
+variance: 0.0
+---
+header: 
+  seq: 1787
+  stamp: 
+    secs: 1523957807
+    nsecs: 633823160
+  frame_id: "base_link"
+fluid_pressure: 125890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1788
+  stamp: 
+    secs: 1523957807
+    nsecs: 838789954
+  frame_id: "base_link"
+fluid_pressure: 125820.0
+variance: 0.0
+---
+header: 
+  seq: 1789
+  stamp: 
+    secs: 1523957808
+    nsecs:  44476913
+  frame_id: "base_link"
+fluid_pressure: 125980.0
+variance: 0.0
+---
+header: 
+  seq: 1790
+  stamp: 
+    secs: 1523957808
+    nsecs: 248950490
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1791
+  stamp: 
+    secs: 1523957808
+    nsecs: 453667367
+  frame_id: "base_link"
+fluid_pressure: 125790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1792
+  stamp: 
+    secs: 1523957808
+    nsecs: 658844492
+  frame_id: "base_link"
+fluid_pressure: 126020.0
+variance: 0.0
+---
+header: 
+  seq: 1793
+  stamp: 
+    secs: 1523957808
+    nsecs: 863760609
+  frame_id: "base_link"
+fluid_pressure: 126159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1794
+  stamp: 
+    secs: 1523957809
+    nsecs:  67881030
+  frame_id: "base_link"
+fluid_pressure: 125959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1795
+  stamp: 
+    secs: 1523957809
+    nsecs: 272763928
+  frame_id: "base_link"
+fluid_pressure: 126100.0
+variance: 0.0
+---
+header: 
+  seq: 1796
+  stamp: 
+    secs: 1523957809
+    nsecs: 477533953
+  frame_id: "base_link"
+fluid_pressure: 126050.0
+variance: 0.0
+---
+header: 
+  seq: 1797
+  stamp: 
+    secs: 1523957809
+    nsecs: 682105828
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1798
+  stamp: 
+    secs: 1523957809
+    nsecs: 887058557
+  frame_id: "base_link"
+fluid_pressure: 126240.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1799
+  stamp: 
+    secs: 1523957810
+    nsecs:  91320229
+  frame_id: "base_link"
+fluid_pressure: 126280.0
+variance: 0.0
+---
+header: 
+  seq: 1800
+  stamp: 
+    secs: 1523957810
+    nsecs: 295387723
+  frame_id: "base_link"
+fluid_pressure: 126130.0
+variance: 0.0
+---
+header: 
+  seq: 1801
+  stamp: 
+    secs: 1523957810
+    nsecs: 502428364
+  frame_id: "base_link"
+fluid_pressure: 125970.0
+variance: 0.0
+---
+header: 
+  seq: 1802
+  stamp: 
+    secs: 1523957810
+    nsecs: 707057496
+  frame_id: "base_link"
+fluid_pressure: 126259.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1803
+  stamp: 
+    secs: 1523957810
+    nsecs: 912355862
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1804
+  stamp: 
+    secs: 1523957811
+    nsecs: 116084693
+  frame_id: "base_link"
+fluid_pressure: 126150.0
+variance: 0.0
+---
+header: 
+  seq: 1805
+  stamp: 
+    secs: 1523957811
+    nsecs: 321192714
+  frame_id: "base_link"
+fluid_pressure: 126230.0
+variance: 0.0
+---
+header: 
+  seq: 1806
+  stamp: 
+    secs: 1523957811
+    nsecs: 525682514
+  frame_id: "base_link"
+fluid_pressure: 125909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1807
+  stamp: 
+    secs: 1523957811
+    nsecs: 730259474
+  frame_id: "base_link"
+fluid_pressure: 125959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1808
+  stamp: 
+    secs: 1523957811
+    nsecs: 935107931
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1809
+  stamp: 
+    secs: 1523957812
+    nsecs: 140646708
+  frame_id: "base_link"
+fluid_pressure: 125740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1810
+  stamp: 
+    secs: 1523957812
+    nsecs: 344562784
+  frame_id: "base_link"
+fluid_pressure: 125670.0
+variance: 0.0
+---
+header: 
+  seq: 1811
+  stamp: 
+    secs: 1523957812
+    nsecs: 549649271
+  frame_id: "base_link"
+fluid_pressure: 125770.0
+variance: 0.0
+---
+header: 
+  seq: 1812
+  stamp: 
+    secs: 1523957812
+    nsecs: 754361802
+  frame_id: "base_link"
+fluid_pressure: 125640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1813
+  stamp: 
+    secs: 1523957812
+    nsecs: 959470599
+  frame_id: "base_link"
+fluid_pressure: 125670.0
+variance: 0.0
+---
+header: 
+  seq: 1814
+  stamp: 
+    secs: 1523957813
+    nsecs: 164331947
+  frame_id: "base_link"
+fluid_pressure: 125470.0
+variance: 0.0
+---
+header: 
+  seq: 1815
+  stamp: 
+    secs: 1523957813
+    nsecs: 368927899
+  frame_id: "base_link"
+fluid_pressure: 125390.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1816
+  stamp: 
+    secs: 1523957813
+    nsecs: 574695155
+  frame_id: "base_link"
+fluid_pressure: 125480.0
+variance: 0.0
+---
+header: 
+  seq: 1817
+  stamp: 
+    secs: 1523957813
+    nsecs: 778455483
+  frame_id: "base_link"
+fluid_pressure: 125490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1818
+  stamp: 
+    secs: 1523957813
+    nsecs: 982911207
+  frame_id: "base_link"
+fluid_pressure: 125380.0
+variance: 0.0
+---
+header: 
+  seq: 1819
+  stamp: 
+    secs: 1523957814
+    nsecs: 187779501
+  frame_id: "base_link"
+fluid_pressure: 125609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1820
+  stamp: 
+    secs: 1523957814
+    nsecs: 392815256
+  frame_id: "base_link"
+fluid_pressure: 125580.0
+variance: 0.0
+---
+header: 
+  seq: 1821
+  stamp: 
+    secs: 1523957814
+    nsecs: 597250594
+  frame_id: "base_link"
+fluid_pressure: 125740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1822
+  stamp: 
+    secs: 1523957814
+    nsecs: 802070327
+  frame_id: "base_link"
+fluid_pressure: 126000.0
+variance: 0.0
+---
+header: 
+  seq: 1823
+  stamp: 
+    secs: 1523957815
+    nsecs:   7052044
+  frame_id: "base_link"
+fluid_pressure: 126140.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1824
+  stamp: 
+    secs: 1523957815
+    nsecs: 212696818
+  frame_id: "base_link"
+fluid_pressure: 126280.0
+variance: 0.0
+---
+header: 
+  seq: 1825
+  stamp: 
+    secs: 1523957815
+    nsecs: 416632798
+  frame_id: "base_link"
+fluid_pressure: 126390.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1826
+  stamp: 
+    secs: 1523957815
+    nsecs: 621377943
+  frame_id: "base_link"
+fluid_pressure: 126530.0
+variance: 0.0
+---
+header: 
+  seq: 1827
+  stamp: 
+    secs: 1523957815
+    nsecs: 826916526
+  frame_id: "base_link"
+fluid_pressure: 126620.0
+variance: 0.0
+---
+header: 
+  seq: 1828
+  stamp: 
+    secs: 1523957816
+    nsecs:  31154741
+  frame_id: "base_link"
+fluid_pressure: 126490.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1829
+  stamp: 
+    secs: 1523957816
+    nsecs: 235927659
+  frame_id: "base_link"
+fluid_pressure: 126850.0
+variance: 0.0
+---
+header: 
+  seq: 1830
+  stamp: 
+    secs: 1523957816
+    nsecs: 439612238
+  frame_id: "base_link"
+fluid_pressure: 126830.0
+variance: 0.0
+---
+header: 
+  seq: 1831
+  stamp: 
+    secs: 1523957816
+    nsecs: 643643633
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1832
+  stamp: 
+    secs: 1523957816
+    nsecs: 848437635
+  frame_id: "base_link"
+fluid_pressure: 126770.0
+variance: 0.0
+---
+header: 
+  seq: 1833
+  stamp: 
+    secs: 1523957817
+    nsecs:  53195141
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1834
+  stamp: 
+    secs: 1523957817
+    nsecs: 257422180
+  frame_id: "base_link"
+fluid_pressure: 126790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1835
+  stamp: 
+    secs: 1523957817
+    nsecs: 462364171
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1836
+  stamp: 
+    secs: 1523957817
+    nsecs: 667296576
+  frame_id: "base_link"
+fluid_pressure: 126520.0
+variance: 0.0
+---
+header: 
+  seq: 1837
+  stamp: 
+    secs: 1523957817
+    nsecs: 872273998
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1838
+  stamp: 
+    secs: 1523957818
+    nsecs:  75571683
+  frame_id: "base_link"
+fluid_pressure: 126350.0
+variance: 0.0
+---
+header: 
+  seq: 1839
+  stamp: 
+    secs: 1523957818
+    nsecs: 280525491
+  frame_id: "base_link"
+fluid_pressure: 126309.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1840
+  stamp: 
+    secs: 1523957818
+    nsecs: 484919129
+  frame_id: "base_link"
+fluid_pressure: 126080.0
+variance: 0.0
+---
+header: 
+  seq: 1841
+  stamp: 
+    secs: 1523957818
+    nsecs: 690206430
+  frame_id: "base_link"
+fluid_pressure: 126270.0
+variance: 0.0
+---
+header: 
+  seq: 1842
+  stamp: 
+    secs: 1523957818
+    nsecs: 894495587
+  frame_id: "base_link"
+fluid_pressure: 125830.0
+variance: 0.0
+---
+header: 
+  seq: 1843
+  stamp: 
+    secs: 1523957819
+    nsecs:  99961456
+  frame_id: "base_link"
+fluid_pressure: 125890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1844
+  stamp: 
+    secs: 1523957819
+    nsecs: 304264947
+  frame_id: "base_link"
+fluid_pressure: 125550.0
+variance: 0.0
+---
+header: 
+  seq: 1845
+  stamp: 
+    secs: 1523957819
+    nsecs: 509839591
+  frame_id: "base_link"
+fluid_pressure: 125350.0
+variance: 0.0
+---
+header: 
+  seq: 1846
+  stamp: 
+    secs: 1523957819
+    nsecs: 713722337
+  frame_id: "base_link"
+fluid_pressure: 125550.0
+variance: 0.0
+---
+header: 
+  seq: 1847
+  stamp: 
+    secs: 1523957819
+    nsecs: 918691540
+  frame_id: "base_link"
+fluid_pressure: 125509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1848
+  stamp: 
+    secs: 1523957820
+    nsecs: 123635367
+  frame_id: "base_link"
+fluid_pressure: 125850.0
+variance: 0.0
+---
+header: 
+  seq: 1849
+  stamp: 
+    secs: 1523957820
+    nsecs: 328266603
+  frame_id: "base_link"
+fluid_pressure: 125900.0
+variance: 0.0
+---
+header: 
+  seq: 1850
+  stamp: 
+    secs: 1523957820
+    nsecs: 533629932
+  frame_id: "base_link"
+fluid_pressure: 126280.0
+variance: 0.0
+---
+header: 
+  seq: 1851
+  stamp: 
+    secs: 1523957820
+    nsecs: 740044047
+  frame_id: "base_link"
+fluid_pressure: 126330.0
+variance: 0.0
+---
+header: 
+  seq: 1852
+  stamp: 
+    secs: 1523957820
+    nsecs: 945621373
+  frame_id: "base_link"
+fluid_pressure: 126630.0
+variance: 0.0
+---
+header: 
+  seq: 1853
+  stamp: 
+    secs: 1523957821
+    nsecs: 150536201
+  frame_id: "base_link"
+fluid_pressure: 126600.0
+variance: 0.0
+---
+header: 
+  seq: 1854
+  stamp: 
+    secs: 1523957821
+    nsecs: 355194846
+  frame_id: "base_link"
+fluid_pressure: 126820.0
+variance: 0.0
+---
+header: 
+  seq: 1855
+  stamp: 
+    secs: 1523957821
+    nsecs: 560894519
+  frame_id: "base_link"
+fluid_pressure: 126959.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1856
+  stamp: 
+    secs: 1523957821
+    nsecs: 764718908
+  frame_id: "base_link"
+fluid_pressure: 126709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1857
+  stamp: 
+    secs: 1523957821
+    nsecs: 969373735
+  frame_id: "base_link"
+fluid_pressure: 127030.0
+variance: 0.0
+---
+header: 
+  seq: 1858
+  stamp: 
+    secs: 1523957822
+    nsecs: 174078122
+  frame_id: "base_link"
+fluid_pressure: 126880.0
+variance: 0.0
+---
+header: 
+  seq: 1859
+  stamp: 
+    secs: 1523957822
+    nsecs: 378570618
+  frame_id: "base_link"
+fluid_pressure: 126970.0
+variance: 0.0
+---
+header: 
+  seq: 1860
+  stamp: 
+    secs: 1523957822
+    nsecs: 583531818
+  frame_id: "base_link"
+fluid_pressure: 126930.0
+variance: 0.0
+---
+header: 
+  seq: 1861
+  stamp: 
+    secs: 1523957822
+    nsecs: 788158256
+  frame_id: "base_link"
+fluid_pressure: 126970.0
+variance: 0.0
+---
+header: 
+  seq: 1862
+  stamp: 
+    secs: 1523957822
+    nsecs: 992428529
+  frame_id: "base_link"
+fluid_pressure: 126920.0
+variance: 0.0
+---
+header: 
+  seq: 1863
+  stamp: 
+    secs: 1523957823
+    nsecs: 197932573
+  frame_id: "base_link"
+fluid_pressure: 126659.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1864
+  stamp: 
+    secs: 1523957823
+    nsecs: 401699764
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1865
+  stamp: 
+    secs: 1523957823
+    nsecs: 606445914
+  frame_id: "base_link"
+fluid_pressure: 126680.0
+variance: 0.0
+---
+header: 
+  seq: 1866
+  stamp: 
+    secs: 1523957823
+    nsecs: 811319486
+  frame_id: "base_link"
+fluid_pressure: 126730.0
+variance: 0.0
+---
+header: 
+  seq: 1867
+  stamp: 
+    secs: 1523957824
+    nsecs:  16006436
+  frame_id: "base_link"
+fluid_pressure: 126609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1868
+  stamp: 
+    secs: 1523957824
+    nsecs: 219916286
+  frame_id: "base_link"
+fluid_pressure: 126759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1869
+  stamp: 
+    secs: 1523957824
+    nsecs: 424837360
+  frame_id: "base_link"
+fluid_pressure: 126809.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1870
+  stamp: 
+    secs: 1523957824
+    nsecs: 629552729
+  frame_id: "base_link"
+fluid_pressure: 126850.0
+variance: 0.0
+---
+header: 
+  seq: 1871
+  stamp: 
+    secs: 1523957824
+    nsecs: 834607966
+  frame_id: "base_link"
+fluid_pressure: 127200.0
+variance: 0.0
+---
+header: 
+  seq: 1872
+  stamp: 
+    secs: 1523957825
+    nsecs:  38463452
+  frame_id: "base_link"
+fluid_pressure: 127430.0
+variance: 0.0
+---
+header: 
+  seq: 1873
+  stamp: 
+    secs: 1523957825
+    nsecs: 243306895
+  frame_id: "base_link"
+fluid_pressure: 127630.0
+variance: 0.0
+---
+header: 
+  seq: 1874
+  stamp: 
+    secs: 1523957825
+    nsecs: 448171682
+  frame_id: "base_link"
+fluid_pressure: 127890.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1875
+  stamp: 
+    secs: 1523957825
+    nsecs: 653284256
+  frame_id: "base_link"
+fluid_pressure: 127970.0
+variance: 0.0
+---
+header: 
+  seq: 1876
+  stamp: 
+    secs: 1523957825
+    nsecs: 858098025
+  frame_id: "base_link"
+fluid_pressure: 128209.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1877
+  stamp: 
+    secs: 1523957826
+    nsecs:  62661188
+  frame_id: "base_link"
+fluid_pressure: 128100.0
+variance: 0.0
+---
+header: 
+  seq: 1878
+  stamp: 
+    secs: 1523957826
+    nsecs: 267613738
+  frame_id: "base_link"
+fluid_pressure: 128530.0
+variance: 0.0
+---
+header: 
+  seq: 1879
+  stamp: 
+    secs: 1523957826
+    nsecs: 472453114
+  frame_id: "base_link"
+fluid_pressure: 128550.0
+variance: 0.0
+---
+header: 
+  seq: 1880
+  stamp: 
+    secs: 1523957826
+    nsecs: 676771293
+  frame_id: "base_link"
+fluid_pressure: 128690.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1881
+  stamp: 
+    secs: 1523957826
+    nsecs: 882416554
+  frame_id: "base_link"
+fluid_pressure: 128570.0
+variance: 0.0
+---
+header: 
+  seq: 1882
+  stamp: 
+    secs: 1523957827
+    nsecs:  86230986
+  frame_id: "base_link"
+fluid_pressure: 128730.0
+variance: 0.0
+---
+header: 
+  seq: 1883
+  stamp: 
+    secs: 1523957827
+    nsecs: 290875100
+  frame_id: "base_link"
+fluid_pressure: 128700.0
+variance: 0.0
+---
+header: 
+  seq: 1884
+  stamp: 
+    secs: 1523957827
+    nsecs: 496037481
+  frame_id: "base_link"
+fluid_pressure: 128790.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1885
+  stamp: 
+    secs: 1523957827
+    nsecs: 699502344
+  frame_id: "base_link"
+fluid_pressure: 128780.0
+variance: 0.0
+---
+header: 
+  seq: 1886
+  stamp: 
+    secs: 1523957827
+    nsecs: 904410980
+  frame_id: "base_link"
+fluid_pressure: 128640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1887
+  stamp: 
+    secs: 1523957828
+    nsecs: 108950072
+  frame_id: "base_link"
+fluid_pressure: 128600.0
+variance: 0.0
+---
+header: 
+  seq: 1888
+  stamp: 
+    secs: 1523957828
+    nsecs: 313740569
+  frame_id: "base_link"
+fluid_pressure: 128640.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1889
+  stamp: 
+    secs: 1523957828
+    nsecs: 518770213
+  frame_id: "base_link"
+fluid_pressure: 128440.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1890
+  stamp: 
+    secs: 1523957828
+    nsecs: 723825377
+  frame_id: "base_link"
+fluid_pressure: 128509.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1891
+  stamp: 
+    secs: 1523957828
+    nsecs: 928408385
+  frame_id: "base_link"
+fluid_pressure: 128300.0
+variance: 0.0
+---
+header: 
+  seq: 1892
+  stamp: 
+    secs: 1523957829
+    nsecs: 133254930
+  frame_id: "base_link"
+fluid_pressure: 128290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1893
+  stamp: 
+    secs: 1523957829
+    nsecs: 338184339
+  frame_id: "base_link"
+fluid_pressure: 128130.0
+variance: 0.0
+---
+header: 
+  seq: 1894
+  stamp: 
+    secs: 1523957829
+    nsecs: 543711925
+  frame_id: "base_link"
+fluid_pressure: 127750.0
+variance: 0.0
+---
+header: 
+  seq: 1895
+  stamp: 
+    secs: 1523957829
+    nsecs: 749038290
+  frame_id: "base_link"
+fluid_pressure: 127759.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1896
+  stamp: 
+    secs: 1523957829
+    nsecs: 953982323
+  frame_id: "base_link"
+fluid_pressure: 127609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1897
+  stamp: 
+    secs: 1523957830
+    nsecs: 159672691
+  frame_id: "base_link"
+fluid_pressure: 127650.0
+variance: 0.0
+---
+header: 
+  seq: 1898
+  stamp: 
+    secs: 1523957830
+    nsecs: 363733403
+  frame_id: "base_link"
+fluid_pressure: 127730.0
+variance: 0.0
+---
+header: 
+  seq: 1899
+  stamp: 
+    secs: 1523957830
+    nsecs: 568771102
+  frame_id: "base_link"
+fluid_pressure: 127709.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1900
+  stamp: 
+    secs: 1523957830
+    nsecs: 773260116
+  frame_id: "base_link"
+fluid_pressure: 127880.0
+variance: 0.0
+---
+header: 
+  seq: 1901
+  stamp: 
+    secs: 1523957830
+    nsecs: 978176374
+  frame_id: "base_link"
+fluid_pressure: 127600.0
+variance: 0.0
+---
+header: 
+  seq: 1902
+  stamp: 
+    secs: 1523957831
+    nsecs: 182455936
+  frame_id: "base_link"
+fluid_pressure: 127930.0
+variance: 0.0
+---
+header: 
+  seq: 1903
+  stamp: 
+    secs: 1523957831
+    nsecs: 387239809
+  frame_id: "base_link"
+fluid_pressure: 128020.0
+variance: 0.0
+---
+header: 
+  seq: 1904
+  stamp: 
+    secs: 1523957831
+    nsecs: 591884116
+  frame_id: "base_link"
+fluid_pressure: 127950.0
+variance: 0.0
+---
+header: 
+  seq: 1905
+  stamp: 
+    secs: 1523957831
+    nsecs: 796427162
+  frame_id: "base_link"
+fluid_pressure: 128009.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1906
+  stamp: 
+    secs: 1523957832
+    nsecs:   1481206
+  frame_id: "base_link"
+fluid_pressure: 128020.0
+variance: 0.0
+---
+header: 
+  seq: 1907
+  stamp: 
+    secs: 1523957832
+    nsecs: 206219011
+  frame_id: "base_link"
+fluid_pressure: 128150.0
+variance: 0.0
+---
+header: 
+  seq: 1908
+  stamp: 
+    secs: 1523957832
+    nsecs: 411255777
+  frame_id: "base_link"
+fluid_pressure: 128159.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1909
+  stamp: 
+    secs: 1523957832
+    nsecs: 616182583
+  frame_id: "base_link"
+fluid_pressure: 128270.0
+variance: 0.0
+---
+header: 
+  seq: 1910
+  stamp: 
+    secs: 1523957832
+    nsecs: 821507723
+  frame_id: "base_link"
+fluid_pressure: 128270.0
+variance: 0.0
+---
+header: 
+  seq: 1911
+  stamp: 
+    secs: 1523957833
+    nsecs:  25312757
+  frame_id: "base_link"
+fluid_pressure: 128480.0
+variance: 0.0
+---
+header: 
+  seq: 1912
+  stamp: 
+    secs: 1523957833
+    nsecs: 229733656
+  frame_id: "base_link"
+fluid_pressure: 128359.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1913
+  stamp: 
+    secs: 1523957833
+    nsecs: 434910168
+  frame_id: "base_link"
+fluid_pressure: 128940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1914
+  stamp: 
+    secs: 1523957833
+    nsecs: 638976777
+  frame_id: "base_link"
+fluid_pressure: 128770.0
+variance: 0.0
+---
+header: 
+  seq: 1915
+  stamp: 
+    secs: 1523957833
+    nsecs: 843417666
+  frame_id: "base_link"
+fluid_pressure: 128870.0
+variance: 0.0
+---
+header: 
+  seq: 1916
+  stamp: 
+    secs: 1523957834
+    nsecs:  48234051
+  frame_id: "base_link"
+fluid_pressure: 128940.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1917
+  stamp: 
+    secs: 1523957834
+    nsecs: 251991105
+  frame_id: "base_link"
+fluid_pressure: 128909.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1918
+  stamp: 
+    secs: 1523957834
+    nsecs: 464391020
+  frame_id: "base_link"
+fluid_pressure: 129290.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1919
+  stamp: 
+    secs: 1523957834
+    nsecs: 668791548
+  frame_id: "base_link"
+fluid_pressure: 129050.0
+variance: 0.0
+---
+header: 
+  seq: 1920
+  stamp: 
+    secs: 1523957834
+    nsecs: 874415949
+  frame_id: "base_link"
+fluid_pressure: 129609.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1921
+  stamp: 
+    secs: 1523957835
+    nsecs:  78563434
+  frame_id: "base_link"
+fluid_pressure: 129450.0
+variance: 0.0
+---
+header: 
+  seq: 1922
+  stamp: 
+    secs: 1523957835
+    nsecs: 283114909
+  frame_id: "base_link"
+fluid_pressure: 129680.0
+variance: 0.0
+---
+header: 
+  seq: 1923
+  stamp: 
+    secs: 1523957835
+    nsecs: 488092318
+  frame_id: "base_link"
+fluid_pressure: 129800.0
+variance: 0.0
+---
+header: 
+  seq: 1924
+  stamp: 
+    secs: 1523957835
+    nsecs: 692480529
+  frame_id: "base_link"
+fluid_pressure: 129740.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1925
+  stamp: 
+    secs: 1523957835
+    nsecs: 900545390
+  frame_id: "base_link"
+fluid_pressure: 130190.00000000001
+variance: 0.0
+---
+header: 
+  seq: 1926
+  stamp: 
+    secs: 1523957836
+    nsecs: 106864315
+  frame_id: "base_link"
+fluid_pressure: 130320.0
+variance: 0.0
+---
+header: 
+  seq: 1927
+  stamp: 
+    secs: 1523957836
+    nsecs: 311516261
+  frame_id: "base_link"
+fluid_pressure: 130409.99999999999
+variance: 0.0
+---
+header: 
+  seq: 1928
+  stamp: 
+    secs: 1523957836
+    nsecs: 517088144
+  frame_id: "base_link"
+fluid_pressure: 130720.0
+variance: 0.0
+---
+header: 
+  seq: 1929
+  stamp: 
+    secs: 1523957836
+    nsecs: 722031157
+  frame_id: "base_link"
+fluid_pressure: 130790.00000000001
+variance: 0.0
+---
