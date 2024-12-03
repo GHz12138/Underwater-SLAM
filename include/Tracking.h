@@ -240,11 +240,16 @@ protected:
 
     // Queue of Pressure measurements between frames
     std::list<IMU::PressureData> mlQueuePressData;
-    std::mutex mMutexPressQueue;
+   
 
     // Vector of IMU measurements from previous to current frame (to be filled by PreintegrateIMU)
     std::vector<IMU::Point> mvImuFromLastFrame;
     std::mutex mMutexImuQueue;
+
+    // Vector of Pressure measurements from previous to current frame
+    std::vector<IMU::PressureData> mvPressFromLastFrame;
+    std::mutex mMutexPressQueue;
+
 
     // Imu calibration parameters
     IMU::Calib *mpImuCalib;

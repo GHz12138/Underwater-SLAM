@@ -118,7 +118,8 @@ int main(int argc, char **argv)
   SLAM.SaveKeyFrameTrajectoryTUM("ORB-SLAM3-KeyFrameTrajectory.txt");
   // Save camera trajectory
   SLAM.SaveTrajectoryTUM("ORB-SLAM3-FrameTrajectory.txt");
-
+  // int initIdx = 0;
+  // SLAM.SaveDebugData(initIdx);
   return 0;
 }
 
