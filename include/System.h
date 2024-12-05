@@ -89,6 +89,7 @@ namespace ORB_SLAM3
             IMU_MONOCULAR = 3,
             IMU_STEREO = 4,
             IMU_RGBD = 5,
+            IMU_MONOCULAR_DEPTH = 6,
         };
 
         // File type

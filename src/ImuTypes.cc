@@ -187,11 +187,11 @@ void Preintegrated::IntegrateNewMeasurement(const Eigen::Vector3f &acceleration,
     A.setIdentity();
     Eigen::Matrix<float,9,6> B;
     B.setZero();
-
+    // 得到去掉零偏的加速度、角速度
     Eigen::Vector3f acc, accW;
     acc << acceleration(0)-b.bax, acceleration(1)-b.bay, acceleration(2)-b.baz;
     accW << angVel(0)-b.bwx, angVel(1)-b.bwy, angVel(2)-b.bwz;
-
+    // 得到平均加速度、角速度
     avgA = (dT*avgA + dR*acc*dt)/(dT+dt);
     avgW = (dT*avgW + accW*dt)/(dT+dt);
 

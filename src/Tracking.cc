@@ -67,7 +67,7 @@ namespace ORB_SLAM3
             }
 
             bool b_parse_imu = true;
-            if (sensor == System::IMU_MONOCULAR || sensor == System::IMU_STEREO || sensor == System::IMU_RGBD)
+            if (sensor == System::IMU_MONOCULAR || sensor == System::IMU_STEREO || sensor == System::IMU_RGBD || sensor == System::IMU_MONOCULAR_DEPTH)
             {
                 b_parse_imu = ParseIMUParamFile(fSettings);
                 if (!b_parse_imu)
@@ -627,7 +627,7 @@ namespace ORB_SLAM3
         if (mSensor == System::STEREO || mSensor == System::IMU_STEREO)
             mpORBextractorRight = new ORBextractor(nFeatures, fScaleFactor, nLevels, fIniThFAST, fMinThFAST);
 
-        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
             mpIniORBextractor = new ORBextractor(5 * nFeatures, fScaleFactor, nLevels, fIniThFAST, fMinThFAST);
 
         // IMU parameters
@@ -1312,7 +1312,7 @@ namespace ORB_SLAM3
         if (mSensor == System::STEREO || mSensor == System::IMU_STEREO)
             mpORBextractorRight = new ORBextractor(nFeatures, fScaleFactor, nLevels, fIniThFAST, fMinThFAST);
 
-        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
             mpIniORBextractor = new ORBextractor(5 * nFeatures, fScaleFactor, nLevels, fIniThFAST, fMinThFAST);
 
         cout << endl
@@ -1605,7 +1605,7 @@ namespace ORB_SLAM3
             else
                 mCurrentFrame = Frame(mImGray, timestamp, mpORBextractorLeft, mpORBVocabulary, mpCamera, mDistCoef, mbf, mThDepth);
         }
-        else if (mSensor == System::IMU_MONOCULAR)
+        else if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             if (mState == NOT_INITIALIZED || mState == NO_IMAGES_YET)
             {
@@ -1738,6 +1738,16 @@ namespace ORB_SLAM3
 
         IMU::Preintegrated *pImuPreintegratedFromLastFrame = new IMU::Preintegrated(mLastFrame.mImuBias, mCurrentFrame.mImuCalib);
 
+    // 针对预积分位置的不同做不同中值积分的处理
+    /**
+     *  根据上面imu帧的筛选，IMU与图像帧的时序如下：
+     *  Frame---IMU0---IMU1---IMU2---IMU3---IMU4---------------IMUx---Frame---IMUx+1
+     *  T_------T0-----T1-----T2-----T3-----T4-----------------Tx-----_T------Tx+1
+     *  A_------A0-----A1-----A2-----A3-----A4-----------------Ax-----_T------Ax+1
+     *  W_------W0-----W1-----W2-----W3-----W4-----------------Wx-----_T------Wx+1
+     *  T_和_T分别表示上一图像帧和当前图像帧的时间戳，A(加速度数据)，W(陀螺仪数据)，同理
+     */
+
         for (int i = 0; i < n; i++)
         {
             float tstep;
@@ -1746,6 +1756,11 @@ namespace ORB_SLAM3
             {
                 float tab = mvImuFromLastFrame[i + 1].t - mvImuFromLastFrame[i].t;
                 float tini = mvImuFromLastFrame[i].t - mCurrentFrame.mpPrevFrame->mTimeStamp;
+            // 设当前时刻imu的加速度a0，下一时刻加速度a1，时间间隔tab 为t10，tini t0p
+            // 正常情况下时为了求上一帧到当前时刻imu的一个平均加速度，但是imu时间不会正好落在上一帧的时刻，需要做补偿，要求得a0时刻到上一帧这段时间加速度的改变量
+            // 有了这个改变量将其加到a0上之后就可以表示上一帧时的加速度了。其中a0 - (a1-a0)*(tini/tab) 为上一帧时刻的加速度再加上a1 之后除以2就为这段时间的加速度平均值
+            // 其中tstep表示a1到上一帧的时间间隔，a0 - (a1-a0)*(tini/tab)这个式子中tini可以是正也可以是负表示时间上的先后，(a1-a0)也是一样，多种情况下这个式子依然成立
+
                 acc = (mvImuFromLastFrame[i].a + mvImuFromLastFrame[i + 1].a -
                        (mvImuFromLastFrame[i + 1].a - mvImuFromLastFrame[i].a) * (tini / tab)) *
                       0.5f;
@@ -1913,7 +1928,7 @@ namespace ORB_SLAM3
             }
         }
 
-        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && mpLastKeyFrame)
+        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && mpLastKeyFrame)
             mCurrentFrame.SetNewBias(mpLastKeyFrame->GetImuBias());
 
         if (mState == NO_IMAGES_YET)
@@ -1923,7 +1938,7 @@ namespace ORB_SLAM3
 
         mLastProcessedState = mState;
 
-        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && !mbCreatedMap)
+        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && !mbCreatedMap)
         {
 #ifdef REGISTER_TIMES
             std::chrono::steady_clock::time_point time_StartPreIMU = std::chrono::steady_clock::now();
@@ -2013,7 +2028,7 @@ namespace ORB_SLAM3
                     if (!bOK)
                     {
                         if (mCurrentFrame.mnId <= (mnLastRelocFrameId + mnFramesToResetIMU) &&
-                            (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD))
+                            (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH))
                         {
                             mState = LOST;
                         }
@@ -2037,7 +2052,7 @@ namespace ORB_SLAM3
                         Verbose::PrintMess("Lost for a short time", Verbose::VERBOSITY_NORMAL);
 
                         bOK = true;
-                        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD))
+                        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH))
                         {
                             if (pCurrentMap->isImuInitialized())
                                 PredictStateIMU();
@@ -2092,7 +2107,7 @@ namespace ORB_SLAM3
                 // Localization Mode: Local Mapping is deactivated (TODO Not available in inertial mode)
                 if (mState == LOST)
                 {
-                    if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+                    if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
                         Verbose::PrintMess("IMU. State LOST", Verbose::VERBOSITY_NORMAL);
                     bOK = Relocalization();
                 }
@@ -2195,7 +2210,7 @@ namespace ORB_SLAM3
                 mState = OK;
             else if (mState == OK)
             {
-                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
                 {
                     Verbose::PrintMess("Track lost for less than one second...", Verbose::VERBOSITY_NORMAL);
                     if (!pCurrentMap->isImuInitialized() || !pCurrentMap->GetIniertialBA2())
@@ -2217,7 +2232,7 @@ namespace ORB_SLAM3
 
             // Save frame if recent relocalization, since they are used for IMU reset (as we are making copy, it shluld be once mCurrFrame is completely modified)
             if ((mCurrentFrame.mnId < (mnLastRelocFrameId + mnFramesToResetIMU)) && (mCurrentFrame.mnId > mnFramesToResetIMU) &&
-                (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && pCurrentMap->isImuInitialized())
+                (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && pCurrentMap->isImuInitialized())
             {
                 // TODO check this situation
                 Verbose::PrintMess("Saving pointer to frame. imu needs reset...", Verbose::VERBOSITY_NORMAL);
@@ -2268,7 +2283,7 @@ namespace ORB_SLAM3
                     mbVelocity = false;
                 }
 
-                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
                     mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.GetPose());
 
                 // Clean VO matches
@@ -2299,7 +2314,7 @@ namespace ORB_SLAM3
                 // Check if we need to insert a new keyframe
                 // if(bNeedKF && bOK)
                 if (bNeedKF && (bOK || (mInsertKFsLost && mState == RECENTLY_LOST &&
-                                        (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD))))
+                                        (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH))))
                     CreateNewKeyFrame();
 
 #ifdef REGISTER_TIMES
@@ -2328,7 +2343,7 @@ namespace ORB_SLAM3
                     mpSystem->ResetActiveMap();
                     return;
                 }
-                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
                     if (!pCurrentMap->isImuInitialized())
                     {
                         Verbose::PrintMess("Track lost before IMU initialisation, reseting...", Verbose::VERBOSITY_QUIET);
@@ -2515,7 +2530,7 @@ namespace ORB_SLAM3
 
                 fill(mvIniMatches.begin(), mvIniMatches.end(), -1);
 
-                if (mSensor == System::IMU_MONOCULAR)
+                if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
                 {
                     if (mpImuPreintegratedFromLastKF)
                     {
@@ -2532,7 +2547,7 @@ namespace ORB_SLAM3
         }
         else
         {
-            if (((int)mCurrentFrame.mvKeys.size() <= 100) || ((mSensor == System::IMU_MONOCULAR) && (mLastFrame.mTimeStamp - mInitialFrame.mTimeStamp > 1.0)))
+            if (((int)mCurrentFrame.mvKeys.size() <= 100) || ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH) && (mLastFrame.mTimeStamp - mInitialFrame.mTimeStamp > 1.0)))
             {
                 mbReadyToInitializate = false;
 
@@ -2579,7 +2594,7 @@ namespace ORB_SLAM3
         KeyFrame *pKFini = new KeyFrame(mInitialFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
         KeyFrame *pKFcur = new KeyFrame(mCurrentFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
 
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
             pKFini->mpImuPreintegrated = (IMU::Preintegrated *)(NULL);
 
         pKFini->ComputeBoW();
@@ -2629,7 +2644,7 @@ namespace ORB_SLAM3
 
         float medianDepth = pKFini->ComputeSceneMedianDepth(2);
         float invMedianDepth;
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
             invMedianDepth = 4.0f / medianDepth; // 4.0f
         else
             invMedianDepth = 1.0f / medianDepth;
@@ -2658,7 +2673,7 @@ namespace ORB_SLAM3
             }
         }
 
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             pKFcur->mPrevKF = pKFini;
             pKFini->mNextKF = pKFcur;
@@ -2709,7 +2724,7 @@ namespace ORB_SLAM3
     {
         mnLastInitFrameId = mCurrentFrame.mnId;
         mpAtlas->CreateNewMap();
-        if (mSensor == System::IMU_STEREO || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_RGBD)
+        if (mSensor == System::IMU_STEREO || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
             mpAtlas->SetInertialSensor();
         mbSetInit = false;
 
@@ -2721,12 +2736,12 @@ namespace ORB_SLAM3
         // mnLastRelocFrameId = mnLastInitFrameId; // The last relocation KF_id is the current id, because it is the new starting point for new map
         Verbose::PrintMess("First frame id in map: " + to_string(mnLastInitFrameId + 1), Verbose::VERBOSITY_NORMAL);
         mbVO = false; // Init value for know if there are enough MapPoints in the last KF
-        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             mbReadyToInitializate = false;
         }
 
-        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && mpImuPreintegratedFromLastKF)
+        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && mpImuPreintegratedFromLastKF)
         {
             delete mpImuPreintegratedFromLastKF;
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(IMU::Bias(), *mpImuCalib);
@@ -2818,7 +2833,7 @@ namespace ORB_SLAM3
             }
         }
 
-        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
             return true;
         else
             return nmatchesMap >= 10;
@@ -2831,7 +2846,7 @@ namespace ORB_SLAM3
         Sophus::SE3f Tlr = mlRelativeFramePoses.back();
         mLastFrame.SetPose(Tlr * pRef->GetPose());
 
-        if (mnLastKeyFrameId == mLastFrame.mnId || mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || !mbOnlyTracking)
+        if (mnLastKeyFrameId == mLastFrame.mnId || mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH || !mbOnlyTracking)
             return;
 
         // Create "visual odometry" MapPoints
@@ -2927,7 +2942,7 @@ namespace ORB_SLAM3
         else
             th = 15;
 
-        int nmatches = matcher.SearchByProjection(mCurrentFrame, mLastFrame, th, mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR);
+        int nmatches = matcher.SearchByProjection(mCurrentFrame, mLastFrame, th, mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH);
 
         // If few matches, uses a wider window search
         if (nmatches < 20)
@@ -2935,14 +2950,14 @@ namespace ORB_SLAM3
             Verbose::PrintMess("Not enough matches, wider window search!!", Verbose::VERBOSITY_NORMAL);
             fill(mCurrentFrame.mvpMapPoints.begin(), mCurrentFrame.mvpMapPoints.end(), static_cast<MapPoint *>(NULL));
 
-            nmatches = matcher.SearchByProjection(mCurrentFrame, mLastFrame, 2 * th, mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR);
+            nmatches = matcher.SearchByProjection(mCurrentFrame, mLastFrame, 2 * th, mSensor == System::MONOCULAR || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH);
             Verbose::PrintMess("Matches with wider search: " + to_string(nmatches), Verbose::VERBOSITY_NORMAL);
         }
 
         if (nmatches < 20)
         {
             Verbose::PrintMess("Not enough matches!!", Verbose::VERBOSITY_NORMAL);
-            if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+            if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
                 return true;
             else
                 return false;
@@ -2985,7 +3000,7 @@ namespace ORB_SLAM3
             return nmatches > 20;
         }
 
-        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
             return true;
         else
             return nmatchesMap >= 10;
@@ -3078,7 +3093,7 @@ namespace ORB_SLAM3
         if ((mnMatchesInliers > 10) && (mState == RECENTLY_LOST))
             return true;
 
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             if ((mnMatchesInliers < 15 && mpAtlas->isImuInitialized()) || (mnMatchesInliers < 50 && !mpAtlas->isImuInitialized()))
             {
@@ -3107,9 +3122,9 @@ namespace ORB_SLAM3
 
     bool Tracking::NeedNewKeyFrame()
     {
-        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && !mpAtlas->GetCurrentMap()->isImuInitialized())
+        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && !mpAtlas->GetCurrentMap()->isImuInitialized())
         {
-            if (mSensor == System::IMU_MONOCULAR && (mCurrentFrame.mTimeStamp - mpLastKeyFrame->mTimeStamp) >= 0.25)
+            if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH) && (mCurrentFrame.mTimeStamp - mpLastKeyFrame->mTimeStamp) >= 0.25)
                 return true;
             else if ((mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && (mCurrentFrame.mTimeStamp - mpLastKeyFrame->mTimeStamp) >= 0.25)
                 return true;
@@ -3151,7 +3166,7 @@ namespace ORB_SLAM3
         int nNonTrackedClose = 0;
         int nTrackedClose = 0;
 
-        if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR)
+        if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH)
         {
             int N = (mCurrentFrame.Nleft == -1) ? mCurrentFrame.N : mCurrentFrame.Nleft;
             for (int i = 0; i < N; i++)
@@ -3189,7 +3204,7 @@ namespace ORB_SLAM3
         if (mpCamera2)
             thRefRatio = 0.75f;
 
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             if (mnMatchesInliers > 350) // Points tracked from the local map
                 thRefRatio = 0.75f;
@@ -3202,7 +3217,7 @@ namespace ORB_SLAM3
         // Condition 1b: More than "MinFrames" have passed and Local Mapping is idle
         const bool c1b = ((mCurrentFrame.mnId >= mnLastKeyFrameId + mMinFrames) && bLocalMappingIdle); // mpLocalMapper->KeyframesInQueue() < 2);
         // Condition 1c: tracking is weak
-        const bool c1c = mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_STEREO && mSensor != System::IMU_RGBD && (mnMatchesInliers < nRefMatches * 0.25 || bNeedToInsertClose);
+        const bool c1c = mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH && mSensor != System::IMU_STEREO && mSensor != System::IMU_RGBD && (mnMatchesInliers < nRefMatches * 0.25 || bNeedToInsertClose);
         // Condition 2: Few tracked points compared to reference keyframe. Lots of visual odometry compared to map matches.
         const bool c2 = (((mnMatchesInliers < nRefMatches * thRefRatio || bNeedToInsertClose)) && mnMatchesInliers > 15);
 
@@ -3211,7 +3226,7 @@ namespace ORB_SLAM3
         bool c3 = false;
         if (mpLastKeyFrame)
         {
-            if (mSensor == System::IMU_MONOCULAR)
+            if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
             {
                 if ((mCurrentFrame.mTimeStamp - mpLastKeyFrame->mTimeStamp) >= 0.5)
                     c3 = true;
@@ -3224,7 +3239,7 @@ namespace ORB_SLAM3
         }
 
         bool c4 = false;
-        if ((((mnMatchesInliers < 75) && (mnMatchesInliers > 15)) || mState == RECENTLY_LOST) && (mSensor == System::IMU_MONOCULAR)) // MODIFICATION_2, originally ((((mnMatchesInliers<75) && (mnMatchesInliers>15)) || mState==RECENTLY_LOST) && ((mSensor == System::IMU_MONOCULAR)))
+        if ((((mnMatchesInliers < 75) && (mnMatchesInliers > 15)) || mState == RECENTLY_LOST) && (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)) // MODIFICATION_2, originally ((((mnMatchesInliers<75) && (mnMatchesInliers>15)) || mState==RECENTLY_LOST) && ((mSensor == System::IMU_MONOCULAR)))
             c4 = true;
         else
             c4 = false;
@@ -3240,7 +3255,7 @@ namespace ORB_SLAM3
             else
             {
                 mpLocalMapper->InterruptBA();
-                if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR)
+                if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH)
                 {
                     if (mpLocalMapper->KeyframesInQueue() < 3)
                         return true;
@@ -3284,12 +3299,12 @@ namespace ORB_SLAM3
             Verbose::PrintMess("No last KF in KF creation!!", Verbose::VERBOSITY_NORMAL);
 
         // Reset preintegration from last KF (Create new object)
-        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
+        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(pKF->GetImuBias(), pKF->mImuCalib);
         }
 
-        if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR) // TODO check if incluide imu_stereo
+        if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH) // TODO check if incluide imu_stereo
         {
             mCurrentFrame.UpdatePoseMatrices();
             // cout << "create new MPs" << endl;
@@ -3445,7 +3460,7 @@ namespace ORB_SLAM3
                 else
                     th = 6;
             }
-            else if (!mpAtlas->isImuInitialized() && (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD))
+            else if (!mpAtlas->isImuInitialized() && (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH))
             {
                 th = 10;
             }
@@ -3626,7 +3641,7 @@ namespace ORB_SLAM3
         }
 
         // Add 10 last temporal KFs (mainly for IMU)
-        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && mvpLocalKeyFrames.size() < 80)
+        if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH) && mvpLocalKeyFrames.size() < 80)
         {
             KeyFrame *tempKeyFrame = mCurrentFrame.mpLastKeyFrame;
 
@@ -3852,7 +3867,7 @@ namespace ORB_SLAM3
         // Clear Map (this erase MapPoints and KeyFrames)
         mpAtlas->clearAtlas();
         mpAtlas->CreateNewMap();
-        if (mSensor == System::IMU_STEREO || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_RGBD)
+        if (mSensor == System::IMU_STEREO || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
             mpAtlas->SetInertialSensor();
         mnInitialFrameId = 0;
 

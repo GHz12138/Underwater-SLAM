@@ -154,7 +154,7 @@ namespace ORB_SLAM3 {
         readImageInfo(fSettings);
         cout << "\t-Loaded image info" << endl;
 
-        if(sensor_ == System::IMU_MONOCULAR || sensor_ == System::IMU_STEREO || sensor_ == System::IMU_RGBD){
+        if(sensor_ == System::IMU_MONOCULAR || sensor_ == System::IMU_STEREO || sensor_ == System::IMU_RGBD || sensor_ == System::IMU_MONOCULAR_DEPTH){
             readIMU(fSettings);
             cout << "\t-Loaded IMU calibration" << endl;
         }
@@ -220,7 +220,7 @@ namespace ORB_SLAM3 {
             }
 
             //Check if we need to correct distortion from the images
-            if((sensor_ == System::MONOCULAR || sensor_ == System::IMU_MONOCULAR) && vPinHoleDistorsion1_.size() != 0){
+            if((sensor_ == System::MONOCULAR || sensor_ == System::IMU_MONOCULAR || sensor_ == System::IMU_MONOCULAR_DEPTH) && vPinHoleDistorsion1_.size() != 0){
                 bNeedToUndistort_ = true;
             }
         }
@@ -615,7 +615,7 @@ namespace ORB_SLAM3 {
             }
         }
 
-        if(settings.sensor_ == System::IMU_MONOCULAR || settings.sensor_ == System::IMU_STEREO || settings.sensor_ == System::IMU_RGBD) {
+        if(settings.sensor_ == System::IMU_MONOCULAR || settings.sensor_ == System::IMU_STEREO || settings.sensor_ == System::IMU_RGBD || settings.sensor_ == System::IMU_MONOCULAR_DEPTH) {
             output << "\t-Gyro noise: " << settings.noiseGyro_ << endl;
             output << "\t-Accelerometer noise: " << settings.noiseAcc_ << endl;
             output << "\t-Gyro walk: " << settings.gyroWalk_ << endl;

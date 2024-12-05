@@ -63,6 +63,8 @@ namespace ORB_SLAM3
             cout << "Stereo-Inertial" << endl;
         else if (mSensor == IMU_RGBD)
             cout << "RGB-D-Inertial" << endl;
+        else if (mSensor == IMU_MONOCULAR_DEPTH)
+            cout << "Monocular-Inertial-Depth" << endl;
 
         // Check settings file
         cv::FileStorage fsSettings(strSettingsFile.c_str(), cv::FileStorage::READ);
@@ -180,22 +182,22 @@ namespace ORB_SLAM3
             // usleep(10*1000*1000);
         }
 
-        if (mSensor == IMU_STEREO || mSensor == IMU_MONOCULAR || mSensor == IMU_RGBD)
+        if (mSensor == IMU_STEREO || mSensor == IMU_MONOCULAR || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             mpAtlas->SetInertialSensor();
 
         // Create Drawers. These are used by the Viewer
         mpFrameDrawer = new FrameDrawer(mpAtlas);
         mpMapDrawer = new MapDrawer(mpAtlas, strSettingsFile, settings_);
 
-        // Initialize the Tracking thread
+        // Initialize the Tracking thread 初始化跟踪线程
         //(it will live in the main thread of execution, the one that called this constructor)
         cout << "Seq. Name: " << strSequence << endl;
         mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                                  mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, settings_, strSequence);
 
         // Initialize the Local Mapping thread and launch
-        mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor == MONOCULAR || mSensor == IMU_MONOCULAR,
-                                         mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD, strSequence);
+        mpLocalMapper = new LocalMapping(this, mpAtlas, mSensor == MONOCULAR || mSensor == IMU_MONOCULAR || mSensor == IMU_MONOCULAR_DEPTH,
+                                         mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH, strSequence);
         mptLocalMapping = new thread(&ORB_SLAM3::LocalMapping::Run, mpLocalMapper);
         mpLocalMapper->mInitFr = initFr;
         if (settings_)
@@ -415,7 +417,7 @@ namespace ORB_SLAM3
                 return Sophus::SE3f();
         }
 
-        if (mSensor != MONOCULAR && mSensor != IMU_MONOCULAR)
+        if (mSensor != MONOCULAR && mSensor != IMU_MONOCULAR && mSensor != IMU_MONOCULAR_DEPTH)
         {
             cerr << "ERROR: you called TrackMonocular but input sensor was not set to Monocular nor Monocular-Inertial." << endl;
             exit(-1);
@@ -474,7 +476,7 @@ namespace ORB_SLAM3
         //     for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
         //         mpTracker->GrabImuData(vImuMeas[i_imu]);
         // code by ghz
-        if (mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR || mSensor ==IMU_MONOCULAR_DEPTH)
         {
             for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
                 mpTracker->GrabImuData(vImuMeas[i_imu]);
@@ -722,7 +724,7 @@ namespace ORB_SLAM3
         // Transform all keyframes so that the first keyframe is at the origin.
         // After a loop closure the first keyframe might not be at the origin.
         Sophus::SE3f Twb; // Can be word to cam0 or world to b depending on IMU or not.
-        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             Twb = vpKFs[0]->GetImuPose();
         else
             Twb = vpKFs[0]->GetPoseInverse();
@@ -786,7 +788,7 @@ namespace ORB_SLAM3
 
             // cout << "4" << endl;
 
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = (pKF->mImuCalib.mTbc * (*lit) * Trw).inverse();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -828,7 +830,7 @@ namespace ORB_SLAM3
         // Transform all keyframes so that the first keyframe is at the origin.
         // After a loop closure the first keyframe might not be at the origin.
         Sophus::SE3f Twb; // Can be word to cam0 or world to b dependingo on IMU or not.
-        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             Twb = vpKFs[0]->GetImuPose();
         else
             Twb = vpKFs[0]->GetPoseInverse();
@@ -892,7 +894,7 @@ namespace ORB_SLAM3
 
             // cout << "4" << endl;
 
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = (pKF->mImuCalib.mTbc * (*lit) * Trw).inverse();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -1127,7 +1129,7 @@ namespace ORB_SLAM3
 
             if (!pKF || pKF->isBad())
                 continue;
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = pKF->GetImuPose();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -1165,7 +1167,7 @@ namespace ORB_SLAM3
 
             if (!pKF || pKF->isBad())
                 continue;
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = pKF->GetImuPose();
                 Eigen::Quaternionf q = Twb.unit_quaternion();

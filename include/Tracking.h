@@ -377,6 +377,10 @@ protected:
 #endif
 
 public:
+    const std::vector<IMU::Point>& GetIMUData() const {
+        return mvImuFromLastFrame;
+    }
+public:
     cv::Mat mImRight;
 };
 
