@@ -1631,16 +1631,126 @@ namespace ORB_SLAM3
         return mCurrentFrame.GetPose();
     }
 
-    void Tracking::GrabImuData(const IMU::Point &imuMeasurement)
-    {
-        unique_lock<mutex> lock(mMutexImuQueue);
-        mlQueueImuData.push_back(imuMeasurement);
-    }
+    // void Tracking::GrabImuaccData(const IMU::Point &imuMeasurement)
+    // {
+    //     unique_lock<mutex> lock(mMutexImuaccQueue);
+    //     mlImuaccData.push_back(imuMeasurement);
+    // }
+
+    // Eigen::Vector3f Tracking::CaculateGdir()
+    // {
+    //     unique_lock<mutex> lock(mMutexImuaccQueue);
+    //     // 初始化一个零向量，用于累积加速度
+    //     Eigen::Vector3f total_acceleration = Eigen::Vector3f::Zero();
+
+    //     // 检查数据是否为空
+    //     if (mlImuaccData.empty())
+    //     {
+    //         std::cout<<"mlImuaccData数据为空"<<std::endl;
+    //         // 如果数据为空，直接返回零向量（或其他适当的错误处理）
+    //         return Eigen::Vector3f::Zero();
+    //     }
+
+    //     // 记录有效数据的数量
+    //     int valid_count = 0;
+
+    //     // 遍历所有加速度数据并累加
+    //     for (const auto &point : mlImuaccData)
+    //     {
+    //         // // 只处理时间戳大于 mInitialFrame.mTimeStamp 的数据
+    //         // if (point.t > mInitialFrame.mTimeStamp)
+    //         // {
+    //             // std::cout << "InitialFrametime=" << mInitialFrame.mTimeStamp << std::endl;
+    //             // std::cout << "AfterIMUtime=" << point.t << std::endl;
+    //             total_acceleration += point.a; // 累加加速度向量
+    //             valid_count++;                 // 计数有效数据
+    //         // }
+    //     }
+
+    //     // 如果有效数据为空，返回零向量（或其他适当的处理方式）
+    //     if (valid_count == 0)
+    //     {
+    //         return Eigen::Vector3f::Zero();
+    //     }
+
+    //     mlImuaccData.clear();
+    //     // 计算平均加速度
+    //     Eigen::Vector3f avg_acceleration = total_acceleration / valid_count;
+
+    //     // 计算加速度方向，并归一化
+
+    //     Eigen::Vector3f Gdir = -mpImuCalib->mTcb.rotationMatrix() * avg_acceleration.normalized();
+    //     std::cout<<">mTcb"<<std::endl<<mpImuCalib->mTcb.rotationMatrix()<<std::endl;
+    //     // 返回单位化后的加速度方向（avg_acc）
+    //     return Gdir;
+    // }
+
     // code by ghz
     void Tracking::GrabPressureData(const IMU::PressureData &pressMeasurement)
     {
         unique_lock<mutex> lock(mMutexPressQueue);    // 对压力数据队列加锁
         mlQueuePressData.push_back(pressMeasurement); // 插入数据
+    }
+
+    void Tracking::GrabImuData(const IMU::Point &imuMeasurement)
+    {
+        unique_lock<mutex> lock(mMutexImuQueue);
+        mlQueueImuData.push_back(imuMeasurement);
+    }
+
+    void Tracking::PressFromLastFrame()
+    {
+        if (!mCurrentFrame.mpPrevFrame)
+        {
+            Verbose::PrintMess("non prev frame ", Verbose::VERBOSITY_NORMAL);
+            mCurrentFrame.setIntegrated();
+            return;
+        }
+
+        mvPressFromLastFrame.clear();
+        mvPressFromLastFrame.reserve(mlQueuePressData.size());
+        if (mlQueuePressData.size() == 0)
+        {
+            Verbose::PrintMess("Not Pressure data in mlQueuePressData!!", Verbose::VERBOSITY_NORMAL);
+            mCurrentFrame.setIntegrated();
+            return;
+        }
+
+        // 处理压力数据
+        while (true)
+        {
+            bool bSleep = false;
+            {
+                std::unique_lock<std::mutex> lock(mMutexPressQueue);
+                if (!mlQueuePressData.empty())
+                {
+                    IMU::PressureData *pressuredata = &mlQueuePressData.front();
+                    std::cout.precision(17);
+
+                    if (pressuredata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
+                    {
+                        mlQueuePressData.pop_front();
+                    }
+                    else if (pressuredata->timestamp < mCurrentFrame.mTimeStamp)
+                    {
+                        mvPressFromLastFrame.push_back(*pressuredata);
+                        mlQueuePressData.pop_front();
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        const int n = mvPressFromLastFrame.size() - 1;
+        if (n == 0)
+        {
+            std::cout << "Empty Pressure measurements vector!!!\n";
+            return;
+        }
+
     }
 
     void Tracking::PreintegrateIMU()
@@ -1696,39 +1806,6 @@ namespace ORB_SLAM3
                 usleep(500);
         }
 
-        // code by ghz retrive pressure data between two frame
-        while (true)
-        {
-            bool bSleep = false;
-            {
-                std::unique_lock<std::mutex> lock(mMutexPressQueue);
-                if (!mlQueuePressData.empty())
-                {
-                    IMU::PressureData *pressuredata = &mlQueuePressData.front();
-                    std::cout.precision(17);
-
-                    if (pressuredata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
-                    {
-                        mlQueuePressData.pop_front();
-                    }
-                    else if (pressuredata->timestamp < mCurrentFrame.mTimeStamp)
-                    {
-                        mvPressFromLastFrame.push_back(*pressuredata);
-                        // std::cout << "Pressure Data:" << std::endl;
-                        // for (const auto& data : mvPressFromLastFrame) {
-                        //     std::cout << "Timestamp: " << data.timestamp << ", Depth: " << data.depth << std::endl;
-                        // }
-                        mlQueuePressData.pop_front();
-                    }
-                }
-                else
-                {
-                    // std::cout <<"no pressure data" << std::endl;
-                    break;
-                }
-            }
-        }
-
         const int n = mvImuFromLastFrame.size() - 1;
         if (n == 0)
         {
@@ -1738,15 +1815,15 @@ namespace ORB_SLAM3
 
         IMU::Preintegrated *pImuPreintegratedFromLastFrame = new IMU::Preintegrated(mLastFrame.mImuBias, mCurrentFrame.mImuCalib);
 
-    // 针对预积分位置的不同做不同中值积分的处理
-    /**
-     *  根据上面imu帧的筛选，IMU与图像帧的时序如下：
-     *  Frame---IMU0---IMU1---IMU2---IMU3---IMU4---------------IMUx---Frame---IMUx+1
-     *  T_------T0-----T1-----T2-----T3-----T4-----------------Tx-----_T------Tx+1
-     *  A_------A0-----A1-----A2-----A3-----A4-----------------Ax-----_T------Ax+1
-     *  W_------W0-----W1-----W2-----W3-----W4-----------------Wx-----_T------Wx+1
-     *  T_和_T分别表示上一图像帧和当前图像帧的时间戳，A(加速度数据)，W(陀螺仪数据)，同理
-     */
+        // 针对预积分位置的不同做不同中值积分的处理
+        /**
+         *  根据上面imu帧的筛选，IMU与图像帧的时序如下：
+         *  Frame---IMU0---IMU1---IMU2---IMU3---IMU4---------------IMUx---Frame---IMUx+1
+         *  T_------T0-----T1-----T2-----T3-----T4-----------------Tx-----_T------Tx+1
+         *  A_------A0-----A1-----A2-----A3-----A4-----------------Ax-----_T------Ax+1
+         *  W_------W0-----W1-----W2-----W3-----W4-----------------Wx-----_T------Wx+1
+         *  T_和_T分别表示上一图像帧和当前图像帧的时间戳，A(加速度数据)，W(陀螺仪数据)，同理
+         */
 
         for (int i = 0; i < n; i++)
         {
@@ -1756,10 +1833,10 @@ namespace ORB_SLAM3
             {
                 float tab = mvImuFromLastFrame[i + 1].t - mvImuFromLastFrame[i].t;
                 float tini = mvImuFromLastFrame[i].t - mCurrentFrame.mpPrevFrame->mTimeStamp;
-            // 设当前时刻imu的加速度a0，下一时刻加速度a1，时间间隔tab 为t10，tini t0p
-            // 正常情况下时为了求上一帧到当前时刻imu的一个平均加速度，但是imu时间不会正好落在上一帧的时刻，需要做补偿，要求得a0时刻到上一帧这段时间加速度的改变量
-            // 有了这个改变量将其加到a0上之后就可以表示上一帧时的加速度了。其中a0 - (a1-a0)*(tini/tab) 为上一帧时刻的加速度再加上a1 之后除以2就为这段时间的加速度平均值
-            // 其中tstep表示a1到上一帧的时间间隔，a0 - (a1-a0)*(tini/tab)这个式子中tini可以是正也可以是负表示时间上的先后，(a1-a0)也是一样，多种情况下这个式子依然成立
+                // 设当前时刻imu的加速度a0，下一时刻加速度a1，时间间隔tab 为t10，tini t0p
+                // 正常情况下时为了求上一帧到当前时刻imu的一个平均加速度，但是imu时间不会正好落在上一帧的时刻，需要做补偿，要求得a0时刻到上一帧这段时间加速度的改变量
+                // 有了这个改变量将其加到a0上之后就可以表示上一帧时的加速度了。其中a0 - (a1-a0)*(tini/tab) 为上一帧时刻的加速度再加上a1 之后除以2就为这段时间的加速度平均值
+                // 其中tstep表示a1到上一帧的时间间隔，a0 - (a1-a0)*(tini/tab)这个式子中tini可以是正也可以是负表示时间上的先后，(a1-a0)也是一样，多种情况下这个式子依然成立
 
                 acc = (mvImuFromLastFrame[i].a + mvImuFromLastFrame[i + 1].a -
                        (mvImuFromLastFrame[i + 1].a - mvImuFromLastFrame[i].a) * (tini / tab)) *
@@ -1796,7 +1873,7 @@ namespace ORB_SLAM3
 
             if (!mpImuPreintegratedFromLastKF)
                 cout << "mpImuPreintegratedFromLastKF does not exist" << endl;
-            //IMU 预积分在这里
+            // IMU 预积分在这里
             mpImuPreintegratedFromLastKF->IntegrateNewMeasurement(acc, angVel, tstep);
             pImuPreintegratedFromLastFrame->IntegrateNewMeasurement(acc, angVel, tstep);
         }
@@ -1944,6 +2021,8 @@ namespace ORB_SLAM3
             std::chrono::steady_clock::time_point time_StartPreIMU = std::chrono::steady_clock::now();
 #endif
             PreintegrateIMU();
+            PressFromLastFrame();
+
 #ifdef REGISTER_TIMES
             std::chrono::steady_clock::time_point time_EndPreIMU = std::chrono::steady_clock::now();
 

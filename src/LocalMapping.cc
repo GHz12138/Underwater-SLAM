@@ -1229,41 +1229,40 @@ namespace ORB_SLAM3
         // Compute and KF velocities mRwg estimation
         if (!mpCurrentKeyFrame->GetMap()->isImuInitialized())
         {
-            if (mpTracker->mSensor == System::IMU_MONOCULAR)
-            {
-                Eigen::Matrix3f Rwg;
-                Eigen::Vector3f dirG;
-                dirG.setZero();
-                for (vector<KeyFrame *>::iterator itKF = vpKF.begin(); itKF != vpKF.end(); itKF++)
-                {
-                    if (!(*itKF)->mpImuPreintegrated)
-                        continue;
-                    if (!(*itKF)->mPrevKF)
-                        continue;
 
-                    dirG -= (*itKF)->mPrevKF->GetImuRotation() * (*itKF)->mpImuPreintegrated->GetUpdatedDeltaVelocity();
-                    Eigen::Vector3f _vel = ((*itKF)->GetImuPosition() - (*itKF)->mPrevKF->GetImuPosition()) / (*itKF)->mpImuPreintegrated->dT;
-                    (*itKF)->SetVelocity(_vel);
-                    (*itKF)->mPrevKF->SetVelocity(_vel);
-                }
-
-                dirG = dirG / dirG.norm();
-                Eigen::Vector3f gI(0.0f, 0.0f, -1.0f);
-                Eigen::Vector3f v = gI.cross(dirG);
-                const float nv = v.norm();
-                const float cosg = gI.dot(dirG);
-                const float ang = acos(cosg);
-                Eigen::Vector3f vzg = v * ang / nv;
-                Rwg = Sophus::SO3f::exp(vzg).matrix();
-                mRwg = Rwg.cast<double>();
-                mTinit = mpCurrentKeyFrame->mTimeStamp - mFirstTs;
-                cout << "mTinit1=" << mTinit << endl;
-            }
-            // code by ghz get IMU gravity direction and scale initial number
-            else if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
+            Eigen::Matrix3f Rwg;
+            Eigen::Vector3f dirG;
+            dirG.setZero();
+            for (vector<KeyFrame *>::iterator itKF = vpKF.begin(); itKF != vpKF.end(); itKF++)
             {
-                // 待修改
+                if (!(*itKF)->mpImuPreintegrated)
+                    continue;
+                if (!(*itKF)->mPrevKF)
+                    continue;
+
+                dirG -= (*itKF)->mPrevKF->GetImuRotation() * (*itKF)->mpImuPreintegrated->GetUpdatedDeltaVelocity();
+                Eigen::Vector3f _vel = ((*itKF)->GetImuPosition() - (*itKF)->mPrevKF->GetImuPosition()) / (*itKF)->mpImuPreintegrated->dT;
+                (*itKF)->SetVelocity(_vel);
+                (*itKF)->mPrevKF->SetVelocity(_vel);
             }
+
+            dirG = dirG / dirG.norm();
+            Eigen::Vector3f gI(0.0f, 0.0f, -1.0f);
+            Eigen::Vector3f v = gI.cross(dirG);
+            const float nv = v.norm();
+            const float cosg = gI.dot(dirG);
+            const float ang = acos(cosg);
+            Eigen::Vector3f vzg = v * ang / nv;
+            Rwg = Sophus::SO3f::exp(vzg).matrix();
+            mRwg = Rwg.cast<double>();
+            mTinit = mpCurrentKeyFrame->mTimeStamp - mFirstTs;
+            // cout << "mTinit1=" << mTinit << endl;
+
+            // // code by ghz get IMU  scale initial number
+            // if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
+            // {
+
+            // }
         }
         else
         {
@@ -1287,7 +1286,7 @@ namespace ORB_SLAM3
             bInitializing = false;
             return;
         }
-
+        // 到此时为止，前面做的东西没有改变map
         // Before this line we are not changing the map
         {
             unique_lock<mutex> lock(mpAtlas->GetCurrentMap()->mMutexMapUpdate);

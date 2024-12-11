@@ -74,6 +74,9 @@ public:
     Sophus::SE3f GrabImageMonocular(const cv::Mat &im, const double &timestamp, string filename);
 
     void GrabImuData(const IMU::Point &imuMeasurement);
+    // code by ghz
+    // void GrabImuaccData(const IMU::Point &imuMeasurement);
+    // Eigen::Vector3f CaculateGdir();
     void GrabPressureData(const IMU::PressureData &PressMeasurement);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
@@ -227,6 +230,9 @@ protected:
     // Perform preintegration from last frame
     void PreintegrateIMU();
 
+    // Perform depth from last frame
+    void PressFromLastFrame();
+
     // Reset IMU biases and compute frame velocity
     void ResetFrameIMU();
 
@@ -241,6 +247,9 @@ protected:
     // Queue of Pressure measurements between frames
     std::list<IMU::PressureData> mlQueuePressData;
    
+    // // code by ghz Queue of IMU acc measurements between frames for initialize
+    // std::list<IMU::Point> mlImuaccData;
+    // std::mutex mMutexImuaccQueue;
 
     // Vector of IMU measurements from previous to current frame (to be filled by PreintegrateIMU)
     std::vector<IMU::Point> mvImuFromLastFrame;
@@ -383,6 +392,7 @@ public:
 public:
     cv::Mat mImRight;
 };
+
 
 } //namespace ORB_SLAM
 

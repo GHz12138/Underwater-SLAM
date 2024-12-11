@@ -472,14 +472,13 @@ namespace ORB_SLAM3
             }
         }
 
-        // if (mSensor == System::IMU_MONOCULAR)
-        //     for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
-        //         mpTracker->GrabImuData(vImuMeas[i_imu]);
-        // code by ghz
-        if (mSensor == System::IMU_MONOCULAR || mSensor ==IMU_MONOCULAR_DEPTH)
-        {
+        if (mSensor == System::IMU_MONOCULAR)
             for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
                 mpTracker->GrabImuData(vImuMeas[i_imu]);
+
+        // code by ghz
+        if (mSensor == IMU_MONOCULAR_DEPTH || mSensor == System::IMU_MONOCULAR)
+        {
             if (!vPressMeas.empty())
                 for (size_t i_press = 0; i_press < vPressMeas.size(); i_press++)
                     mpTracker->GrabPressureData(vPressMeas[i_press]);
@@ -692,7 +691,7 @@ namespace ORB_SLAM3
 
         f.close();
     }
-
+   
     void System::SaveTrajectoryEuRoC(const string &filename)
     {
 
@@ -724,7 +723,7 @@ namespace ORB_SLAM3
         // Transform all keyframes so that the first keyframe is at the origin.
         // After a loop closure the first keyframe might not be at the origin.
         Sophus::SE3f Twb; // Can be word to cam0 or world to b depending on IMU or not.
-        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             Twb = vpKFs[0]->GetImuPose();
         else
             Twb = vpKFs[0]->GetPoseInverse();
@@ -788,7 +787,7 @@ namespace ORB_SLAM3
 
             // cout << "4" << endl;
 
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = (pKF->mImuCalib.mTbc * (*lit) * Trw).inverse();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -830,7 +829,7 @@ namespace ORB_SLAM3
         // Transform all keyframes so that the first keyframe is at the origin.
         // After a loop closure the first keyframe might not be at the origin.
         Sophus::SE3f Twb; // Can be word to cam0 or world to b dependingo on IMU or not.
-        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+        if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             Twb = vpKFs[0]->GetImuPose();
         else
             Twb = vpKFs[0]->GetPoseInverse();
@@ -894,7 +893,7 @@ namespace ORB_SLAM3
 
             // cout << "4" << endl;
 
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = (pKF->mImuCalib.mTbc * (*lit) * Trw).inverse();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -1129,7 +1128,7 @@ namespace ORB_SLAM3
 
             if (!pKF || pKF->isBad())
                 continue;
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = pKF->GetImuPose();
                 Eigen::Quaternionf q = Twb.unit_quaternion();
@@ -1167,7 +1166,7 @@ namespace ORB_SLAM3
 
             if (!pKF || pKF->isBad())
                 continue;
-            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor ==IMU_MONOCULAR_DEPTH)
+            if (mSensor == IMU_MONOCULAR || mSensor == IMU_STEREO || mSensor == IMU_RGBD || mSensor == IMU_MONOCULAR_DEPTH)
             {
                 Sophus::SE3f Twb = pKF->GetImuPose();
                 Eigen::Quaternionf q = Twb.unit_quaternion();

@@ -3039,6 +3039,24 @@ Eigen::MatrixXd Optimizer::Marginalize(const Eigen::MatrixXd &H, const int &star
     return res;
 }
 
+/**************************************以下为尺度与重力优化**************************************************************/
+
+/**
+ * @brief imu初始化优化，LocalMapping::InitializeIMU中使用，其中KF的位姿固定不变
+ * 优化目标 重力方向，尺度，速度与偏置
+ * @param pMap 地图
+ * @param Rwg 重力方向到速度方向的转角
+ * @param scale 尺度（输出cout用）
+ * @param bg 陀螺仪偏置（输出cout用）
+ * @param ba 加速度计偏置（输出cout用）
+ * @param bMono 是否为单目
+ * @param covInertial 惯导协方差矩阵(暂时没用，9*9的0矩阵)
+ * @param bFixedVel 是否固定速度不优化，false
+ * @param bGauss  没用，false
+ * @param priorG 陀螺仪偏置的信息矩阵系数
+ * @param priorA 加速度计偏置的信息矩阵系数
+ */
+
 void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &scale, Eigen::Vector3d &bg, Eigen::Vector3d &ba, bool bMono, Eigen::MatrixXd  &covInertial, bool bFixedVel, bool bGauss, float priorG, float priorA)
 {
     Verbose::PrintMess("inertial optimization", Verbose::VERBOSITY_NORMAL);

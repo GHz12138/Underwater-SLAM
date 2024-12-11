@@ -180,6 +180,7 @@ void ImageGrabber::SyncWithImu()
       {
         // Load imu measurements from buffer
         vImuMeas.clear();
+        // 获取当前图像与前一张图像之间的IMU数据
         while (!mpImuGb->imuBuf.empty() && mpImuGb->imuBuf.front()->header.stamp.toSec() <= tIm)
         {
           double t = mpImuGb->imuBuf.front()->header.stamp.toSec();
@@ -198,6 +199,7 @@ void ImageGrabber::SyncWithImu()
       {
         // Load depth measurements from buffer
         vPressMeas.clear();
+        // 获取当前图像与前一张图像之间的压力计数据
         while (!mpPressGb->pressBuf.empty() && mpPressGb->pressBuf.front()->header.stamp.toSec() <= tIm)
         {
           double t = mpPressGb->pressBuf.front()->header.stamp.toSec();
