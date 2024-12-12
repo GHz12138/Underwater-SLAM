@@ -472,13 +472,15 @@ namespace ORB_SLAM3
             }
         }
 
-        if (mSensor == System::IMU_MONOCULAR)
-            for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
-                mpTracker->GrabImuData(vImuMeas[i_imu]);
+        // if (mSensor == System::IMU_MONOCULAR)
+        //     for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
+        //         mpTracker->GrabImuData(vImuMeas[i_imu]);
 
         // code by ghz
-        if (mSensor == IMU_MONOCULAR_DEPTH || mSensor == System::IMU_MONOCULAR)
+        if (mSensor == System::IMU_MONOCULAR_DEPTH || mSensor == System::IMU_MONOCULAR)
         {
+            for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
+                mpTracker->GrabImuData(vImuMeas[i_imu]);
             if (!vPressMeas.empty())
                 for (size_t i_press = 0; i_press < vPressMeas.size(); i_press++)
                     mpTracker->GrabPressureData(vPressMeas[i_press]);
