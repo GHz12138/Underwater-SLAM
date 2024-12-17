@@ -143,7 +143,10 @@ void Preintegrated::CopyFrom(Preintegrated* pImuPre)
     mvMeasurements = pImuPre->mvMeasurements;
 }
 
-
+/** 
+ * @brief 初始化预积分
+ * @param b_ 偏置
+ */
 void Preintegrated::Initialize(const Bias &b_)
 {
     dR.setIdentity();

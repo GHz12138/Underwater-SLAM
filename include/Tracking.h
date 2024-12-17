@@ -97,7 +97,8 @@ public:
     {
         return mpLastKeyFrame;
     }
-
+    // code by ghz
+    KeyFrame* mpCurrentKeyFrame;
     void CreateMapInAtlas();
     //std::mutex mMutexTracks;
 
@@ -131,7 +132,7 @@ public:
         LOST=4,
         OK_KLT=5
     };
-
+    double temp_t=0;
     eTrackingState mState;
     eTrackingState mLastProcessedState;
 
@@ -231,14 +232,14 @@ protected:
     void PreintegrateIMU();
 
     // Perform depth from last frame
-    void PressFromLastFrame();
+    void DepthFromLastFrame();
 
     // Reset IMU biases and compute frame velocity
     void ResetFrameIMU();
 
     bool mbMapUpdated;
 
-    // Imu preintegration from last frame
+    // Imu preintegration from last keyframe
     IMU::Preintegrated *mpImuPreintegratedFromLastKF;
 
     // Queue of IMU measurements between frames
@@ -254,6 +255,9 @@ protected:
     // Vector of IMU measurements from previous to current frame (to be filled by PreintegrateIMU)
     std::vector<IMU::Point> mvImuFromLastFrame;
     std::mutex mMutexImuQueue;
+
+    // Vector of Pressure measurement from last keyframe
+    std::vector<IMU::PressureData> mvPressFromLastKF;
 
     // Vector of Pressure measurements from previous to current frame
     std::vector<IMU::PressureData> mvPressFromLastFrame;

@@ -267,6 +267,11 @@ public:
     Frame* mpPrevFrame;
     IMU::Preintegrated* mpImuPreintegratedFrame;
 
+    // code by ghz 普通帧间的深度值
+    std::vector<IMU::PressureData> mvDepthFrame;
+    // code by ghz 关键帧间的深度值
+    std::vector<IMU::PressureData> mvDepthKF;
+
     // Current and Next Frame id.
     static long unsigned int nNextId;
     long unsigned int mnId;

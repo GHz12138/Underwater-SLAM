@@ -1697,9 +1697,17 @@ namespace ORB_SLAM3
         unique_lock<mutex> lock(mMutexImuQueue);
         mlQueueImuData.push_back(imuMeasurement);
     }
-
-    void Tracking::PressFromLastFrame()
+    // 累积普通帧间或关键帧间的深度值
+    void Tracking::DepthFromLastFrame()
     {
+        // // 打开文件以追加模式写入数据
+        // std::ofstream outfile("/ORB_SLAM3/pressure_data2.csv", std::ios::app);
+        // if (!outfile.is_open())
+        // {
+        //     std::cerr << "Error opening file for writing!" << std::endl;
+        //     return;
+        // }
+
         if (!mCurrentFrame.mpPrevFrame)
         {
             Verbose::PrintMess("non prev frame ", Verbose::VERBOSITY_NORMAL);
@@ -1707,16 +1715,30 @@ namespace ORB_SLAM3
             return;
         }
 
+        // // 清空当前帧的压力数据向量
+        // if (!mvDepthFrame.empty())
+        // {
+        //     // 在清空前，将数据写入文件
+        //     for (const auto &data : mvDepthFrame)
+        //     {
+        //         // 写入时间戳和深度值，设置精度和格式
+        //         outfile << std::fixed << std::setprecision(9) << data.timestamp << ","
+        //                 << std::fixed << std::setprecision(6) << data.depth << "\n";
+        //     }
+        //     // 清空数据
+        //     mvDepthFrame.clear();
+        // }
+
         mvPressFromLastFrame.clear();
         mvPressFromLastFrame.reserve(mlQueuePressData.size());
+
         if (mlQueuePressData.size() == 0)
         {
-            Verbose::PrintMess("Not Pressure data in mlQueuePressData!!", Verbose::VERBOSITY_NORMAL);
+            Verbose::PrintMess("Not Pressure data in mlQueueImuData!!", Verbose::VERBOSITY_NORMAL);
             mCurrentFrame.setIntegrated();
             return;
         }
 
-        // 处理压力数据
         while (true)
         {
             bool bSleep = false;
@@ -1751,6 +1773,22 @@ namespace ORB_SLAM3
             return;
         }
 
+        mCurrentFrame.mvDepthFrame.clear();
+        mCurrentFrame.mvDepthFrame = mvPressFromLastFrame;
+        mvPressFromLastKF.insert(mvPressFromLastKF.end(), mvPressFromLastFrame.begin(), mvPressFromLastFrame.end());
+        mCurrentFrame.mvDepthKF = mvPressFromLastKF;
+        // // 再次写入文件以确保最后一批数据也保存
+        // for (const auto &data : mCurrentFrame.mvDepthFrame)
+        // {
+        //     outfile << std::fixed << std::setprecision(9) << data.timestamp << ","
+        //             << std::fixed << std::setprecision(6) << data.depth << "\n";
+        // }
+        // outfile << "CurrentFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
+        // // // 清空向量
+        // // mvDepthFrame.clear();
+
+        // // 关闭文件
+        // outfile.close();
     }
 
     void Tracking::PreintegrateIMU()
@@ -1798,8 +1836,8 @@ namespace ORB_SLAM3
                 }
                 else
                 {
-                    break; // 有问题？
-                    bSleep = true;
+                    break;
+                    bSleep = true; // 有问题？
                 }
             }
             if (bSleep)
@@ -1812,7 +1850,7 @@ namespace ORB_SLAM3
             cout << "Empty IMU measurements vector!!!\n";
             return;
         }
-
+        // 普通帧的预积分在这里被重置
         IMU::Preintegrated *pImuPreintegratedFromLastFrame = new IMU::Preintegrated(mLastFrame.mImuBias, mCurrentFrame.mImuCalib);
 
         // 针对预积分位置的不同做不同中值积分的处理
@@ -1874,7 +1912,9 @@ namespace ORB_SLAM3
             if (!mpImuPreintegratedFromLastKF)
                 cout << "mpImuPreintegratedFromLastKF does not exist" << endl;
             // IMU 预积分在这里
+            // 关键帧间的预积分在创建新的关键帧时被重置
             mpImuPreintegratedFromLastKF->IntegrateNewMeasurement(acc, angVel, tstep);
+            // 普通帧间的预积分在每次经过这个PreintegrateIMU()函数时被重置
             pImuPreintegratedFromLastFrame->IntegrateNewMeasurement(acc, angVel, tstep);
         }
 
@@ -1887,6 +1927,15 @@ namespace ORB_SLAM3
         // Verbose::PrintMess("Preintegration is finished!! ", Verbose::VERBOSITY_DEBUG);
     }
 
+    /**
+     * @brief 跟踪不成功的时候，用初始化好的imu数据做跟踪处理，通过IMU预测状态
+     * 两个地方用到：
+     * 1. 匀速模型计算速度,但并没有给当前帧位姿赋值；
+     * 2. 跟踪丢失时不直接判定丢失，通过这个函数预测当前帧位姿看看能不能拽回来，代替纯视觉中的重定位
+     *
+     * @return true
+     * @return false
+     */
     bool Tracking::PredictStateIMU()
     {
         if (!mCurrentFrame.mpPrevFrame)
@@ -2020,8 +2069,9 @@ namespace ORB_SLAM3
 #ifdef REGISTER_TIMES
             std::chrono::steady_clock::time_point time_StartPreIMU = std::chrono::steady_clock::now();
 #endif
+            // IMU预积分
             PreintegrateIMU();
-            PressFromLastFrame();
+            DepthFromLastFrame();
 
 #ifdef REGISTER_TIMES
             std::chrono::steady_clock::time_point time_EndPreIMU = std::chrono::steady_clock::now();
@@ -2274,6 +2324,7 @@ namespace ORB_SLAM3
                     bOK = TrackLocalMap();
                 }
                 if (!bOK)
+                    // 这个需要改进
                     cout << "Fail to track local map!" << endl;
             }
             else
@@ -3351,7 +3402,14 @@ namespace ORB_SLAM3
         else
             return false;
     }
-
+    /**
+     * @brief 创建新的关键帧
+     * 对于非单目的情况，同时创建新的MapPoints
+     *
+     * Step 1：将当前帧构造成关键帧
+     * Step 2：将当前关键帧设置为当前帧的参考关键帧
+     * Step 3：对于双目或rgbd摄像头，为当前帧生成新的MapPoints
+     */
     void Tracking::CreateNewKeyFrame()
     {
         if (mpLocalMapper->IsInitializing() && !mpAtlas->isImuInitialized())
@@ -3377,10 +3435,31 @@ namespace ORB_SLAM3
         else
             Verbose::PrintMess("No last KF in KF creation!!", Verbose::VERBOSITY_NORMAL);
 
-        // Reset preintegration from last KF (Create new object)
+        // Reset preintegration from last KF (Create new object) 重置关键帧间的预积分
+        /*关键帧间的预积分在这里被重置*/
         if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD || mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(pKF->GetImuBias(), pKF->mImuCalib);
+            // // 打开文件以追加模式写入数据
+            // std::ofstream outfile("/ORB_SLAM3/pressure_data2.csv", std::ios::app);
+            // if (!outfile.is_open())
+            // {
+            //     std::cerr << "Error opening file for writing!" << std::endl;
+            //     return;
+            // }
+            // // 再次写入文件以确保最后一批数据也保存
+            // for (const auto &data : mvPressFromLastKF)
+            // {
+            //     outfile << std::fixed << std::setprecision(9) << data.timestamp << ","
+            //             << std::fixed << std::setprecision(6) << data.depth << "\n";
+            // }
+            // outfile << "CurrentKeyFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
+            // // // 清空向量
+            // mvPressFromLastKF.clear();
+
+            // // 关闭文件
+            // outfile.close();
+            mvPressFromLastKF.clear();
         }
 
         if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH) // TODO check if incluide imu_stereo
@@ -4112,7 +4191,15 @@ namespace ORB_SLAM3
     {
         mbOnlyTracking = flag;
     }
-
+    /**
+     * @brief 更新了关键帧的位姿，但需要修改普通帧的位姿，因为正常跟踪需要普通帧
+     * localmapping中初始化imu中使用，速度的走向（仅在imu模式使用），最开始速度定义于imu初始化时，每个关键帧都根据位移除以时间得到，经过非线性优化保存于KF中.
+     * 之后使用本函数，让上一帧与当前帧分别与他们对应的上一关键帧做速度叠加得到，后面新的frame速度由上一个帧速度决定，如果使用匀速模型（大多数情况下），通过imu积分更新速度。
+     * 新的关键帧继承于对应帧
+     * @param  s 尺度
+     * @param  b 初始化后第一帧的偏置
+     * @param  pCurrentKeyFrame 当前关键帧
+     */
     void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame *pCurrentKeyFrame)
     {
         Map *pMap = pCurrentKeyFrame->GetMap();

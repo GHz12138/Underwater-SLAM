@@ -412,6 +412,9 @@ public:
     IMU::Preintegrated* mpImuPreintegrated;
     IMU::Calib mImuCalib;
 
+    // code by ghz 关键帧间的深度值
+    std::vector<IMU::PressureData> mvDepthKF;
+
     unsigned int mnOriginMapId;
 
     string mNameFile;

@@ -131,7 +131,7 @@ namespace ORB_SLAM3
                             if (dist > 0.05)
                                 // 累积上一帧到当前帧的时间差
                                 mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp;
-                            cout << "mTinit2=" << mTinit << endl;
+                            // cout << "mTinit2=" << mTinit << endl;
                             if (!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
                             {
                                 // 累积时间小于10s并且距离小于0.02m
