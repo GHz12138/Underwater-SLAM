@@ -3045,7 +3045,7 @@ Eigen::MatrixXd Optimizer::Marginalize(const Eigen::MatrixXd &H, const int &star
  * @brief imu初始化优化，LocalMapping::InitializeIMU中使用，其中KF的位姿固定不变
  * 优化目标 重力方向，尺度，速度与偏置
  * @param pMap 地图
- * @param Rwg 重力方向到速度方向的转角
+ * @param Rwg 新的世界坐标系到相机第一帧世界坐标系的坐标变换矩阵
  * @param scale 尺度（输出cout用）
  * @param bg 陀螺仪偏置（输出cout用）
  * @param ba 加速度计偏置（输出cout用）
@@ -3065,6 +3065,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     const vector<KeyFrame*> vpKFs = pMap->GetAllKeyFrames();
 
     // Setup optimizer
+     // 1. 构建优化器
     g2o::SparseOptimizer optimizer;
     g2o::BlockSolverX::LinearSolverType * linearSolver;
 
@@ -3080,6 +3081,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     optimizer.setAlgorithm(solver);
 
     // Set KeyFrame vertices (fixed poses and optimizable velocities)
+    // 2. 确定关键帧节点（锁住的位姿及可优化的速度）
     for(size_t i=0; i<vpKFs.size(); i++)
     {
         KeyFrame* pKFi = vpKFs[i];
@@ -3101,6 +3103,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     }
 
     // Biases
+    // 3. 确定偏置节点，陀螺仪与加速度计
     VertexGyroBias* VG = new VertexGyroBias(vpKFs.front());
     VG->setId(maxKFid*2+2);
     if (bFixedVel)
@@ -3120,6 +3123,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     Eigen::Vector3f bprior;
     bprior.setZero();
 
+    // 4. 添加关于加速度计与陀螺仪偏置的边，这两个边加入是保证第一帧的偏置为0
     EdgePriorAcc* epa = new EdgePriorAcc(bprior);
     epa->setVertex(0,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VA));
     double infoPriorA = priorA;
@@ -3132,6 +3136,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     optimizer.addEdge(epg);
 
     // Gravity and scale
+    // 5. 添加关于重力方向与尺度的节点
     VertexGDir* VGDir = new VertexGDir(Rwg);
     VGDir->setId(maxKFid*2+4);
     VGDir->setFixed(false);
@@ -3143,12 +3148,14 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
 
     // Graph edges
     // IMU links with gravity and scale
+    // 6. imu信息链接重力方向与尺度信息
     vector<EdgeInertialGS*> vpei;
     vpei.reserve(vpKFs.size());
     vector<pair<KeyFrame*,KeyFrame*> > vppUsedKF;
     vppUsedKF.reserve(vpKFs.size());
     //std::cout << "build optimization graph" << std::endl;
-
+    
+    // 添加惯性边
     for(size_t i=0;i<vpKFs.size();i++)
     {
         KeyFrame* pKFi = vpKFs[i];
@@ -3159,7 +3166,9 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
                 continue;
             if(!pKFi->mpImuPreintegrated)
                 std::cout << "Not preintegrated measurement" << std::endl;
-
+            // 到这里的条件是pKFi是好的，并且它有上一个关键帧，且他们的id要小于最大id
+            // 6.1 检查节点指针是否为空
+            // 将pKFi偏置设定为上一关键帧的偏置
             pKFi->mpImuPreintegrated->SetNewBias(pKFi->mPrevKF->GetImuBias());
             g2o::HyperGraph::Vertex* VP1 = optimizer.vertex(pKFi->mPrevKF->mnId);
             g2o::HyperGraph::Vertex* VV1 = optimizer.vertex(maxKFid+(pKFi->mPrevKF->mnId)+1);
@@ -3175,6 +3184,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
 
                 continue;
             }
+            // 6.2 这是一个大边。。。。包含了上面所有信息，注意到前面的两个偏置也做了两个一元边加入
             EdgeInertialGS* ei = new EdgeInertialGS(pKFi->mpImuPreintegrated);
             ei->setVertex(0,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VP1));
             ei->setVertex(1,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VV1));
@@ -3190,6 +3200,13 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
             vppUsedKF.push_back(make_pair(pKFi->mPrevKF,pKFi));
             optimizer.addEdge(ei);
 
+            // // code by ghz 
+            // EdgePressureGS* ep = new EdgeInertialGS(pKFi->mpImuPreintegrated);
+            // ep->setVertex(0,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VP1));
+            // ep->setVertex(4,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VP2));
+            // ep->setVertex(6,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VGDir));
+            // ep->setVertex(7,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VS));
+
         }
     }
 
@@ -3200,6 +3217,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     optimizer.initializeOptimization();
     optimizer.optimize(its);
 
+    // 7. 取数
     scale = VS->estimate();
 
     // Recover optimized data

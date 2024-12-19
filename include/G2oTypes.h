@@ -544,7 +544,8 @@ public:
 };
 
 
-// Edge inertial whre gravity is included as optimizable variable and it is not supposed to be pointing in -z axis, as well as scale
+// Edge inertial where gravity is included as optimizable variable and it is not supposed to be pointing in -z axis, as well as scale
+// 惯性边，其中重力包括作为可优化变量，它不应该指向-z轴，以及比例
 class EdgeInertialGS : public g2o::BaseMultiEdge<9,Vector9d>
 {
 public:
@@ -565,6 +566,7 @@ public:
     const double dt;
     Eigen::Vector3d g, gI;
 
+    // 关于pose1与2 的旋转平移速度，以及之间的偏置，还有重力方向与尺度的信息矩阵
     Eigen::Matrix<double,27,27> GetHessian(){
         linearizeOplus();
         Eigen::Matrix<double,9,27> J;
@@ -577,7 +579,7 @@ public:
         J.block<9,2>(0,24) = _jacobianOplus[6];
         J.block<9,1>(0,26) = _jacobianOplus[7];
         return J.transpose()*information()*J;
-    }
+    } 
 
     Eigen::Matrix<double,27,27> GetHessian2(){
         linearizeOplus();
@@ -593,6 +595,7 @@ public:
         return J.transpose()*information()*J;
     }
 
+    // 关于偏置，重力方向与尺度的信息矩阵
     Eigen::Matrix<double,9,9> GetHessian3(){
         linearizeOplus();
         Eigen::Matrix<double,9,9> J;
@@ -603,8 +606,7 @@ public:
         return J.transpose()*information()*J;
     }
 
-
-
+    // 下面的没有用到，其实也是获取状态的信息矩阵
     Eigen::Matrix<double,1,1> GetHessianScale(){
         linearizeOplus();
         Eigen::Matrix<double,9,1> J = _jacobianOplus[7];
@@ -629,8 +631,39 @@ public:
         return J.transpose()*information()*J;
     }
 };
+// // code by ghz 使用深度值估计重力方向和尺度
+// class EdgePressureGS : public g2o::BaseMultiEdge<1,Vector1d>
+// {
+// public:
+//     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+//     // EdgePressureGS(IMU::Preintegrated* pInt);
+//     EdgePressureGS(std::vector<DepthData> vDepth);
+
+//     virtual bool read(std::istream& is){return false;}
+//     virtual bool write(std::ostream& os) const{return false;}
+
+//     void computeError();
+//     virtual void linearizeOplus();
+
+//     const Eigen::Matrix3d JRg, JVg, JPg;
+//     const Eigen::Matrix3d JVa, JPa;
+//     IMU::Preintegrated* mpInt;
+//     const double dt;
+//     Eigen::Vector3d g, gI;
+
+//     Eigen::Matrix<double,15,15> GetHessian(){
+//         linearizeOplus();
+//         Eigen::Matrix<double,1,15> J;
+//         J.block<1,6>(0,0) = _jacobianOplus[0];
+//         J.block<1,6>(0,6) = _jacobianOplus[1];
+//         J.block<1,2>(0,12) = _jacobianOplus[2];
+//         J.block<1,1>(0,14) = _jacobianOplus[3];
+//         return J.transpose()*information()*J;
+//     }
 
 
+// };
 
 class EdgeGyroRW : public g2o::BaseBinaryEdge<3,Eigen::Vector3d,VertexGyroBias,VertexGyroBias>
 {

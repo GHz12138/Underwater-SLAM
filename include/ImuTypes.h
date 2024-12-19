@@ -37,25 +37,23 @@
 namespace ORB_SLAM3
 {
 
-namespace IMU
-{
-
-const float GRAVITY_VALUE=9.81;
-
-
 //code by ghz
-// Pressure measurement
-class PressureData {
+// Pressure gauge measurement depth
+class DepthData {
 public:
     double timestamp;   // 时间戳
     float depth;        // 深度值
 
-    PressureData(double ts, float d) : timestamp(ts), depth(d) {}
+    DepthData(double ts, float d) : timestamp(ts), depth(d) {}
     // EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 
 
+namespace IMU
+{
+
+const float GRAVITY_VALUE=9.81;
 
 //IMU measurement (gyro, accelerometer and timestamp)
 class Point
@@ -103,7 +101,7 @@ public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-//IMU calibration (Tbc, Tcb, noise)
+//IMU calibration (Tbc, Tcb, noise) fix by ghz add pressure nosie
 class Calib
 {
     friend class boost::serialization::access;

@@ -306,6 +306,7 @@ public:
     bool bImu;
 
     // The following variables are accesed from only 1 thread or never change (no mutex needed).
+    // 以下变量只能从一个线程访问，或者永远不会改变（不需要互斥锁）。
 public:
 
     static long unsigned int nNextId;
@@ -413,7 +414,7 @@ public:
     IMU::Calib mImuCalib;
 
     // code by ghz 关键帧间的深度值
-    std::vector<IMU::PressureData> mvDepthKF;
+    std::vector<DepthData> mvDepthKF;
 
     unsigned int mnOriginMapId;
 

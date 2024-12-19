@@ -612,7 +612,22 @@ EdgeInertialGS::EdgeInertialGS(IMU::Preintegrated *pInt):JRg(pInt->JRg.cast<doub
     setInformation(Info);
 }
 
+// EdgePressureGS::EdgePressureGS(std::vector<DepthData> vDepth)
+// {
+//     // This edge links 8 vertices
+//     resize(8);
+//     gI << 0, 0, -IMU::GRAVITY_VALUE;
 
+//     Matrix9d Info = pInt->C.block<9,9>(0,0).cast<double>().inverse();
+//     Info = (Info+Info.transpose())/2;
+//     Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double,9,9> > es(Info);
+//     Eigen::Matrix<double,9,1> eigs = es.eigenvalues();
+//     for(int i=0;i<9;i++)
+//         if(eigs[i]<1e-12)
+//             eigs[i]=0;
+//     Info = es.eigenvectors()*eigs.asDiagonal()*es.eigenvectors().transpose();
+//     setInformation(Info);
+// }
 
 void EdgeInertialGS::computeError()
 {
@@ -638,6 +653,25 @@ void EdgeInertialGS::computeError()
 
     _error << er, ev, ep;
 }
+
+// void EdgePressureGS::computeError()
+// {
+//     // TODO Maybe Reintegrate inertial measurments when difference between linearization point and current estimate is too big
+//     const VertexPose* VP1 = static_cast<const VertexPose*>(_vertices[0]);
+//     const VertexPose* VP2 = static_cast<const VertexPose*>(_vertices[1]);
+//     const VertexGDir* VGDir = static_cast<const VertexGDir*>(_vertices[2]);
+//     const VertexScale* VS = static_cast<const VertexScale*>(_vertices[3]);
+
+//     const double s = VS->estimate();
+
+//     // 修改这里为深度测量值
+//     const Eigen::Vector3d dP = mpInt->GetDeltaPosition(b).cast<double>();
+
+
+//     const Eigen::Vector3d ep = VP1->estimate().Rwb.transpose()*(s*(VP2->estimate().twb - VP1->estimate().twb - VV1->estimate()*dt) - g*dt*dt/2) - dP;
+
+//     _error << ep;
+// }
 
 void EdgeInertialGS::linearizeOplus()
 {

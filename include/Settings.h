@@ -92,6 +92,10 @@ namespace ORB_SLAM3 {
         Sophus::SE3f Tbc() {return Tbc_;}
         bool insertKFsWhenLost() {return insertKFsWhenLost_;}
 
+        // code by ghz
+        float Depthnoise() {return depthnoise_;}
+        float PressureFrequency() {return pressureFrequency_;}
+
         float depthMapFactor() {return depthMapFactor_;}
 
         int nFeatures() {return nFeatures_;}
@@ -148,6 +152,8 @@ namespace ORB_SLAM3 {
         void readCamera2(cv::FileStorage& fSettings);
         void readImageInfo(cv::FileStorage& fSettings);
         void readIMU(cv::FileStorage& fSettings);
+        // code by ghz read Pressure gauge 
+        void readPressure(cv::FileStorage& fSettings);
         void readRGBD(cv::FileStorage& fSettings);
         void readORB(cv::FileStorage& fSettings);
         void readViewer(cv::FileStorage& fSettings);
@@ -192,6 +198,14 @@ namespace ORB_SLAM3 {
         float imuFrequency_;
         Sophus::SE3f Tbc_;
         bool insertKFsWhenLost_;
+
+        /*
+         * Pressure stuff code by ghz
+         */
+        float depthnoise_;
+        float pressureFrequency_;
+        Sophus::SE3f Tbp_;
+
 
         /*
          * RGBD stuff

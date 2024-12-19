@@ -176,7 +176,7 @@ namespace ORB_SLAM3
 
 #endif
 
-                    // Initialize IMU here
+                    // Initialize IMU here IMU初始化在这里
                     if (!mpCurrentKeyFrame->GetMap()->isImuInitialized() && mbInertial)
                     {
                         if (mbMonocular)

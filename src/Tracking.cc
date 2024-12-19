@@ -640,6 +640,10 @@ namespace ORB_SLAM3
         float Ngw = settings->gyroWalk();
         float Naw = settings->accWalk();
 
+        // code by ghz get pressure gauge depth noise
+        mPressureFreq = settings->PressureFrequency();
+        float Nd = settings->Depthnoise();
+
         const float sf = sqrt(mImuFreq);
         mpImuCalib = new IMU::Calib(Tbc, Ng * sf, Na * sf, Ngw / sf, Naw / sf);
 
@@ -1605,7 +1609,16 @@ namespace ORB_SLAM3
             else
                 mCurrentFrame = Frame(mImGray, timestamp, mpORBextractorLeft, mpORBVocabulary, mpCamera, mDistCoef, mbf, mThDepth);
         }
-        else if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
+        else if (mSensor == System::IMU_MONOCULAR)
+        {
+            if (mState == NOT_INITIALIZED || mState == NO_IMAGES_YET)
+            {
+                mCurrentFrame = Frame(mImGray, timestamp, mpIniORBextractor, mpORBVocabulary, mpCamera, mDistCoef, mbf, mThDepth, &mLastFrame, *mpImuCalib);
+            }
+            else
+                mCurrentFrame = Frame(mImGray, timestamp, mpORBextractorLeft, mpORBVocabulary, mpCamera, mDistCoef, mbf, mThDepth, &mLastFrame, *mpImuCalib);
+        }
+        else if (mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             if (mState == NOT_INITIALIZED || mState == NO_IMAGES_YET)
             {
@@ -1686,10 +1699,10 @@ namespace ORB_SLAM3
     // }
 
     // code by ghz
-    void Tracking::GrabPressureData(const IMU::PressureData &pressMeasurement)
+    void Tracking::GrabDepthData(const DepthData &pressureMeasurement)
     {
-        unique_lock<mutex> lock(mMutexPressQueue);    // 对压力数据队列加锁
-        mlQueuePressData.push_back(pressMeasurement); // 插入数据
+        unique_lock<mutex> lock(mMutexDepthQueue);    // 对压力数据队列加锁
+        mlQueueDepthData.push_back(pressureMeasurement); // 插入数据
     }
 
     void Tracking::GrabImuData(const IMU::Point &imuMeasurement)
@@ -1729,10 +1742,10 @@ namespace ORB_SLAM3
         //     mvDepthFrame.clear();
         // }
 
-        mvPressFromLastFrame.clear();
-        mvPressFromLastFrame.reserve(mlQueuePressData.size());
+        mvDepthFromLastFrame.clear();
+        mvDepthFromLastFrame.reserve(mlQueueDepthData.size());
 
-        if (mlQueuePressData.size() == 0)
+        if (mlQueueDepthData.size() == 0)
         {
             Verbose::PrintMess("Not Pressure data in mlQueueImuData!!", Verbose::VERBOSITY_NORMAL);
             mCurrentFrame.setIntegrated();
@@ -1743,20 +1756,20 @@ namespace ORB_SLAM3
         {
             bool bSleep = false;
             {
-                std::unique_lock<std::mutex> lock(mMutexPressQueue);
-                if (!mlQueuePressData.empty())
+                std::unique_lock<std::mutex> lock(mMutexDepthQueue);
+                if (!mlQueueDepthData.empty())
                 {
-                    IMU::PressureData *pressuredata = &mlQueuePressData.front();
+                    DepthData *depthdata = &mlQueueDepthData.front();
                     std::cout.precision(17);
 
-                    if (pressuredata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
+                    if (depthdata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
                     {
-                        mlQueuePressData.pop_front();
+                        mlQueueDepthData.pop_front();
                     }
-                    else if (pressuredata->timestamp < mCurrentFrame.mTimeStamp)
+                    else if (depthdata->timestamp < mCurrentFrame.mTimeStamp)
                     {
-                        mvPressFromLastFrame.push_back(*pressuredata);
-                        mlQueuePressData.pop_front();
+                        mvDepthFromLastFrame.push_back(*depthdata);
+                        mlQueueDepthData.pop_front();
                     }
                 }
                 else
@@ -1766,17 +1779,17 @@ namespace ORB_SLAM3
             }
         }
 
-        const int n = mvPressFromLastFrame.size() - 1;
+        const int n = mvDepthFromLastFrame.size() - 1;
         if (n == 0)
         {
-            std::cout << "Empty Pressure measurements vector!!!\n";
+            std::cout << "Empty Pressure gauge measurements vector!!!\n";
             return;
         }
 
         mCurrentFrame.mvDepthFrame.clear();
-        mCurrentFrame.mvDepthFrame = mvPressFromLastFrame;
-        mvPressFromLastKF.insert(mvPressFromLastKF.end(), mvPressFromLastFrame.begin(), mvPressFromLastFrame.end());
-        mCurrentFrame.mvDepthKF = mvPressFromLastKF;
+        mCurrentFrame.mvDepthFrame = mvDepthFromLastFrame;
+        mvDepthFromLastKF.insert(mvDepthFromLastKF.end(), mvDepthFromLastFrame.begin(), mvDepthFromLastFrame.end());
+        mCurrentFrame.mvDepthKF = mvDepthFromLastKF;
         // // 再次写入文件以确保最后一批数据也保存
         // for (const auto &data : mCurrentFrame.mvDepthFrame)
         // {
@@ -2642,24 +2655,41 @@ namespace ORB_SLAM3
             mState = OK;
         }
     }
-
+    /*
+     * @brief 单目的地图初始化
+     *
+     * 并行地计算基础矩阵和单应性矩阵，选取其中一个模型，恢复出最开始两帧之间的相对姿态以及点云
+     * 得到初始两帧的匹配、相对运动、初始MapPoints
+     *
+     * Step 1：（未创建）得到用于初始化的第一帧，初始化需要两帧
+     * Step 2：（已创建）如果当前帧特征点数大于100，则得到用于单目初始化的第二帧
+     * Step 3：在mInitialFrame与mCurrentFrame中找匹配的特征点对
+     * Step 4：如果初始化的两帧之间的匹配点太少，重新初始化
+     * Step 5：通过H模型或F模型进行单目初始化，得到两帧间相对运动、初始MapPoints
+     * Step 6：删除那些无法进行三角化的匹配点
+     * Step 7：将三角化得到的3D点包装成MapPoints
+     */
     void Tracking::MonocularInitialization()
     {
-
+        // Step 1 如果单目初始器还没有被创建，则创建。后面如果重新初始化时会清掉这个
         if (!mbReadyToInitializate)
         {
             // Set Reference Frame
             if (mCurrentFrame.mvKeys.size() > 100)
             {
-
+                // 初始化需要两帧，分别是mInitialFrame，mCurrentFrame
                 mInitialFrame = Frame(mCurrentFrame);
+                // 用当前帧更新上一帧
                 mLastFrame = Frame(mCurrentFrame);
+                // mvbPrevMatched  记录"上一帧"所有特征点
                 mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
                 for (size_t i = 0; i < mCurrentFrame.mvKeysUn.size(); i++)
                     mvbPrevMatched[i] = mCurrentFrame.mvKeysUn[i].pt;
 
+                // 初始化为-1 表示没有任何匹配。这里面存储的是匹配的点的id
                 fill(mvIniMatches.begin(), mvIniMatches.end(), -1);
 
+                // 初始化预积分
                 if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
                 {
                     if (mpImuPreintegratedFromLastKF)
@@ -2668,15 +2698,25 @@ namespace ORB_SLAM3
                     }
                     mpImuPreintegratedFromLastKF = new IMU::Preintegrated(IMU::Bias(), *mpImuCalib);
                     mCurrentFrame.mpImuPreintegrated = mpImuPreintegratedFromLastKF;
+                    // code by ghz
+                    if (mSensor == System::IMU_MONOCULAR_DEPTH)
+                    {
+                        if (!mvDepthFromLastKF.empty())
+                        {
+                            mvDepthFromLastKF.clear();
+                        }
+                        mCurrentFrame.mvDepthKF = mvDepthFromLastKF;
+                    }
                 }
-
+                // 下一帧准备做单目初始化了
                 mbReadyToInitializate = true;
 
                 return;
             }
         }
-        else
+        else // 第二帧来了之后
         {
+            // Step 2 如果当前帧特征点数太少（不超过100），则重新构造初始器
             if (((int)mCurrentFrame.mvKeys.size() <= 100) || ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH) && (mLastFrame.mTimeStamp - mInitialFrame.mTimeStamp > 1.0)))
             {
                 mbReadyToInitializate = false;
@@ -2685,6 +2725,9 @@ namespace ORB_SLAM3
             }
 
             // Find correspondences
+            // Step 3 在mInitialFrame与mCurrentFrame中找匹配的特征点对
+            // 0.9 表示最佳的和次佳特征点评分的比值阈值，这里是比较宽松的，跟踪时一般是0.7
+            // true 表示检查特征点的方向
             ORBmatcher matcher(0.9, true);
             int nmatches = matcher.SearchForInitialization(mInitialFrame, mCurrentFrame, mvbPrevMatched, mvIniMatches, 100);
 
@@ -2718,14 +2761,23 @@ namespace ORB_SLAM3
         }
     }
 
+    /**
+     * @brief 单目相机成功初始化后用三角化得到的点生成MapPoints
+     *
+     */
     void Tracking::CreateInitialMapMonocular()
     {
-        // Create KeyFrames
+        // Create KeyFrames 认为单目初始化时候的参考帧和当前帧都是关键帧
         KeyFrame *pKFini = new KeyFrame(mInitialFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
         KeyFrame *pKFcur = new KeyFrame(mCurrentFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
 
-        if (mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_MONOCULAR_DEPTH)
+        if (mSensor == System::IMU_MONOCULAR)
+        {
             pKFini->mpImuPreintegrated = (IMU::Preintegrated *)(NULL);
+
+            // 清空 mvDepthKF 中的所有元素
+            pKFini->mvDepthKF.clear();
+        }
 
         pKFini->ComputeBoW();
         pKFcur->ComputeBoW();
@@ -2810,6 +2862,12 @@ namespace ORB_SLAM3
             pKFcur->mpImuPreintegrated = mpImuPreintegratedFromLastKF;
 
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(pKFcur->mpImuPreintegrated->GetUpdatedBias(), pKFcur->mImuCalib);
+            // code by ghz
+            if (mSensor == System::IMU_MONOCULAR_DEPTH)
+            {
+                pKFcur->mvDepthKF = mvDepthFromLastKF;
+                mvDepthFromLastKF.clear();
+            }
         }
 
         mpLocalMapper->InsertKeyFrame(pKFini);
@@ -2850,6 +2908,13 @@ namespace ORB_SLAM3
         initID = pKFcur->mnId;
     }
 
+    /**
+     * @brief 在Atlas中保存当前地图，创建新地图，所有跟状态相关的变量全部重置
+     * 1. 前一帧时间戳大于当前帧
+     * 2. imu模式下前后帧超过1s
+     * 3. 上一帧为最近丢失且重定位失败时
+     * 4. 重定位成功，局部地图跟踪失败
+     */
     void Tracking::CreateMapInAtlas()
     {
         mnLastInitFrameId = mCurrentFrame.mnId;
@@ -2875,6 +2940,11 @@ namespace ORB_SLAM3
         {
             delete mpImuPreintegratedFromLastKF;
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(IMU::Bias(), *mpImuCalib);
+            // code by ghz
+            if (mSensor == System::IMU_MONOCULAR_DEPTH)
+            {
+                mvDepthFromLastKF.clear();
+            }
         }
 
         if (mpLastKeyFrame)
@@ -3412,18 +3482,22 @@ namespace ORB_SLAM3
      */
     void Tracking::CreateNewKeyFrame()
     {
+        // 如果局部建图线程正在初始化且没做完或关闭了,就无法插入关键帧
         if (mpLocalMapper->IsInitializing() && !mpAtlas->isImuInitialized())
             return;
 
         if (!mpLocalMapper->SetNotStop(true))
             return;
 
+        // Step 1：将当前帧构造成关键帧
         KeyFrame *pKF = new KeyFrame(mCurrentFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
 
         if (mpAtlas->isImuInitialized()) //  || mpLocalMapper->IsInitializing())
             pKF->bImu = true;
 
         pKF->SetNewBias(mCurrentFrame.mImuBias);
+        // Step 2：将当前关键帧设置为当前帧的参考关键帧
+        // 在UpdateLocalKeyFrames函数中会将与当前关键帧共视程度最高的关键帧设定为当前帧的参考关键帧
         mpReferenceKF = pKF;
         mCurrentFrame.mpReferenceKF = pKF;
 
@@ -3441,27 +3515,29 @@ namespace ORB_SLAM3
         {
             mpImuPreintegratedFromLastKF = new IMU::Preintegrated(pKF->GetImuBias(), pKF->mImuCalib);
             // // 打开文件以追加模式写入数据
-            // std::ofstream outfile("/ORB_SLAM3/pressure_data2.csv", std::ios::app);
+            // std::ofstream outfile("/ORB_SLAM3/pressure_data-KF.csv", std::ios::app);
             // if (!outfile.is_open())
             // {
             //     std::cerr << "Error opening file for writing!" << std::endl;
             //     return;
             // }
             // // 再次写入文件以确保最后一批数据也保存
-            // for (const auto &data : mvPressFromLastKF)
+            // for (const auto &data : mvDepthFromLastKF)
             // {
             //     outfile << std::fixed << std::setprecision(9) << data.timestamp << ","
             //             << std::fixed << std::setprecision(6) << data.depth << "\n";
             // }
             // outfile << "CurrentKeyFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
             // // // 清空向量
-            // mvPressFromLastKF.clear();
+            // mvDepthFromLastKF.clear();
 
             // // 关闭文件
             // outfile.close();
-            mvPressFromLastKF.clear();
+            mvDepthFromLastKF.clear();
         }
 
+        // 这段代码和 Tracking::UpdateLastFrame 中的那一部分代码功能相同
+        // Step 3：对于双目或rgbd摄像头，为当前帧生成新的地图点；单目无操作
         if (mSensor != System::MONOCULAR && mSensor != System::IMU_MONOCULAR && mSensor != System::IMU_MONOCULAR_DEPTH) // TODO check if incluide imu_stereo
         {
             mCurrentFrame.UpdatePoseMatrices();
@@ -3552,14 +3628,21 @@ namespace ORB_SLAM3
             }
         }
 
+        // Step 4：插入关键帧
+        // 将当前关键帧传到LocalMapping线程中的mlNewKeyFrames
         mpLocalMapper->InsertKeyFrame(pKF);
-
+        // 插入好了，允许局部建图停止
         mpLocalMapper->SetNotStop(false);
 
+        // 当前帧成为新的关键帧，更新
         mnLastKeyFrameId = mCurrentFrame.mnId;
         mpLastKeyFrame = pKF;
     }
 
+    /**
+     * @brief 用局部地图点进行投影匹配，得到更多的匹配关系
+     * 注意：局部地图点中已经是当前帧地图点的不需要再投影，只需要将此外的并且在视野范围内的点和当前帧进行投影匹配
+     */
     void Tracking::SearchLocalPoints()
     {
         // Do not search map points already matched
@@ -3644,6 +3727,13 @@ namespace ORB_SLAM3
         UpdateLocalPoints();
     }
 
+    /**
+     * @brief 更新LocalMap
+     *
+     * 局部地图包括：
+     * 1、K1个关键帧、K2个临近关键帧和参考关键帧
+     * 2、由这些关键帧观测到的MapPoints
+     */
     void Tracking::UpdateLocalPoints()
     {
         mvpLocalMapPoints.clear();
@@ -3673,6 +3763,16 @@ namespace ORB_SLAM3
         }
     }
 
+    /**
+     * @brief 跟踪局部地图函数里，更新局部关键帧
+     * 方法是遍历当前帧的地图点，将观测到这些地图点的关键帧和相邻的关键帧及其父子关键帧，作为mvpLocalKeyFrames
+     * Step 1：遍历当前帧的地图点，记录所有能观测到当前帧地图点的关键帧
+     * Step 2：更新局部关键帧（mvpLocalKeyFrames），添加局部关键帧包括以下3种类型
+     *      类型1：能观测到当前帧地图点的关键帧，也称一级共视关键帧
+     *      类型2：一级共视关键帧的共视关键帧，称为二级共视关键帧
+     *      类型3：一级共视关键帧的子关键帧、父关键帧
+     * Step 3：更新当前帧的参考关键帧，与自己共视程度最高的关键帧作为参考关键帧
+     */
     void Tracking::UpdateLocalKeyFrames()
     {
         // Each map point vote for the keyframes in which it has been observed
@@ -4191,6 +4291,7 @@ namespace ORB_SLAM3
     {
         mbOnlyTracking = flag;
     }
+
     /**
      * @brief 更新了关键帧的位姿，但需要修改普通帧的位姿，因为正常跟踪需要普通帧
      * localmapping中初始化imu中使用，速度的走向（仅在imu模式使用），最开始速度定义于imu初始化时，每个关键帧都根据位移除以时间得到，经过非线性优化保存于KF中.
