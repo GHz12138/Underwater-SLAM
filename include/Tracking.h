@@ -77,7 +77,7 @@ public:
     // code by ghz
     // void GrabImuaccData(const IMU::Point &imuMeasurement);
     // Eigen::Vector3f CaculateGdir();
-    void GrabPressureData(const IMU::PressureData &PressMeasurement);
+    void GrabDepthData(const Pressure::DepthData &PressMeasurement);
 
     void SetLocalMapper(LocalMapping* pLocalMapper);
     void SetLoopClosing(LoopClosing* pLoopClosing);
@@ -246,7 +246,7 @@ protected:
     std::list<IMU::Point> mlQueueImuData;
 
     // Queue of Pressure measurements between frames
-    std::list<IMU::PressureData> mlQueuePressData;
+    std::list<Pressure::DepthData> mlQueueDepthData;
    
     // // code by ghz Queue of IMU acc measurements between frames for initialize
     // std::list<IMU::Point> mlImuaccData;
@@ -257,11 +257,11 @@ protected:
     std::mutex mMutexImuQueue;
 
     // Vector of Pressure measurement from last keyframe
-    std::vector<IMU::PressureData> mvPressFromLastKF;
+    std::vector<Pressure::DepthData> mvDepthFromLastKF;
 
     // Vector of Pressure measurements from previous to current frame
-    std::vector<IMU::PressureData> mvPressFromLastFrame;
-    std::mutex mMutexPressQueue;
+    std::vector<Pressure::DepthData> mvDepthFromLastFrame;
+    std::mutex mMutexDepthQueue;
 
 
     // Imu calibration parameters

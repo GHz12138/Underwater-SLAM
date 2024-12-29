@@ -36,13 +36,13 @@
 
 using namespace std;
 
-class PressGrabber
+class DepthGrabber
 {
 public:
-  PressGrabber() {};
-  void GrabPress(const sensor_msgs::FluidPressureConstPtr &press_msg);
+  DepthGrabber() {};
+  void GrabDepth(const sensor_msgs::FluidPressureConstPtr &depth_msg);
 
-  queue<sensor_msgs::FluidPressureConstPtr> pressBuf;
+  queue<sensor_msgs::FluidPressureConstPtr> pressureBuf;
   std::mutex mBufMutex;
 };
 
@@ -59,7 +59,7 @@ public:
 class ImageGrabber
 {
 public:
-  ImageGrabber(ORB_SLAM3::System *pSLAM, ImuGrabber *pImuGb, PressGrabber *pPressGb, const bool bClahe) : mpSLAM(pSLAM), mpImuGb(pImuGb), mpPressGb(pPressGb), mbClahe(bClahe) {}
+  ImageGrabber(ORB_SLAM3::System *pSLAM, ImuGrabber *pImuGb, DepthGrabber *pdepthgb, const bool bClahe) : mpSLAM(pSLAM), mpImuGb(pImuGb), mpDepthGb(pdepthgb), mbClahe(bClahe) {}
 
   void GrabImage(const sensor_msgs::ImageConstPtr &msg);
   cv::Mat GetImage(const sensor_msgs::ImageConstPtr &img_msg);
@@ -70,7 +70,7 @@ public:
 
   ORB_SLAM3::System *mpSLAM;
   ImuGrabber *mpImuGb;
-  PressGrabber *mpPressGb;
+  DepthGrabber *mpDepthGb;
 
   const bool mbClahe;
   cv::Ptr<cv::CLAHE> mClahe = cv::createCLAHE(3.0, cv::Size(8, 8));
@@ -101,13 +101,13 @@ int main(int argc, char **argv)
   ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::IMU_MONOCULAR_DEPTH, true);
 
   ImuGrabber imugb;
-  PressGrabber pressgb;
-  ImageGrabber igb(&SLAM, &imugb, &pressgb, bEqual); // TODO
+  DepthGrabber depthgb;
+  ImageGrabber igb(&SLAM, &imugb, &depthgb, bEqual); // TODO
 
   // Maximum delay, 5 seconds
   ros::Subscriber sub_imu = n.subscribe("/imu", 1000, &ImuGrabber::GrabImu, &imugb);
   ros::Subscriber sub_img0 = n.subscribe("/camera/image_raw", 100, &ImageGrabber::GrabImage, &igb);
-  ros::Subscriber sub_press = n.subscribe("/barometer_node/depth", 100, &PressGrabber::GrabPress, &pressgb);
+  ros::Subscriber sub_press = n.subscribe("/barometer_node/depth", 100, &DepthGrabber::GrabDepth, &depthgb);
 
   std::thread sync_thread(&ImageGrabber::SyncWithImu, &igb);
 
@@ -193,23 +193,23 @@ void ImageGrabber::SyncWithImu()
       mpImuGb->mBufMutex.unlock();
 
       
-      vector<ORB_SLAM3::IMU::PressureData> vPressMeas;
-      mpPressGb->mBufMutex.lock();
-      if (!mpPressGb->pressBuf.empty())
+      vector<ORB_SLAM3::Pressure::DepthData> vPressureMeas;
+      mpDepthGb->mBufMutex.lock();
+      if (!mpDepthGb->pressureBuf.empty())
       {
         // Load depth measurements from buffer
-        vPressMeas.clear();
+        vPressureMeas.clear();
         // 获取当前图像与前一张图像之间的压力计数据
-        while (!mpPressGb->pressBuf.empty() && mpPressGb->pressBuf.front()->header.stamp.toSec() <= tIm)
+        while (!mpDepthGb->pressureBuf.empty() && mpDepthGb->pressureBuf.front()->header.stamp.toSec() <= tIm)
         {
-          double t = mpPressGb->pressBuf.front()->header.stamp.toSec();
-          float depth(mpPressGb->pressBuf.front()->fluid_pressure);
+          double t = mpDepthGb->pressureBuf.front()->header.stamp.toSec();
+          float depth(mpDepthGb->pressureBuf.front()->fluid_pressure);
 
-          vPressMeas.push_back(ORB_SLAM3::IMU::PressureData(t, depth));
-          // if (!vPressMeas.empty())
+          vPressureMeas.push_back(ORB_SLAM3::Pressure::DepthData(t, depth));
+          // if (!vPressureMeas.empty())
           // {
           //   std::cout << "Pressure measurements:" << std::endl;
-          //   for (const auto &pressData : vPressMeas)
+          //   for (const auto &pressData : vPressureMeas)
           //   {
           //     std::cout << "Timestamp: " << pressData.timestamp
           //               << ", Depth: " << pressData.depth << std::endl;
@@ -217,16 +217,16 @@ void ImageGrabber::SyncWithImu()
           // }
           // else
           // {
-          //   std::cout << "vPressMeas is empty." << std::endl;
+          //   std::cout << "vPressureMeas is empty." << std::endl;
           // }
-          mpPressGb->pressBuf.pop();
+          mpDepthGb->pressureBuf.pop();
         }
       }
-      mpPressGb->mBufMutex.unlock();
+      mpDepthGb->mBufMutex.unlock();
       if (mbClahe)
         mClahe->apply(im, im);
 
-      mpSLAM->TrackMonocular(im, tIm, vImuMeas, vPressMeas);
+      mpSLAM->TrackMonocular(im, tIm, vImuMeas, vPressureMeas);
     }
 
     std::chrono::milliseconds tSleep(1);
@@ -242,11 +242,11 @@ void ImuGrabber::GrabImu(const sensor_msgs::ImuConstPtr &imu_msg)
   return;
 }
 
-void PressGrabber::GrabPress(const sensor_msgs::FluidPressureConstPtr &press_msg)
+void DepthGrabber::GrabDepth(const sensor_msgs::FluidPressureConstPtr &depth_msg)
 {
   mBufMutex.lock();
-  pressBuf.push(press_msg);
-  // std::cout << "press_msg=" << press_msg->fluid_pressure << std::endl;
+  pressureBuf.push(depth_msg);
+  // std::cout << "depth_msg=" << depth_msg->fluid_pressure << std::endl;
   mBufMutex.unlock();
   return;
 }

@@ -1,0 +1,13 @@
+<launch>
+  <!-- 设置ORB_SLAM3所需的环境变量 -->
+  <arg name="vocabulary_file" default="$(find ORB_SLAM3)/Vocabulary/ORBvoc.txt" />
+  <arg name="config_file" default="$(find Examples)/Monocular-Inertial/archaeo.yaml" />
+
+  <!-- 启动 Mono_Inertial_Depth 节点 -->
+  <node pkg="ORB_SLAM3" type="Mono_Inertial_Depth" name="mono_inertial_depth" output="screen">
+    <!-- 加载词汇文件 -->
+    <param name="vocabulary" value="$(arg vocabulary_file)" />
+    <!-- 加载配置文件 -->
+    <param name="config_file" value="$(arg config_file)" />
+  </node>
+</launch>

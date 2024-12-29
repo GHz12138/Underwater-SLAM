@@ -37,26 +37,22 @@
 namespace ORB_SLAM3
 {
 
+namespace Pressure
+{
+    class DepthData {
+    public:
+        double timestamp;
+        float depth;
+        bool isSet;  // 新增一个标志位，默认值为 false
+
+        DepthData(double ts, float d) : timestamp(ts), depth(d), isSet(true) {}  // 初始化时设置 valid 为 true
+        DepthData() : timestamp(0), depth(0), isSet(false) {}  // 默认构造函数，valid 设置为 false
+    };
+}
+
 namespace IMU
 {
-
 const float GRAVITY_VALUE=9.81;
-
-
-//code by ghz
-// Pressure measurement
-class PressureData {
-public:
-    double timestamp;   // 时间戳
-    float depth;        // 深度值
-
-    PressureData(double ts, float d) : timestamp(ts), depth(d) {}
-    // EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-};
-
-
-
-
 //IMU measurement (gyro, accelerometer and timestamp)
 class Point
 {
@@ -264,6 +260,10 @@ private:
 
     std::mutex mMutex;
 };
+
+
+
+
 
 // Lie Algebra Functions
 Eigen::Matrix3f RightJacobianSO3(const float &x, const float &y, const float &z);

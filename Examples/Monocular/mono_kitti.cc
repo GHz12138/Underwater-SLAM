@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 #endif
 
         // Pass the image to the SLAM system //code by ghz
-        SLAM.TrackMonocular(im,tframe,vector<ORB_SLAM3::IMU::Point>(),vector<ORB_SLAM3::IMU::PressureData>(), vstrImageFilenames[ni]);
+        SLAM.TrackMonocular(im,tframe,vector<ORB_SLAM3::IMU::Point>(),vector<ORB_SLAM3::Pressure::DepthData>(), vstrImageFilenames[ni]);
 
 #ifdef COMPILEDWITHC11
         std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();

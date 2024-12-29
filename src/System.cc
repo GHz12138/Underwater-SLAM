@@ -408,7 +408,7 @@ namespace ORB_SLAM3
     Sophus::SE3f System::TrackMonocular(const cv::Mat &im,
                                         const double &timestamp,
                                         const vector<IMU::Point> &vImuMeas,
-                                        const vector<IMU::PressureData> &vPressMeas,
+                                        const vector<Pressure::DepthData> &vPressureMeas,
                                         string filename)
     {
         {
@@ -481,14 +481,14 @@ namespace ORB_SLAM3
         {
             for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
                 mpTracker->GrabImuData(vImuMeas[i_imu]);
-            if (!vPressMeas.empty())
-                for (size_t i_press = 0; i_press < vPressMeas.size(); i_press++)
-                    mpTracker->GrabPressureData(vPressMeas[i_press]);
+            if (!vPressureMeas.empty())
+                for (size_t i_press = 0; i_press < vPressureMeas.size(); i_press++)
+                    mpTracker->GrabDepthData(vPressureMeas[i_press]);
         }
-        // if (!vPressMeas.empty())
+        // if (!vPressureMeas.empty())
         // {
         //     std::cout << "Pressure measurements:" << std::endl;
-        //     for (const auto &pressData : vPressMeas)
+        //     for (const auto &pressData : vPressureMeas)
         //     {
         //         std::cout << "Timestamp: " << pressData.timestamp
         //                   << ", Depth: " << pressData.depth << std::endl;
@@ -496,7 +496,7 @@ namespace ORB_SLAM3
         // }
         // else
         // {
-        //     std::cout << "vPressMeas is empty." << std::endl;
+        //     std::cout << "vPressureMeas is empty." << std::endl;
         // }
 
         Sophus::SE3f Tcw = mpTracker->GrabImageMonocular(imToFeed, timestamp, filename);

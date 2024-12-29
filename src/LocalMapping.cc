@@ -1258,11 +1258,6 @@ namespace ORB_SLAM3
             mTinit = mpCurrentKeyFrame->mTimeStamp - mFirstTs;
             // cout << "mTinit1=" << mTinit << endl;
 
-            // // code by ghz get IMU  scale initial number
-            // if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
-            // {
-
-            // }
         }
         else
         {
@@ -1271,6 +1266,11 @@ namespace ORB_SLAM3
             mba = mpCurrentKeyFrame->GetAccBias().cast<double>();
         }
 
+        // code by ghz get IMU  scale initial number
+        if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
+        {
+            mScale = 1.0;
+        }
         mScale = 1.0;
 
         mInitTime = mpTracker->mLastFrame.mTimeStamp - vpKF.front()->mTimeStamp;

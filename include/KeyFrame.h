@@ -413,7 +413,7 @@ public:
     IMU::Calib mImuCalib;
 
     // code by ghz 关键帧间的深度值
-    std::vector<IMU::PressureData> mvDepthKF;
+    std::vector<Pressure::DepthData> mvDepthBetweenKF;
 
     unsigned int mnOriginMapId;
 
