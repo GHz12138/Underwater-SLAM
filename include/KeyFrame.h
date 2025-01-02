@@ -414,6 +414,8 @@ public:
 
     // code by ghz 关键帧间的深度值
     std::vector<Pressure::DepthData> mvDepthBetweenKF;
+    // 关键帧对应深度值
+    Pressure::DepthData* mpKFDepth;
 
     unsigned int mnOriginMapId;
 

@@ -234,6 +234,8 @@ protected:
     // Perform depth from last frame
     void DepthFromLastFrame();
 
+    void GetFrameDepth();
+
     // Reset IMU biases and compute frame velocity
     void ResetFrameIMU();
 

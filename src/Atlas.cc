@@ -55,6 +55,10 @@ Atlas::~Atlas()
     }
 }
 
+/**
+ * @brief 创建新地图，如果当前活跃地图有效，先存储当前地图为不活跃地图，然后新建地图；否则，可以直接新建地图。
+ * 
+ */
 void Atlas::CreateNewMap()
 {
     unique_lock<mutex> lock(mMutexAtlas);

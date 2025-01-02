@@ -59,10 +59,11 @@ KeyFrame::KeyFrame(Frame &F, Map *pMap, KeyFrameDatabase *pKFDB):
     mbToBeErased(false), mbBad(false), mHalfBaseline(F.mb/2), mpMap(pMap), mbCurrentPlaceRecognition(false), mNameFile(F.mNameFile), mnMergeCorrectedForKF(0),
     mpCamera(F.mpCamera), mpCamera2(F.mpCamera2),
     mvLeftToRightMatch(F.mvLeftToRightMatch),mvRightToLeftMatch(F.mvRightToLeftMatch), mTlr(F.GetRelativePoseTlr()),
-    mvKeysRight(F.mvKeysRight), NLeft(F.Nleft), NRight(F.Nright), mTrl(F.GetRelativePoseTrl()), mnNumberOfOpt(0), mbHasVelocity(false)
+    mvKeysRight(F.mvKeysRight), NLeft(F.Nleft), NRight(F.Nright), mTrl(F.GetRelativePoseTrl()), mnNumberOfOpt(0), mbHasVelocity(false), mpKFDepth(F.mpFrameDepth), mvDepthBetweenKF(F.mvDepthBetweenKF)
 {
     mnId=nNextId++;
 
+    // 根据指定的普通帧, 初始化用于加速匹配的网格对象信息; 其实就把每个网格中有的特征点的索引复制过来
     mGrid.resize(mnGridCols);
     if(F.Nleft != -1)  mGridRight.resize(mnGridCols);
     for(int i=0; i<mnGridCols;i++)
@@ -97,6 +98,7 @@ KeyFrame::KeyFrame(Frame &F, Map *pMap, KeyFrameDatabase *pKFDB):
 
 void KeyFrame::ComputeBoW()
 {
+    // 只有当词袋向量或者节点和特征序号的特征向量为空的时候执行
     if(mBowVec.empty() || mFeatVec.empty())
     {
         vector<cv::Mat> vCurrentDesc = Converter::toDescriptorVector(mDescriptors);
@@ -106,6 +108,7 @@ void KeyFrame::ComputeBoW()
     }
 }
 
+// 设置当前关键帧的位姿
 void KeyFrame::SetPose(const Sophus::SE3f &Tcw)
 {
     unique_lock<mutex> lock(mMutexPose);
@@ -186,6 +189,7 @@ bool KeyFrame::isVelocitySet()
     return mbHasVelocity;
 }
 
+// 为关键帧之间添加或更新连接
 void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight)
 {
     {
@@ -201,6 +205,11 @@ void KeyFrame::AddConnection(KeyFrame *pKF, const int &weight)
     UpdateBestCovisibles();
 }
 
+/**
+ * @brief 按照权重对连接的关键帧进行排序
+ * 
+ * 更新后的变量存储在mvpOrderedConnectedKeyFrames和mvOrderedWeights中
+ */
 void KeyFrame::UpdateBestCovisibles()
 {
     unique_lock<mutex> lock(mMutexConnections);
