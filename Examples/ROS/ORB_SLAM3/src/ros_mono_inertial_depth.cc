@@ -114,10 +114,10 @@ int main(int argc, char **argv)
   ros::spin();
   // Stop all threads
   SLAM.Shutdown();
-  // Save camera trajectory
-  SLAM.SaveKeyFrameTrajectoryTUM("ORB-SLAM3-KeyFrameTrajectory.txt");
-  // Save camera trajectory
-  SLAM.SaveTrajectoryTUM("ORB-SLAM3-FrameTrajectory.txt");
+  // // Save camera trajectory
+  // SLAM.SaveKeyFrameTrajectoryTUM("ORB-SLAM3-KeyFrameTrajectory.txt");
+  // // Save camera trajectory
+  // SLAM.SaveTrajectoryTUM("ORB-SLAM3-FrameTrajectory.txt");
   // int initIdx = 0;
   // SLAM.SaveDebugData(initIdx);
   return 0;

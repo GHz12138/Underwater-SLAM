@@ -296,12 +296,68 @@ namespace ORB_SLAM3
         return (!mlNewKeyFrames.empty());
     }
 
+    /**
+     * @brief 处理列表中的关键帧，包括计算BoW、更新观测、描述子、共视图，插入到地图等
+     */
     void LocalMapping::ProcessNewKeyFrame()
     {
         {
             unique_lock<mutex> lock(mMutexNewKFs);
             mpCurrentKeyFrame = mlNewKeyFrames.front();
             mlNewKeyFrames.pop_front();
+        }
+
+        if(mpCurrentKeyFrame->mPrevKF)
+        {
+            if (!mpCurrentKeyFrame->mPrevKF->mPrevKF)
+            {
+                if (!mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+            }
+            else if (!mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && !mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+            {
+                if (abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp) > abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp))
+                {
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
+                }
+                else
+                {
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                }
+            }
+            else if (!mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+            {
+                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
+            }
+            else if (mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && !mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+            {
+                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+            }
+
+            if (mpCurrentKeyFrame->mPrevKF->mpKFDepth)
+            {
+                // 打开文件以追加模式写入数据
+                std::ofstream outfile("/ORB_SLAM3/KeyFrameDepth.csv", std::ios::app);
+                if (!outfile.is_open())
+                {
+                    std::cerr << "Error opening file for writing!" << std::endl;
+                    return;
+                }
+                // 判断mpFrameDepth是否存在
+                if (mpCurrentKeyFrame->mPrevKF->mpKFDepth->isSet)
+                {
+                    // 写入时间戳和深度值，设置精度和格式
+                    outfile << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->timestamp << ","
+                            << std::fixed << std::setprecision(6) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->depth << "\n";
+
+                    outfile << "PrevKeyFrame TimeStamp: " << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mTimeStamp << "\n";
+                }
+                else
+                {
+                    outfile << "Not KeyFrame Depth measurement" << "\n";
+                }
+                outfile.close();
+            }
         }
 
         // Compute Bags of Words structures
@@ -337,7 +393,9 @@ namespace ORB_SLAM3
         // Insert Keyframe in Map
         mpAtlas->AddKeyFrame(mpCurrentKeyFrame);
     }
-
+    /**
+     * @brief 处理新的关键帧，使队列为空，注意这里只是处理了关键帧，并没有生成MP
+     */
     void LocalMapping::EmptyQueue()
     {
         while (CheckNewKeyFrames())
@@ -1257,7 +1315,6 @@ namespace ORB_SLAM3
             mRwg = Rwg.cast<double>();
             mTinit = mpCurrentKeyFrame->mTimeStamp - mFirstTs;
             // cout << "mTinit1=" << mTinit << endl;
-
         }
         else
         {
@@ -1442,7 +1499,9 @@ namespace ORB_SLAM3
 
         return;
     }
-
+    /**
+     * @brief 通过BA优化进行尺度更新，关键帧小于100，使用了所有关键帧的信息，但只优化尺度和重力方向。每10s在这里的时间段内时多次进行尺度更新
+     */
     void LocalMapping::ScaleRefinement()
     {
         // Minimum number of keyframes to compute a solution

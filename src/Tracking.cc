@@ -1644,188 +1644,6 @@ namespace ORB_SLAM3
         mlQueueImuData.push_back(imuMeasurement);
     }
 
-    // void Tracking::DepthFromLastFrame()
-    // {
-    //     if (!mCurrentFrame.mpPrevFrame || mlQueueDepthData.empty())
-    //     {
-    //         Verbose::PrintMess("No previous frame or no depth data!", Verbose::VERBOSITY_NORMAL);
-    //         return;
-    //     }
-
-    //     mvDepthFromLastFrame.clear();
-    //     mvDepthFromLastFrame.reserve(mlQueueDepthData.size());
-
-    //     while (!mlQueueDepthData.empty())
-    //     {
-    //         std::unique_lock<std::mutex> lock(mMutexDepthQueue);
-    //         Pressure::DepthData *depthdata = &mlQueueDepthData.front();
-    //         if (depthdata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
-    //         {
-    //             mlQueueDepthData.pop_front(); // 丢弃过时的数据
-    //         }
-    //         else if (depthdata->timestamp < mCurrentFrame.mTimeStamp)
-    //         {
-    //             mvDepthFromLastFrame.push_back(*depthdata); // 添加有效数据
-    //             mlQueueDepthData.pop_front();               // 从队列中移除处理过的数据
-    //         }
-    //         else
-    //         {
-    //             break; // 时间戳大于当前帧时间戳，跳出循环
-    //         }
-    //     }
-
-    //     if (mvDepthFromLastFrame.empty())
-    //     {
-    //         std::cout << "Empty Pressure measurements vector!!!\n";
-    //         return;
-    //     }
-
-    //     if (!mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty())
-    //     {
-    //         std::cout << "Depth measurements vector Is In Between CurrentFrames!!!\n";
-    //         if (abs(mCurrentFrame.mvDepthBetweenFrame.back().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp) > abs(mvDepthFromLastFrame.front().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp))
-    //         {
-    //             mCurrentFrame.mpPrevFrame->mpFrameDepth = &mvDepthFromLastFrame.front();
-    //         }
-    //         else
-    //         {
-    //             mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.back();
-    //         }
-    //     }
-    //     else
-    //     {
-    //         std::cout << "Empty Depth measurements vector Is In Between CurrentFrames!!!\n";
-    //     }
-
-    //     if (mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty())
-    //     {
-    //         std::cout << "Empty PrevFrame Depth measurements vector Between Frames!!!\n";
-    //     }
-    //     else
-    //     {
-    //         std::cout << "Depth measurements vector Is In Between PrevFrames!!!\n";
-    //     }
-
-    //     mCurrentFrame.mvDepthBetweenFrame = mvDepthFromLastFrame;
-
-    //     if (mCurrentFrame.mvDepthBetweenFrame.empty())
-    //     {
-    //         std::cout << "TWO CurrentFrame Empty Depth measurements vector Between Frames!!!\n";
-    //     }
-    // }
-
-    // void Tracking::DepthFromLastFrame()
-    // {
-    //     // 测试
-    //     // std::ofstream outfile("/ORB_SLAM3/mvFrameDepth.csv", std::ios::app);
-    //     // if (!outfile.is_open())
-    //     // {
-    //     //     std::cerr << "Error opening file for writing!" << std::endl;
-    //     //     return;
-    //     // }
-    //     // outfile << "CurrentFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
-    //     if (!mCurrentFrame.mpPrevFrame)
-    //     {
-    //         Verbose::PrintMess("No previous frame", Verbose::VERBOSITY_NORMAL);
-    //         return;
-    //     }
-
-    //     // if (mlQueueDepthData.empty())
-    //     // {
-    //     //     Verbose::PrintMess("No Pressure data in mlQueueDepthData!", Verbose::VERBOSITY_NORMAL);
-    //     //     return;
-    //     // }
-
-    //     mvDepthFromLastFrame.clear();
-    //     mvDepthFromLastFrame.reserve(mlQueueDepthData.size());
-
-    //     while (true)
-    //     {
-    //         // 使用 unique_lock 来加锁队列操作部分
-    //         std::unique_lock<std::mutex> lock(mMutexDepthQueue);
-
-    //         // 如果队列为空，则跳出循环
-    //         if (mlQueueDepthData.empty())
-    //             break;
-
-    //         Pressure::DepthData *depthdata = &mlQueueDepthData.front();
-    //         std::cout.precision(17);
-
-    //         // 根据时间戳来处理深度数据
-    //         if (depthdata->timestamp < mCurrentFrame.mpPrevFrame->mTimeStamp)
-    //         {
-    //             mlQueueDepthData.pop_front(); // 丢弃过时的数据
-    //         }
-    //         else if (depthdata->timestamp < mCurrentFrame.mTimeStamp)
-    //         {
-    //             mvDepthFromLastFrame.push_back(*depthdata); // 添加有效数据
-    //             mlQueueDepthData.pop_front();               // 从队列中移除处理过的数据
-    //         }
-    //         else if (depthdata->timestamp > mCurrentFrame.mTimeStamp)
-    //         {
-    //             break; // 时间戳大于当前帧时间戳，跳出循环
-    //         }
-    //     }
-
-    //     // // 确保有数据可以处理
-    //     // if (mvDepthFromLastFrame.empty())
-    //     // {
-    //     //     std::cout << "Empty Pressure measurements vector!!!\n";
-    //     //     return;
-    //     // }
-
-    //     mCurrentFrame.mvDepthBetweenFrame = mvDepthFromLastFrame;
-    //     // 将新数据追加到关键帧历史数据中
-    //     mvDepthFromLastKF.insert(mvDepthFromLastKF.end(), mvDepthFromLastFrame.begin(), mvDepthFromLastFrame.end());
-    //     mCurrentFrame.mvDepthBetweenKF = mvDepthFromLastKF;
-    //     mCurrentFrame.mpLastKeyFrame = mpLastKeyFrame;
-    //     GetFrameDepth();
-    //     // if (mCurrentFrame.mpPrevFrame->mpFrameDepth)
-    //     // {
-    //     //     // 打开文件以追加模式写入数据
-    //     //     std::ofstream outfile("/ORB_SLAM3/mpFrameDepth.csv", std::ios::app);
-    //     //     if (!outfile.is_open())
-    //     //     {
-    //     //         std::cerr << "Error opening file for writing!" << std::endl;
-    //     //         return;
-    //     //     }
-    //     //     // 判断mpFrameDepth是否存在
-    //     //     if (mCurrentFrame.mpPrevFrame->mpFrameDepth->isSet)
-    //     //     {
-    //     //         // 写入时间戳和深度值，设置精度和格式
-    //     //         outfile << std::fixed << std::setprecision(9) << mCurrentFrame.mpPrevFrame->mpFrameDepth->timestamp << ","
-    //     //                 << std::fixed << std::setprecision(6) << mCurrentFrame.mpPrevFrame->mpFrameDepth->depth << "\n";
-
-    //     //         outfile << "PrevFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mpPrevFrame->mTimeStamp << "\n";
-    //     //     }
-    //     //     else
-    //     //     {
-    //     //         outfile << "Not PrevFrame Depth measurement" << "\n";
-    //     //     }
-    //     //     outfile.close();
-    //     // }
-
-    //     // if (!mCurrentFrame.mvDepthBetweenFrame.empty())
-    //     // {
-    //     //     // 在清空前，将数据写入文件
-    //     //     for (const auto &data : mCurrentFrame.mvDepthBetweenFrame)
-    //     //     {
-    //     //         // 写入时间戳和深度值，设置精度和格式
-    //     //         outfile << std::fixed << std::setprecision(9) << data.timestamp << ","
-    //     //                 << std::fixed << std::setprecision(6) << data.depth << "\n";
-    //     //     }
-    //     //     // 清空数据
-    //     //     mCurrentFrame.mvDepthBetweenFrame.clear();
-    //     //     // outfile << "CurrentFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
-    //     // }
-    //     // else
-    //     // {
-    //     //     outfile << "Not mvDepthBetweenFrame measurement" << "\n";
-    //     // }
-
-    //     // outfile.close();
-    // }
-
     void Tracking::DepthFromLastFrame()
     {
         // 存储上一个关键帧的地址，修改为 KeyFrame* 类型
@@ -1870,39 +1688,9 @@ namespace ORB_SLAM3
 
         // // 更新当前帧的深度数据
         // mCurrentFrame.mvDepthBetweenFrame = mvDepthFromLastFrame;
-
-        // // 打开文件以追加模式写入数据
-        // std::ofstream outfile("/ORB_SLAM3/mvDepthBetweenFrame.txt", std::ios::app);
-        // if (!outfile.is_open())
-        // {
-        //     std::cerr << "Error opening file for writing!" << std::endl;
-        //     return;
-        // }
-        // if (!mCurrentFrame.mvDepthBetweenFrame.empty())
-        // {
-        //     // 在清空前，将数据写入文件
-        //     for (const auto &data : mCurrentFrame.mvDepthBetweenFrame)
-        //     {
-        //         // 写入时间戳和深度值，设置精度和格式
-        //         outfile << "Timestamp: " << std::fixed << std::setprecision(9) << data.timestamp
-        //                 << ", Depth: " << std::fixed << std::setprecision(6) << data.depth << std::endl;
-        //     }
-        //     // 清空数据
-        //     mCurrentFrame.mvDepthBetweenFrame.clear();
-        //     // outfile << "CurrentFrame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
-        // }
-        // else
-        // {
-        //     outfile << "Not mvDepthBetweenFrame measurement" << "\n";
-        // }
-
-        // outfile.close();
-
-
-
+        // 这种方法可能会有Bug
         if (previousKeyFrame != mCurrentFrame.mpLastKeyFrame)
         {
-
             // // 打开文件以追加模式写入数据
             // std::ofstream outfile("/ORB_SLAM3/mvDepthBetweenKF.txt", std::ios::app);
             // if (!outfile.is_open())
@@ -1930,7 +1718,6 @@ namespace ORB_SLAM3
             //     // 关闭文件
             //     outfile.close();
             // }
-
             previousKeyFrame = mCurrentFrame.mpLastKeyFrame;
             mvDepthFromLastKF.clear();
             mvDepthFromLastKF.insert(mvDepthFromLastKF.end(), mvDepthFromLastFrame.begin(), mvDepthFromLastFrame.end());
@@ -1941,7 +1728,6 @@ namespace ORB_SLAM3
             mvDepthFromLastKF.insert(mvDepthFromLastKF.end(), mvDepthFromLastFrame.begin(), mvDepthFromLastFrame.end());
             mCurrentFrame.mvDepthBetweenKF = mvDepthFromLastKF;
         }
-
 
         // GetFrameDepth();
     }
@@ -1962,31 +1748,20 @@ namespace ORB_SLAM3
 
         else if (mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty() && !mCurrentFrame.mvDepthBetweenFrame.empty())
         {
-            if (abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp) > abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mTimeStamp))
-            {
-                mCurrentFrame.mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
-            }
-            else
-            {
-                mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
-            }
+             mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
+            // if (abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp) > abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mTimeStamp))
+            // {
+            //     mCurrentFrame.mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
+            // }
+            // else
+            // {
+            //     mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
+            // }
         }
-
-        // else if (!mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty() && mCurrentFrame.mvDepthBetweenFrame.empty())
-        // {
-        //     if (abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp) > abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mTimeStamp))
-        //     {
-        //         mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.back();
-        //     }
-        //     else
-        //     {
-        //         mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.back();
-        //     }
-        // }
-        // else
-        // {
-        //     std::cout << "Previous Frame has not Depth!!!\n";
-        // }
+        else if (!mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty() && mCurrentFrame.mvDepthBetweenFrame.empty())
+        {
+            mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.back();
+        }
     }
 
     void Tracking::PreintegrateIMU()
@@ -3671,7 +3446,8 @@ namespace ORB_SLAM3
 
         if (!mpLocalMapper->SetNotStop(true))
             return;
-
+            
+        //- Step 1：将当前帧构造成关键帧
         KeyFrame *pKF = new KeyFrame(mCurrentFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
 
         if (mpAtlas->isImuInitialized()) //  || mpLocalMapper->IsInitializing())
@@ -3787,7 +3563,10 @@ namespace ORB_SLAM3
             }
         }
 
+        // Step 4：插入关键帧
+        // 关键帧插入到列表 mlNewKeyFrames中，等待local mapping线程临幸
         mpLocalMapper->InsertKeyFrame(pKF);
+        
         // 插入好了，允许局部建图停止
         mpLocalMapper->SetNotStop(false);
 

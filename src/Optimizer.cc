@@ -3144,7 +3144,8 @@ namespace ORB_SLAM3
         for (size_t i = 0; i < vpKFs.size(); i++)
         {
             KeyFrame *pKFi = vpKFs[i];
-
+            // if (!pKFi->mPrevKF)
+            //     std::cout << "Not KF measurement in InertialOptimization" << std::endl;
             if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
             {
                 if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
@@ -3184,15 +3185,23 @@ namespace ORB_SLAM3
 
                 vppUsedKF.push_back(make_pair(pKFi->mPrevKF, pKFi));
                 optimizer.addEdge(ei);
-
-                // // code by ghz
-                // EdgeDepthGS* ez = new EdgeDepthGS(pKFi->mvDepthKF);
+                
+                if (!pKFi->mpKFDepth)
+                {
+                    std::cout << "The i = "<< i << " in " << vpKFs.size() << std::endl;
+                    std::cout << "The TimeStamp = "<< pKFi->mTimeStamp << std::fixed << std::setprecision(9) << " KeyFame Does not Have Depth measurement" << std::endl;
+                }
+                    
+              
+                // // // code by ghz
+                // EdgeDepthGS* ez = new EdgeDepthGS(pKFi->mpKFDepth);
                 // ez->setVertex(0,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VP1));
                 // ez->setVertex(1,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VP2));
                 // ez->setVertex(2,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VGDir));
                 // ez->setVertex(3,dynamic_cast<g2o::OptimizableGraph::Vertex*>(VS));
 
                 // optimizer.addEdge(ez);
+
             }
         }
 
