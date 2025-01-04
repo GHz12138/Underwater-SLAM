@@ -78,7 +78,9 @@ namespace ORB_SLAM3
 #endif
                 // BoW conversion and insertion in Map
                 ProcessNewKeyFrame();
+
 #ifdef REGISTER_TIMES
+
                 std::chrono::steady_clock::time_point time_EndProcessKF = std::chrono::steady_clock::now();
 
                 double timeProcessKF = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(time_EndProcessKF - time_StartProcessKF).count();
@@ -307,57 +309,73 @@ namespace ORB_SLAM3
             mlNewKeyFrames.pop_front();
         }
 
-        if(mpCurrentKeyFrame->mPrevKF)
+        if (mpCurrentKeyFrame->mPrevKF)
         {
-            if (!mpCurrentKeyFrame->mPrevKF->mPrevKF)
+            // 只在需要时打开文件
+            std::ofstream outfile("/ORB_SLAM3/KeyFrameDepth.csv", std::ios::app);
+            if (!outfile.is_open())
             {
-                if (!mpCurrentKeyFrame->mvDepthBetweenKF.empty())
-                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                std::cerr << "Error opening file for writing!" << std::endl;
+                return;
             }
-            else if (!mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && !mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+
+            bool written = false;
+            // 计算空状态，以减少多次调用empty()
+            bool currentDepthEmpty = mpCurrentKeyFrame->mvDepthBetweenKF.empty();
+            bool prevDepthEmpty = mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty();
+
+            // 根据不同情况选择深度数据
+            if (mpCurrentKeyFrame->mPrevKF->mPrevKF)
             {
-                if (abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp) > abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp))
+                if (!prevDepthEmpty && !currentDepthEmpty)
+                {
+                    if (abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp) >
+                        abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp))
+                    {
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
+                    }
+                    else
+                    {
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                    }
+                    written = true;
+                }
+                else if (!prevDepthEmpty)
                 {
                     mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
+                    written = true;
                 }
-                else
+                else if (!currentDepthEmpty)
                 {
                     mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                    written = true;
                 }
             }
-            else if (!mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && mpCurrentKeyFrame->mvDepthBetweenKF.empty())
+            else // 没有 prevKF
             {
-                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
-            }
-            else if (mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.empty() && !mpCurrentKeyFrame->mvDepthBetweenKF.empty())
-            {
-                mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                if (!currentDepthEmpty)
+                {
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                    written = true;
+                }
             }
 
-            if (mpCurrentKeyFrame->mPrevKF->mpKFDepth)
-            {
-                // 打开文件以追加模式写入数据
-                std::ofstream outfile("/ORB_SLAM3/KeyFrameDepth.csv", std::ios::app);
-                if (!outfile.is_open())
-                {
-                    std::cerr << "Error opening file for writing!" << std::endl;
-                    return;
-                }
-                // 判断mpFrameDepth是否存在
-                if (mpCurrentKeyFrame->mPrevKF->mpKFDepth->isSet)
-                {
-                    // 写入时间戳和深度值，设置精度和格式
-                    outfile << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->timestamp << ","
-                            << std::fixed << std::setprecision(6) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->depth << "\n";
+            // // 只有在有有效深度数据时才写入文件
+            // if (written && mpCurrentKeyFrame->mPrevKF->mpKFDepth)
+            // {
+            //     if (mpCurrentKeyFrame->mPrevKF->mpKFDepth->isSet)
+            //     {
+            //         outfile << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->timestamp << ","
+            //                 << std::fixed << std::setprecision(6) << mpCurrentKeyFrame->mPrevKF->mpKFDepth->depth << "\n";
+            //         outfile << "PrevKeyFrame TimeStamp: " << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mTimeStamp << "\n";
+            //     }
+            //     else
+            //     {
+            //         outfile << "Not KeyFrame Depth measurement" << "\n";
+            //     }
+            // }
 
-                    outfile << "PrevKeyFrame TimeStamp: " << std::fixed << std::setprecision(9) << mpCurrentKeyFrame->mPrevKF->mTimeStamp << "\n";
-                }
-                else
-                {
-                    outfile << "Not KeyFrame Depth measurement" << "\n";
-                }
-                outfile.close();
-            }
+            // outfile.close(); // 关闭文件
         }
 
         // Compute Bags of Words structures

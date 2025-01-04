@@ -416,6 +416,8 @@ public:
     std::vector<Pressure::DepthData> mvDepthBetweenKF;
     // 关键帧对应深度值
     Pressure::DepthData* mpKFDepth;
+    // 与上一关键帧的深度差
+    double RelDepth;
 
     unsigned int mnOriginMapId;
 

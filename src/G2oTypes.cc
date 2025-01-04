@@ -611,8 +611,8 @@ namespace ORB_SLAM3
         setInformation(Info);
     }
 
-    EdgeDepthGS::EdgeDepthGS(const std::vector<Pressure::DepthData> &vDepth)
-        : mvDepth(vDepth) // 初始化 const 成员 dt
+    EdgeDepthGS::EdgeDepthGS(const double &dz)
+        : mdZ(dz) // 初始化 const 成员 dt
     {
         resize(4);
 
@@ -660,10 +660,7 @@ namespace ORB_SLAM3
         const double s = VS->estimate();
         const Eigen::RowVector3d e3 = Eigen::RowVector3d::UnitZ();
 
-        // 修改这里为深度测量值
-        const double dZ = mvDepth.back().depth - mvDepth.front().depth;
-
-        const double ep = VS->estimate() * e3 * VGDir->estimate().Rwg * (VP2->estimate().twb - VP1->estimate().twb) - dZ;
+        const double ep = VS->estimate() * e3 * VGDir->estimate().Rwg * (VP2->estimate().twb - VP1->estimate().twb) - mdZ;
 
         _error << ep;
     }

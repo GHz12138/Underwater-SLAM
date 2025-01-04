@@ -671,7 +671,7 @@ namespace ORB_SLAM3
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-        EdgeDepthGS(const std::vector<Pressure::DepthData> &vDepth);
+        EdgeDepthGS(const double &dz);
 
         virtual bool read(std::istream &is) { return false; }
         virtual bool write(std::ostream &os) const { return false; }
@@ -679,7 +679,7 @@ namespace ORB_SLAM3
         void computeError();
         virtual void linearizeOplus();
 
-        std::vector<Pressure::DepthData> mvDepth;
+        double mdZ;
         // const double dt;
         // Eigen::Vector3d g, gI;
 
