@@ -382,6 +382,21 @@ namespace ORB_SLAM3
         }
     }
 
+    /**
+     * @brief imu初始化优化，LocalMapping::InitializeIMU中使用 LoopClosing::RunGlobalBundleAdjustment
+     * 地图全部做BA。也就是imu版的GlobalBundleAdjustemnt
+     * @param pMap 地图
+     * @param its 迭代次数
+     * @param bFixLocal 是否固定局部，为false
+     * @param nLoopId 回环id
+     * @param pbStopFlag 是否停止的标志
+     * @param bInit 提供priorG时为true，此时偏置只优化最后一帧的至0，然后所有关键帧的偏置都赋值为优化后的值
+     *              若为false，则建立每两帧之间的偏置边，优化使其相差为0
+     * @param priorG 陀螺仪偏置的信息矩阵系数，主动设置时一般bInit为true，也就是只优化最后一帧的偏置，这个数会作为计算信息矩阵时使用
+     * @param priorA 加速度计偏置的信息矩阵系数
+     * @param vSingVal 没用，估计调试用的
+     * @param bHess 没用，估计调试用的
+     */
     void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const long unsigned int nLoopId, bool *pbStopFlag, bool bInit, float priorG, float priorA, Eigen::VectorXd *vSingVal, bool *bHess)
     {
         long unsigned int maxKFid = pMap->GetMaxKFid();
@@ -2368,17 +2383,31 @@ namespace ORB_SLAM3
         return nIn;
     }
 
+    /**
+     * @brief 局部地图＋惯导BA LocalMapping IMU中使用，地图经过imu初始化时用这个函数代替LocalBundleAdjustment
+     *
+     * @param[in] pKF               //关键帧
+     * @param[in] pbStopFlag        //是否停止的标志
+     * @param[in] pMap              //地图
+     * @param[in] num_fixedKF       //固定不优化关键帧的数目
+     * @param[in] num_OptKF
+     * @param[in] num_MPs
+     * @param[in] num_edges
+     * @param[in] bLarge            成功跟踪匹配的点数是否足够多
+     * @param[in] bRecInit          经过BA2初始化后这个变量为false
+     */
     void Optimizer::LocalInertialBA(KeyFrame *pKF, bool *pbStopFlag, Map *pMap, int &num_fixedKF, int &num_OptKF, int &num_MPs, int &num_edges, bool bLarge, bool bRecInit)
     {
         Map *pCurrentMap = pKF->GetMap();
 
-        int maxOpt = 10;
-        int opt_it = 10;
+        int maxOpt = 10; // 最大优化关键帧数目
+        int opt_it = 10; // 每次优化的迭代次数
         if (bLarge)
         {
             maxOpt = 25;
             opt_it = 4;
         }
+        // 预计待优化的关键帧数，min函数是为了控制优化关键帧的数量
         const int Nd = std::min((int)pCurrentMap->KeyFramesInMap() - 2, maxOpt);
         const unsigned long maxKFid = pKF->mnId;
 
@@ -2400,6 +2429,8 @@ namespace ORB_SLAM3
                 break;
         }
 
+        // Optimizable points seen by temporal optimizable keyframes
+        // Step 2. 确定这些关键帧对应的地图点，存入lLocalMapPoints
         int N = vpOptimizableKFs.size();
 
         // Optimizable points seen by temporal optimizable keyframes
@@ -2421,6 +2452,7 @@ namespace ORB_SLAM3
         }
 
         // Fixed Keyframe: First frame previous KF to optimization window)
+        // Step 3. 固定一帧，为vpOptimizableKFs中最早的那一关键帧的上一关键帧，如果没有上一关键帧了就用最早的那一帧，毕竟目前得到的地图虽然有尺度但并不是绝对的位置
         list<KeyFrame *> lFixedKeyFrames;
         if (vpOptimizableKFs.back()->mPrevKF)
         {
@@ -2436,6 +2468,9 @@ namespace ORB_SLAM3
         }
 
         // Optimizable visual KFs
+        // 4. 做了一系列操作发现最后lpOptVisKFs为空。这段应该是调试遗留代码，如果实现的话其实就是把共视图中在前面没有加过的关键帧们加进来，
+        // 但作者可能发现之前就把共视图的全部帧加进来了，也有可能发现优化的效果不好浪费时间
+        // 获得与当前关键帧有共视关系的一些关键帧，大于15个点，排序为从小到大
         const int maxCovKF = 0;
         for (int i = 0, iend = vpNeighsKFs.size(); i < iend; i++)
         {
@@ -2466,6 +2501,7 @@ namespace ORB_SLAM3
         }
 
         // Fixed KFs which are not covisible optimizable
+        // 5. 将所有mp点对应的关键帧（除了前面加过的）放入到固定组里面，后面优化时不改变
         const int maxFixKF = 200;
 
         for (list<MapPoint *>::iterator lit = lLocalMapPoints.begin(), lend = lLocalMapPoints.end(); lit != lend; lit++)
@@ -2492,6 +2528,7 @@ namespace ORB_SLAM3
         bool bNonFixed = (lFixedKeyFrames.size() == 0);
 
         // Setup optimizer
+        // 6. 构造优化器，正式开始优化
         g2o::SparseOptimizer optimizer;
         g2o::BlockSolverX::LinearSolverType *linearSolver;
         linearSolver = new g2o::LinearSolverEigen<g2o::BlockSolverX::PoseMatrixType>();
@@ -2512,6 +2549,7 @@ namespace ORB_SLAM3
         }
 
         // Set Local temporal KeyFrame vertices
+        // 7. 建立关于关键帧的节点，其中包括，位姿，速度，以及两个偏置
         N = vpOptimizableKFs.size();
         for (int i = 0; i < N; i++)
         {
@@ -2540,6 +2578,7 @@ namespace ORB_SLAM3
         }
 
         // Set Local visual KeyFrame vertices
+        // 8. 建立关于共视关键帧的节点，但这里为空
         for (list<KeyFrame *>::iterator it = lpOptVisKFs.begin(), itEnd = lpOptVisKFs.end(); it != itEnd; it++)
         {
             KeyFrame *pKFi = *it;
@@ -2550,6 +2589,7 @@ namespace ORB_SLAM3
         }
 
         // Set Fixed KeyFrame vertices
+        // 9. 建立关于固定关键帧的节点，其中包括，位姿，速度，以及两个偏置
         for (list<KeyFrame *>::iterator lit = lFixedKeyFrames.begin(), lend = lFixedKeyFrames.end(); lit != lend; lit++)
         {
             KeyFrame *pKFi = *lit;
@@ -2580,6 +2620,7 @@ namespace ORB_SLAM3
         vector<EdgeGyroRW *> vegr(N, (EdgeGyroRW *)NULL);
         vector<EdgeAccRW *> vear(N, (EdgeAccRW *)NULL);
 
+        // 10. 建立惯性边，没有imu跳过
         for (int i = 0; i < N; i++)
         {
             KeyFrame *pKFi = vpOptimizableKFs[i];
@@ -2622,6 +2663,8 @@ namespace ORB_SLAM3
                     // last optimizable keyframe inside of the local window and the first fixed keyframe out. The
                     // information matrix for this measurement is also downweighted. This is done to avoid accumulating
                     // error due to fixing variables.
+                    // 所有惯性残差都没有鲁棒核，但不包括窗口内最早一个可优化关键帧与第一个固定关键帧链接起来的惯性残差。
+                    // 该度量的信息矩阵也被降权。这样做是为了避免由于固定变量而累积错误
                     g2o::RobustKernelHuber *rki = new g2o::RobustKernelHuber;
                     vei[i]->setRobustKernel(rki);
                     if (i == N - 1)
@@ -3186,21 +3229,20 @@ namespace ORB_SLAM3
                 vppUsedKF.push_back(make_pair(pKFi->mPrevKF, pKFi));
                 optimizer.addEdge(ei);
 
-              
                 if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
                 {
                     // code by ghz
                     double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
-                    std::cout << "The i = " << i+1 << " in " << vpKFs.size() << ", The Releative Depth dZ = " << dz << std::endl;
-
-
-                    EdgeDepthGS *ez = new EdgeDepthGS(dz);
-                    ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP1));
-                    ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP2));
-                    ez->setVertex(2, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
-                    ez->setVertex(3, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
-
-                    optimizer.addEdge(ez);
+                    if (dz > 0.001)
+                    {
+                        // std::cout << "The i = " << i + 1 << " in " << vpKFs.size() << ", The Releative Depth dZ = " << dz << std::endl;
+                        // EdgeDepthGS *ez = new EdgeDepthGS(dz);
+                        // ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP1));
+                        // ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP2));
+                        // ez->setVertex(2, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
+                        // ez->setVertex(3, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
+                        // optimizer.addEdge(ez);
+                    }
                 }
             }
         }
@@ -3410,6 +3452,13 @@ namespace ORB_SLAM3
         }
     }
 
+    /**
+     * @brief 优化重力方向与尺度，LocalMapping::ScaleRefinement()中使用，优化目标有：
+     * 重力方向与尺度
+     * @param pMap 地图
+     * @param Rwg 重力方向到速度方向的转角
+     * @param scale 尺度
+     */
     void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &scale)
     {
         int its = 10;
@@ -3517,6 +3566,99 @@ namespace ORB_SLAM3
         // Recover optimized data
         scale = VS->estimate();
         Rwg = VGDir->estimate().Rwg;
+    }
+
+    void Optimizer::OptimizeInitialScale(Map *pMap, Eigen::Matrix3d &Rwg, double &scale)
+    {
+        int its = 10;
+        long unsigned int maxKFid = pMap->GetMaxKFid();
+        const vector<KeyFrame *> vpKFs = pMap->GetAllKeyFrames();
+
+        // Setup optimizer
+        g2o::SparseOptimizer optimizer;
+        g2o::BlockSolverX::LinearSolverType *linearSolver;
+
+        linearSolver = new g2o::LinearSolverEigen<g2o::BlockSolverX::PoseMatrixType>();
+        g2o::BlockSolverX *solver_ptr = new g2o::BlockSolverX(linearSolver);
+        g2o::OptimizationAlgorithmGaussNewton *solver = new g2o::OptimizationAlgorithmGaussNewton(solver_ptr);
+        optimizer.setAlgorithm(solver);
+
+        // Gravity and scale
+        VertexGDir *VGDir = new VertexGDir(Rwg);
+        VGDir->setId(0);
+        VGDir->setFixed(false);
+        optimizer.addVertex(VGDir);
+        
+        VertexScale *VS = new VertexScale(2);
+        VS->setId(1);
+        VS->setFixed(false);
+        optimizer.addVertex(VS);
+
+        std::cout << "****************************" << std::endl;
+        std::cout << "Added VertexScale with ID 0" << std::endl;
+
+        // Add edges
+        int count_edges = 0;
+        for (size_t i = 0; i < vpKFs.size(); i++)
+        {
+            KeyFrame *pKFi = vpKFs[i];
+            if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
+            {
+                if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
+                    continue;
+
+                if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
+                {
+                    double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
+                    if (abs(dz) > 0.001)
+                    {
+                        EdgeScaleDepth *ez = new EdgeScaleDepth();
+                        count_edges++;
+                        
+                        ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
+                        ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
+
+                        ez->setMeasurement(dz);
+                        ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
+                        ez->Pj = pKFi->GetCameraCenter().cast<double>();
+
+
+                        std::cout << "VS estimate = " << VS->estimate() << std::endl;
+                        std::cout << "dz = " << dz << std::endl;
+                        Eigen::Vector3d dP = Rwg * (ez->Pj - ez->Pi);
+                        std::cout << "dP = " << (double)dP(2) << std::endl;
+
+                        // Set information matrix (for covariance)
+                        Eigen::Matrix<double, 1, 1> InvCovDepth;
+                        InvCovDepth(0) = 1 / (0.01 * 0.01); // Example covariance
+                        ez->setInformation(InvCovDepth);
+
+                        // // Set robust kernel (Huber)
+                        // const float thHuberNavStateDepth = sqrt(5.991); // Huber threshold
+                        // g2o::RobustKernelHuber *rk = new g2o::RobustKernelHuber;
+                        // ez->setRobustKernel(rk);
+                        // rk->setDelta(thHuberNavStateDepth);
+
+                        // Add edge to optimizer
+                        optimizer.addEdge(ez);
+                        std::cout << "Current keyframe: " << pKFi->mTimeStamp << ", " << "Depth:" << pKFi->mpKFDepth->depth << ", Previous keyframe: " << pKFi->mPrevKF->mTimeStamp << ", " << "Depth:" << pKFi->mPrevKF->mpKFDepth->depth << std::endl;
+                    }
+                }
+            }
+        }
+
+        std::cout << "Total edges added: " << count_edges << std::endl;
+
+        // Perform optimization
+        optimizer.setVerbose(true);
+        optimizer.initializeOptimization(); // Make sure we call this after adding vertices and edges
+        optimizer.optimize(2);
+
+        // Recover optimized scale
+        scale = VS->estimate();
+        Rwg = VGDir->estimate().Rwg;
+        std::cout << "OptimizeInitialScale after " << its << " iterations: mScale = " << scale << std::endl;
+        std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg << std::endl;
     }
 
     void Optimizer::LocalBundleAdjustment(KeyFrame *pMainKF, vector<KeyFrame *> vpAdjustKF, vector<KeyFrame *> vpFixedKF, bool *pbStopFlag)

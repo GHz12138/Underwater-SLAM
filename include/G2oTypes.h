@@ -680,17 +680,7 @@ namespace ORB_SLAM3
         virtual void linearizeOplus();
 
         double mdZ;
-        // const double dt;
-        // Eigen::Vector3d g, gI;
 
-        Eigen::Matrix3d skewSymmetric(const Eigen::Vector3d &v)
-        {
-            Eigen::Matrix3d skew;
-            skew << 0, -v.z(), v.y(),
-                v.z(), 0, -v.x(),
-                -v.y(), v.x(), 0;
-            return skew;
-        }
         Eigen::Matrix<double, 15, 15> GetHessian()
         {
             linearizeOplus();
@@ -701,6 +691,27 @@ namespace ORB_SLAM3
             J.block<1, 1>(0, 14) = _jacobianOplus[3];
             return J.transpose() * information() * J;
         }
+    };
+
+    class EdgeScaleDepth : public g2o::BaseBinaryEdge<1, double, VertexGDir, VertexScale>
+    {
+    public:
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+        EdgeScaleDepth() : BaseBinaryEdge<1, double, VertexGDir, VertexScale>() {}
+
+        bool read(std::istream &is) { return true; }
+
+        bool write(std::ostream &os) const { return true; }
+
+        void computeError();
+
+        virtual void linearizeOplus();
+
+        // Matrix3d GravityRot;
+        Eigen::Vector3d Pi;
+        Eigen::Vector3d Pj;
+
     };
 
     class EdgeGyroRW : public g2o::BaseBinaryEdge<3, Eigen::Vector3d, VertexGyroBias, VertexGyroBias>

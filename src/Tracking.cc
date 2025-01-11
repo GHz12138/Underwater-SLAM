@@ -1686,12 +1686,40 @@ namespace ORB_SLAM3
             }
         }
 
-        // // 更新当前帧的深度数据
+        // // // 更新当前帧的深度数据
         // mCurrentFrame.mvDepthBetweenFrame = mvDepthFromLastFrame;
+
+        // std::ofstream outfile("/ORB_SLAM3/mvDepthBetweenFrame.txt", std::ios::app);
+
+        // if (!outfile.is_open())
+        // {
+        //     std::cerr << "Error opening file for writing!" << std::endl;
+        //     return;
+        // }
+
+        // if (mCurrentFrame.mvDepthBetweenFrame.empty())
+        // {
+        //     outfile << "Not Depth measurement" << "\n";
+        // }
+        // else
+        // {
+        //     // 将 mvDepthBetweenKF 中的深度数据写入文件
+        //     for (const auto &depthData : mCurrentFrame.mvDepthBetweenFrame)
+        //     {
+        //         outfile << "Timestamp: " << std::fixed << std::setprecision(9) << depthData.timestamp
+        //                 << ", Depth: " << std::fixed << std::setprecision(6) << depthData.depth << std::endl;
+        //     }
+        // }
+        // outfile << "Current Frame TimeStamp: " << std::fixed << std::setprecision(9) << mCurrentFrame.mTimeStamp << "\n";
+
+        // // 关闭文件
+        // outfile.close();
+
         // 这种方法可能会有Bug
+
         if (previousKeyFrame != mCurrentFrame.mpLastKeyFrame)
         {
-            // // 打开文件以追加模式写入数据
+            // 打开文件以追加模式写入数据
             // std::ofstream outfile("/ORB_SLAM3/mvDepthBetweenKF.txt", std::ios::app);
             // if (!outfile.is_open())
             // {
@@ -1748,7 +1776,7 @@ namespace ORB_SLAM3
 
         else if (mCurrentFrame.mpPrevFrame->mvDepthBetweenFrame.empty() && !mCurrentFrame.mvDepthBetweenFrame.empty())
         {
-             mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
+            mCurrentFrame.mpPrevFrame->mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
             // if (abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mpPrevFrame->mTimeStamp) > abs(mCurrentFrame.mvDepthBetweenFrame.front().timestamp - mCurrentFrame.mTimeStamp))
             // {
             //     mCurrentFrame.mpFrameDepth = &mCurrentFrame.mvDepthBetweenFrame.front();
@@ -1889,6 +1917,7 @@ namespace ORB_SLAM3
             mpImuPreintegratedFromLastKF->IntegrateNewMeasurement(acc, angVel, tstep);
             // 普通帧间的预积分在每次经过这个PreintegrateIMU()函数时被重置
             pImuPreintegratedFromLastFrame->IntegrateNewMeasurement(acc, angVel, tstep);
+            // 修改这里
         }
 
         mCurrentFrame.mpImuPreintegratedFrame = pImuPreintegratedFromLastFrame;
@@ -1917,6 +1946,14 @@ namespace ORB_SLAM3
             return false;
         }
 
+        // 总结下都在什么时候地图更新，也就是mbMapUpdated为true
+        // 1. 回环或融合
+        // 2. 局部地图LocalBundleAdjustment
+        // 3. IMU三阶段的初始化
+        // 下面的代码流程一模一样，只不过计算时相对的帧不同，地图有更新后相对于上一关键帧做的，反之相对于上一帧
+        // 地图更新后会更新关键帧与MP，所以相对于关键帧更准
+        // 而没更新的话，距离上一帧更近，计算起来误差更小
+        // 地图更新时，并且上一个图像关键帧存在
         if (mbMapUpdated && mpLastKeyFrame)
         {
             const Eigen::Vector3f twb1 = mpLastKeyFrame->GetImuPosition();
@@ -1943,6 +1980,8 @@ namespace ORB_SLAM3
             const Eigen::Vector3f Gz(0, 0, -IMU::GRAVITY_VALUE);
             const float t12 = mCurrentFrame.mpImuPreintegratedFrame->dT;
 
+            // 计算当前帧在世界坐标系的位姿,原理都是用预积分的位姿（预积分的值不会变化）与上一帧的位姿（会迭代变化）进行更新
+            // 旋转 R_wb2 = R_wb1 * R_b1b2
             Eigen::Matrix3f Rwb2 = IMU::NormalizeRotation(Rwb1 * mCurrentFrame.mpImuPreintegratedFrame->GetDeltaRotation(mLastFrame.mImuBias));
             Eigen::Vector3f twb2 = twb1 + Vwb1 * t12 + 0.5f * t12 * t12 * Gz + Rwb1 * mCurrentFrame.mpImuPreintegratedFrame->GetDeltaPosition(mLastFrame.mImuBias);
             Eigen::Vector3f Vwb2 = Vwb1 + t12 * Gz + Rwb1 * mCurrentFrame.mpImuPreintegratedFrame->GetDeltaVelocity(mLastFrame.mImuBias);
@@ -2309,6 +2348,25 @@ namespace ORB_SLAM3
                 if (bOK && !mbVO)
                     bOK = TrackLocalMap();
             }
+            // 到此为止跟踪确定位姿阶段结束，下面开始做收尾工作和为下一帧做准备
+
+            // 查看到此为止时的两个状态变化
+            // bOK的历史变化---上一帧跟踪成功---当前帧跟踪成功---局部地图跟踪成功---true                     -->OK   1 跟踪局部地图成功
+            //          \               \              \---局部地图跟踪失败---false
+            //           \               \---当前帧跟踪失败---false
+            //            \---上一帧跟踪失败---重定位成功---局部地图跟踪成功---true                       -->OK  2 重定位
+            //                          \           \---局部地图跟踪失败---false
+            //                           \---重定位失败---false
+
+            //
+            // mState的历史变化---上一帧跟踪成功---当前帧跟踪成功---局部地图跟踪成功---OK                  -->OK  1 跟踪局部地图成功
+            //            \               \              \---局部地图跟踪失败---OK                  -->OK  3 正常跟踪
+            //             \               \---当前帧跟踪失败---非OK
+            //              \---上一帧跟踪失败---重定位成功---局部地图跟踪成功---非OK
+            //                            \           \---局部地图跟踪失败---非OK
+            //                             \---重定位失败---非OK（传不到这里，因为直接return了）
+            // 由上图可知当前帧的状态OK的条件是跟踪局部地图成功，重定位或正常跟踪都可
+            //* Step 8 根据上面的操作来判断是否追踪成功
 
             if (bOK)
                 mState = OK;
@@ -2319,6 +2377,7 @@ namespace ORB_SLAM3
                     Verbose::PrintMess("Track lost for less than one second...", Verbose::VERBOSITY_NORMAL);
                     if (!pCurrentMap->isImuInitialized() || !pCurrentMap->GetIniertialBA2())
                     {
+                        // IMU模式下IMU没有成功初始化或者没有完成IMU BA，则重置当前地图
                         cout << "IMU is not or recently initialized. Reseting active map..." << endl;
                         mpSystem->ResetActiveMap();
                     }
@@ -3446,7 +3505,7 @@ namespace ORB_SLAM3
 
         if (!mpLocalMapper->SetNotStop(true))
             return;
-            
+
         //- Step 1：将当前帧构造成关键帧
         KeyFrame *pKF = new KeyFrame(mCurrentFrame, mpAtlas->GetCurrentMap(), mpKeyFrameDB);
 
@@ -3566,7 +3625,7 @@ namespace ORB_SLAM3
         // Step 4：插入关键帧
         // 关键帧插入到列表 mlNewKeyFrames中，等待local mapping线程临幸
         mpLocalMapper->InsertKeyFrame(pKF);
-        
+
         // 插入好了，允许局部建图停止
         mpLocalMapper->SetNotStop(false);
 

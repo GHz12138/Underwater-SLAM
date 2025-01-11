@@ -179,6 +179,7 @@ void Preintegrated::Reintegrate()
 
 void Preintegrated::IntegrateNewMeasurement(const Eigen::Vector3f &acceleration, const Eigen::Vector3f &angVel, const float &dt)
 {
+    // 可以在这里使用acc accw mvMeasurements
     mvMeasurements.push_back(integrable(acceleration,angVel,dt));
 
     // Position is updated firstly, as it depends on previously computed velocity and rotation.
@@ -213,6 +214,8 @@ void Preintegrated::IntegrateNewMeasurement(const Eigen::Vector3f &acceleration,
 
 
     // Update position and velocity jacobians wrt bias correction
+    // 因为随着时间推移，不可能每次都重新计算雅克比矩阵，所以需要做J(k+1) = j(k) + (~)这类事，分解方式与AB矩阵相同
+    // 论文作者对forster论文公式的基础上做了变形，然后递归更新，参见 https://github.com/UZ-SLAMLab/ORB_SLAM3/issues/212
     JPa = JPa + JVa*dt -0.5f*dR*dt*dt;
     JPg = JPg + JVg*dt -0.5f*dR*dt*dt*Wacc*JRg;
     JVa = JVa - dR*dt;
@@ -237,6 +240,10 @@ void Preintegrated::IntegrateNewMeasurement(const Eigen::Vector3f &acceleration,
     dT += dt;
 }
 
+/** 
+ * @brief 融合两个预积分，发生在删除关键帧的时候，3帧变2帧，需要把两段预积分融合
+ * @param pPrev 前面的预积分
+ */
 void Preintegrated::MergePrevious(Preintegrated* pPrev)
 {
     if (pPrev==this)
@@ -263,6 +270,10 @@ void Preintegrated::MergePrevious(Preintegrated* pPrev)
 
 }
 
+/** 
+ * @brief 更新偏置
+ * @param bu_ 偏置
+ */
 void Preintegrated::SetNewBias(const Bias &bu_)
 {
     std::unique_lock<std::mutex> lock(mMutex);
@@ -276,21 +287,37 @@ void Preintegrated::SetNewBias(const Bias &bu_)
     db(5) = bu_.baz-b.baz;
 }
 
+/** 
+ * @brief 获得当前偏置与输入偏置的改变量
+ * @param b_ 偏置
+ * @return 改变量
+ */
 IMU::Bias Preintegrated::GetDeltaBias(const Bias &b_)
 {
     std::unique_lock<std::mutex> lock(mMutex);
     return IMU::Bias(b_.bax-b.bax,b_.bay-b.bay,b_.baz-b.baz,b_.bwx-b.bwx,b_.bwy-b.bwy,b_.bwz-b.bwz);
 }
 
-
+/** 
+ * @brief 根据新的偏置计算新的dR
+ * @param b_ 新的偏置
+ * @return dR
+ */
 Eigen::Matrix3f Preintegrated::GetDeltaRotation(const Bias &b_)
 {
     std::unique_lock<std::mutex> lock(mMutex);
     Eigen::Vector3f dbg;
     dbg << b_.bwx-b.bwx,b_.bwy-b.bwy,b_.bwz-b.bwz;
+    // 考虑偏置后，dR对偏置线性化的近似求解,邱笑晨《预积分总结与公式推导》P13～P14
+    // Forster论文公式（44）yP17也有结果（但没有推导），后面两个函数GetDeltaPosition和GetDeltaPosition也是基于此推导的
     return NormalizeRotation(dR * Sophus::SO3f::exp(JRg * dbg).matrix());
 }
 
+/** 
+ * @brief 根据新的偏置计算新的dV
+ * @param b_ 新的偏置
+ * @return dV
+ */
 Eigen::Vector3f Preintegrated::GetDeltaVelocity(const Bias &b_)
 {
     std::unique_lock<std::mutex> lock(mMutex);
@@ -300,27 +327,45 @@ Eigen::Vector3f Preintegrated::GetDeltaVelocity(const Bias &b_)
     return dV + JVg * dbg + JVa * dba;
 }
 
+/** 
+ * @brief 根据新的偏置计算新的dR
+ * @param b_ 新的偏置
+ * @return dR
+ */
 Eigen::Vector3f Preintegrated::GetDeltaPosition(const Bias &b_)
 {
     std::unique_lock<std::mutex> lock(mMutex);
     Eigen::Vector3f dbg, dba;
     dbg << b_.bwx-b.bwx,b_.bwy-b.bwy,b_.bwz-b.bwz;
     dba << b_.bax-b.bax,b_.bay-b.bay,b_.baz-b.baz;
+    // 考虑偏置后，dP对偏置线性化的近似求解,邱笑晨《预积分总结与公式推导》P13，JPg和JPa在预积分处理中更新
     return dP + JPg * dbg + JPa * dba;
 }
 
+/** 
+ * @brief 返回经过db(δba, δbg)更新后的dR,与上面是一个意思
+ * @return dR
+ */
 Eigen::Matrix3f Preintegrated::GetUpdatedDeltaRotation()
 {
     std::unique_lock<std::mutex> lock(mMutex);
     return NormalizeRotation(dR * Sophus::SO3f::exp(JRg*db.head(3)).matrix());
 }
 
+/** 
+ * @brief 返回经过db(δba, δbg)更新后的dV,与上面是一个意思
+ * @return dV
+ */
 Eigen::Vector3f Preintegrated::GetUpdatedDeltaVelocity()
 {
     std::unique_lock<std::mutex> lock(mMutex);
     return dV + JVg * db.head(3) + JVa * db.tail(3);
 }
 
+/** 
+ * @brief 返回经过db(δba, δbg)更新后的dP,与上面是一个意思
+ * @return dP
+ */
 Eigen::Vector3f Preintegrated::GetUpdatedDeltaPosition()
 {
     std::unique_lock<std::mutex> lock(mMutex);

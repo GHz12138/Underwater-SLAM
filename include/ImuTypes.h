@@ -43,10 +43,13 @@ namespace Pressure
     public:
         double timestamp;
         float depth;
+        bool backproject;
+        bool frontproject;
+        bool deltat;
         bool isSet;  // 新增一个标志位，默认值为 false
 
-        DepthData(double ts, float d) : timestamp(ts), depth(d), isSet(true) {}  // 初始化时设置 valid 为 true
-        DepthData() : timestamp(0), depth(0), isSet(false) {}  // 默认构造函数，valid 设置为 false
+        DepthData(double ts, float d) : timestamp(ts), depth(d), isSet(true), backproject(false), frontproject(false), deltat(0) {}  // 初始化时设置 valid 为 true
+        DepthData() : timestamp(0), depth(0), isSet(false), backproject(false), frontproject(false), deltat(0) {}  // 默认构造函数，valid 设置为 false
     };
 }
 
@@ -232,7 +235,7 @@ public:
     Eigen::Vector3f avgA, avgW;
 
 
-private:
+// private:
     // Updated bias
     Bias bu;
     // Dif between original and updated bias

@@ -136,7 +136,7 @@ namespace ORB_SLAM3
                             // cout << "mTinit2=" << mTinit << endl;
                             if (!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
                             {
-                                // 累积时间小于10s并且距离小于0.02m
+                                // 如果累计时间差小于10s 并且距离小于2厘米，认为运动幅度太小，不足以初始化IMU，将mbBadImu设置为true
                                 if ((mTinit < 10.f) && (dist < 0.02))
                                 {
                                     cout << "Not enough motion for initializing. Reseting..." << endl;
@@ -146,13 +146,19 @@ namespace ORB_SLAM3
                                     mbBadImu = true;
                                 }
                             }
-
+                            // 判断成功跟踪匹配的点数是否足够多
+                            // 条件---------1.1、跟踪成功的内点数目大于75-----1.2、并且是单目--或--2.1、跟踪成功的内点数目大于100-----2.2、并且不是单目
                             bool bLarge = ((mpTracker->GetMatchesInliers() > 75) && mbMonocular) || ((mpTracker->GetMatchesInliers() > 100) && !mbMonocular);
+                            // 局部地图+IMU一起优化，优化关键帧位姿、地图点、IMU参数
                             Optimizer::LocalInertialBA(mpCurrentKeyFrame, &mbAbortBA, mpCurrentKeyFrame->GetMap(), num_FixedKF_BA, num_OptKF_BA, num_MPs_BA, num_edges_BA, bLarge, !mpCurrentKeyFrame->GetMap()->GetIniertialBA2());
                             b_doneLBA = true;
                         }
                         else
                         {
+                            // Step 6.2 不是IMU模式或者当前关键帧所在的地图还未完成IMU初始化
+                            // 局部地图BA，不包括IMU数据
+                            // 注意这里的第二个参数是按地址传递的,当这里的 mbAbortBA 状态发生变化时，能够及时执行/停止BA
+                            // 局部地图优化，不包括IMU信息。优化关键帧位姿、地图点
                             Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame, &mbAbortBA, mpCurrentKeyFrame->GetMap(), num_FixedKF_BA, num_OptKF_BA, num_MPs_BA, num_edges_BA);
                             b_doneLBA = true;
                         }
@@ -179,6 +185,7 @@ namespace ORB_SLAM3
 #endif
 
                     // Initialize IMU here
+                    // Step 7 当前关键帧所在地图未完成IMU初始化（第一阶段）
                     if (!mpCurrentKeyFrame->GetMap()->isImuInitialized() && mbInertial)
                     {
                         if (mbMonocular)
@@ -208,6 +215,7 @@ namespace ORB_SLAM3
                                     cout << "start VIBA 1" << endl;
                                     mpCurrentKeyFrame->GetMap()->SetIniertialBA1();
                                     if (mbMonocular)
+                                        // 如果累计时间差大于5s，开始VIBA1（IMU第二阶段初始化）
                                         InitializeIMU(1.f, 1e5, true);
                                     else
                                         InitializeIMU(1.f, 1e5, true);
@@ -215,6 +223,8 @@ namespace ORB_SLAM3
                                     cout << "end VIBA 1" << endl;
                                 }
                             }
+                            // Step 9.2 根据条件判断是否进行VIBA2（IMU第三次初始化）
+                            // 当前关键帧所在的地图还未完成VIBA 2
                             else if (!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
                             {
                                 if (mTinit > 15.0f)
@@ -231,6 +241,7 @@ namespace ORB_SLAM3
                             }
 
                             // scale refinement
+                            // Step 9.3 在关键帧小于100时，会在满足一定时间间隔后多次进行尺度、重力方向优化
                             if (((mpAtlas->KeyFramesInMap()) <= 200) &&
                                 ((mTinit > 25.0f && mTinit < 25.5f) ||
                                  (mTinit > 35.0f && mTinit < 35.5f) ||
@@ -311,13 +322,13 @@ namespace ORB_SLAM3
 
         if (mpCurrentKeyFrame->mPrevKF)
         {
-            // 只在需要时打开文件
-            std::ofstream outfile("/ORB_SLAM3/KeyFrameDepth.csv", std::ios::app);
-            if (!outfile.is_open())
-            {
-                std::cerr << "Error opening file for writing!" << std::endl;
-                return;
-            }
+            // // 只在需要时打开文件
+            // std::ofstream outfile("/ORB_SLAM3/mvMeasurment.csv", std::ios::app);
+            // if (!outfile.is_open())
+            // {
+            //     std::cerr << "Error opening file for writing!" << std::endl;
+            //     return;
+            // }
 
             bool written = false;
             // 计算空状态，以减少多次调用empty()
@@ -333,33 +344,52 @@ namespace ORB_SLAM3
                         abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp))
                     {
                         mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth->backproject = true;
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth->deltat = abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp);
                     }
                     else
                     {
                         mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth->frontproject = true;
+                        mpCurrentKeyFrame->mPrevKF->mpKFDepth->deltat = abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp);
                     }
-                    written = true;
                 }
                 else if (!prevDepthEmpty)
                 {
                     mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back();
-                    written = true;
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth->backproject = true;
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth->deltat = abs(mpCurrentKeyFrame->mPrevKF->mvDepthBetweenKF.back().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp);
                 }
                 else if (!currentDepthEmpty)
                 {
                     mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
-                    written = true;
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth->frontproject = true;
+                    mpCurrentKeyFrame->mPrevKF->mpKFDepth->deltat = abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp);
                 }
             }
-            else // 没有 prevKF
-            {
-                if (!currentDepthEmpty)
-                {
-                    mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
-                    written = true;
-                }
-            }
+            // else // 没有 prevKF
+            // {
+            //     if (!currentDepthEmpty)
+            //     {
+            //         mpCurrentKeyFrame->mPrevKF->mpKFDepth = &mpCurrentKeyFrame->mvDepthBetweenKF.front();
+            //         mpCurrentKeyFrame->mPrevKF->mpKFDepth->frontproject = true;
+            //         mpCurrentKeyFrame->mPrevKF->mpKFDepth->deltat = abs(mpCurrentKeyFrame->mvDepthBetweenKF.front().timestamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp);
+            //     }
+            // }
 
+            // // 使用互斥锁保护对 mvMeasurements 的访问
+            // if (mpCurrentKeyFrame->mPrevKF->mpImuPreintegrated)
+            // {
+            //     std::lock_guard<std::mutex> lock(mpCurrentKeyFrame->mPrevKF->mpImuPreintegrated->mMutex);
+            //     if (mpCurrentKeyFrame->mPrevKF->mpImuPreintegrated->mvMeasurements.empty())
+            //     {
+            //         outfile << "No IMU measurements" << "\n";
+            //     }
+            //     else
+            //     {
+            //         outfile << "IMU measurements: " << mpCurrentKeyFrame->mPrevKF->mpImuPreintegrated->mvMeasurements.size() << "\n";
+            //     }
+            // }
             // // 只有在有有效深度数据时才写入文件
             // if (written && mpCurrentKeyFrame->mPrevKF->mpKFDepth)
             // {
@@ -1345,12 +1375,16 @@ namespace ORB_SLAM3
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             mScale = 1.0;
+            Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
+            
         }
+
         mScale = 1.0;
 
         mInitTime = mpTracker->mLastFrame.mTimeStamp - vpKF.front()->mTimeStamp;
 
         std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+        // 3. 计算残差及偏置差，优化尺度重力方向及速度偏置，偏置先验为0，双目时不优化尺度
         Optimizer::InertialOptimization(mpAtlas->GetCurrentMap(), mRwg, mScale, mbg, mba, mbMonocular, infoInertial, false, false, priorG, priorA);
 
         std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -1363,12 +1397,14 @@ namespace ORB_SLAM3
         }
         // 到此时为止，前面做的东西没有改变map
         // Before this line we are not changing the map
-        {
+        { // 后续改变地图，所以加锁
             unique_lock<mutex> lock(mpAtlas->GetCurrentMap()->mMutexMapUpdate);
             if ((fabs(mScale - 1.f) > 0.00001) || !mbMonocular)
             {
+                // 4.1 恢复重力方向与尺度信息
                 Sophus::SE3f Twg(mRwg.cast<float>().transpose(), Eigen::Vector3f::Zero());
                 mpAtlas->GetCurrentMap()->ApplyScaledRotation(Twg, mScale, true);
+                // 4.2 更新普通帧的位姿，主要是当前帧与上一帧
                 mpTracker->UpdateFrameIMU(mScale, vpKF[0]->GetImuBias(), mpCurrentKeyFrame);
             }
 
@@ -1381,6 +1417,8 @@ namespace ORB_SLAM3
                 }
         }
 
+        // TODO 这步更新是否有必要做待研究，0.4版本是放在FullInertialBA下面做的
+        // 这个版本FullInertialBA不直接更新位姿及三位点了
         mpTracker->UpdateFrameIMU(1.0, vpKF[0]->GetImuBias(), mpCurrentKeyFrame);
         if (!mpAtlas->isImuInitialized())
         {
@@ -1392,6 +1430,8 @@ namespace ORB_SLAM3
         std::chrono::steady_clock::time_point t4 = std::chrono::steady_clock::now();
         if (bFIBA)
         {
+            // 5. 承接上一步纯imu优化，按照之前的结果更新了尺度信息及适应重力方向，所以要结合地图进行一次视觉加imu的全局优化，这次带了MP等信息
+            // ! 1.0版本里面不直接赋值了，而是将所有优化后的信息保存到变量里面
             if (priorA != 0.f)
                 Optimizer::FullInertialBA(mpAtlas->GetCurrentMap(), 100, false, mpCurrentKeyFrame->mnId, NULL, true, priorG, priorA);
             else
