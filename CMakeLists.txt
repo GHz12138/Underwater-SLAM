@@ -215,16 +215,22 @@ endif()
 #     target_link_libraries(mono_realsense_D435i ${PROJECT_NAME})
 # endif()
 
-# #Monocular inertial examples
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular-Inertial)
+#Monocular inertial examples
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular-Inertial)
 
-# add_executable(mono_inertial_euroc
-#         Examples/Monocular-Inertial/mono_inertial_euroc.cc)
-# target_link_libraries(mono_inertial_euroc ${PROJECT_NAME})
+add_executable(mono_inertial_euroc
+        Examples/Monocular-Inertial/mono_inertial_euroc.cc)
+target_link_libraries(mono_inertial_euroc ${PROJECT_NAME})
+
+add_executable(mono_inertial_depth
+        Examples/Monocular-Inertial/mono_inertial_depth.cc)
+target_link_libraries(mono_inertial_depth ${PROJECT_NAME})
 
 # add_executable(mono_inertial_tum_vi
 #         Examples/Monocular-Inertial/mono_inertial_tum_vi.cc)
 # target_link_libraries(mono_inertial_tum_vi ${PROJECT_NAME})
+
+
 
 # if(realsense2_FOUND)
 #     add_executable(mono_inertial_realsense_t265

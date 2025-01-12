@@ -1,0 +1,1 @@
+./Examples/Monocular-Inertial/mono_inertial_depth Vocabulary/ORBvoc.txt Examples/Monocular-Inertial/archaeo.yaml /mnt/Aqualoc/Archaeological_site_sequences/archaeo_sequence_09_raw_data/ /mnt/Aqualoc/Archaeological_site_sequences/archaeo_sequence_09_raw_data/Times.txt

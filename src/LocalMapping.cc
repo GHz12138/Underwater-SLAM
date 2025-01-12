@@ -1375,7 +1375,7 @@ namespace ORB_SLAM3
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
             mScale = 1.0;
-            Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
+            // Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
             
         }
 

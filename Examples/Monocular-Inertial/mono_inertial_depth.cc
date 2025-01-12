@@ -35,7 +35,10 @@ void LoadImages(const string &strImagePath, const string &strPathTimes,
 
 void LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::Point3f> &vAcc, vector<cv::Point3f> &vGyro);
 
+void LoadPressure(const string &strPressurePath, vector<double> &vTimeStamps, vector<double> &vDepth);
+
 double ttrack_tot = 0;
+
 int main(int argc, char *argv[])
 {
 
@@ -65,6 +68,8 @@ int main(int argc, char *argv[])
     vector<int> nImages;
     vector<int> nImu;
     vector<int> first_imu(num_seq, 0);
+    vector<vector<double>> vTimestampsPressure; // 用于存储每个序列的时间戳
+    vector<vector<double>> vDepth;              // 用于存储每个序列的深度数据
 
     vstrImageFilenames.resize(num_seq);
     vTimestampsCam.resize(num_seq);
@@ -73,6 +78,8 @@ int main(int argc, char *argv[])
     vTimestampsImu.resize(num_seq);
     nImages.resize(num_seq);
     nImu.resize(num_seq);
+    vTimestampsPressure.resize(num_seq); // 初始化
+    vDepth.resize(num_seq);              // 初始化
 
     int tot_images = 0;
     for (seq = 0; seq < num_seq; seq++)
@@ -82,14 +89,19 @@ int main(int argc, char *argv[])
         string pathSeq(argv[(2 * seq) + 3]);
         string pathTimeStamps(argv[(2 * seq) + 4]);
 
-        string pathCam0 = pathSeq + "/mav0/cam0/data";
-        string pathImu = pathSeq + "/mav0/imu0/data.csv";
+        string pathCam0 = pathSeq + "/cam0/data";
+        string pathImu = pathSeq + "/imu0/data.csv";
+        string pathPressure = pathSeq + "/depth.csv"; // depth.csv路径
 
         LoadImages(pathCam0, pathTimeStamps, vstrImageFilenames[seq], vTimestampsCam[seq]);
         cout << "LOADED!" << endl;
 
         cout << "Loading IMU for sequence " << seq << "...";
         LoadIMU(pathImu, vTimestampsImu[seq], vAcc[seq], vGyro[seq]);
+        cout << "LOADED!" << endl;
+
+        cout << "Loading Pressure data for sequence " << seq << "...";
+        LoadPressure(pathPressure, vTimestampsPressure[seq], vDepth[seq]); // 调用新的LoadPressure函数
         cout << "LOADED!" << endl;
 
         nImages[seq] = vstrImageFilenames[seq].size();
@@ -103,7 +115,6 @@ int main(int argc, char *argv[])
         }
 
         // Find first imu to be considered, supposing imu measurements start first
-
         while (vTimestampsImu[seq][first_imu[seq]] <= vTimestampsCam[seq][0])
             first_imu[seq]++;
         first_imu[seq]--; // first imu measurement to be considered
@@ -116,7 +127,7 @@ int main(int argc, char *argv[])
     cout.precision(17);
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::IMU_MONOCULAR, true);
+    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::IMU_MONOCULAR_DEPTH, true);
     float imageScale = SLAM.GetImageScale();
 
     double t_resize = 0.f;
@@ -129,6 +140,7 @@ int main(int argc, char *argv[])
         // Main loop
         cv::Mat im;
         vector<ORB_SLAM3::IMU::Point> vImuMeas;
+        vector<ORB_SLAM3::Pressure::DepthData> vPressureMeas;
         proccIm = 0;
         for (int ni = 0; ni < nImages[seq]; ni++, proccIm++)
         {
@@ -184,6 +196,44 @@ int main(int argc, char *argv[])
                 }
             }
 
+            // Synchronize depth data
+            vPressureMeas.clear();
+            while (!vTimestampsPressure[seq].empty() && vTimestampsPressure[seq].front() <= tframe)
+            {
+                // 取出所有时间戳小于等于当前图像时间戳的深度数据
+                double t_depth = vTimestampsPressure[seq].front();
+                float depth = vDepth[seq].front();
+
+                vPressureMeas.push_back(ORB_SLAM3::Pressure::DepthData(t_depth, depth));
+                vTimestampsPressure[seq].erase(vTimestampsPressure[seq].begin()); // 移除已处理的数据
+                vDepth[seq].erase(vDepth[seq].begin());
+            }
+
+            // std::ofstream outfile("/ORB_SLAM3/vPressureMeas.csv", std::ios::app);
+
+            // if (!outfile.is_open())
+            // {
+            //     std::cerr << "Error opening file for writing!" << std::endl;
+            // }
+
+            // if (vPressureMeas.empty())
+            // {
+            //     outfile << "Not Depth measurement" << "\n";
+            // }
+            // else
+            // {
+            //     // 将 mvDepthBetweenKF 中的深度数据写入文件
+            //     for (const auto &depthData : vPressureMeas)
+            //     {
+            //         outfile << "Timestamp: " << std::fixed << std::setprecision(9) << depthData.timestamp
+            //                 << ", Depth: " << std::fixed << std::setprecision(6) << depthData.depth << std::endl;
+            //     }
+            // }
+            
+
+            // // 关闭文件
+            // outfile.close();
+
 #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 #else
@@ -192,7 +242,7 @@ int main(int argc, char *argv[])
 
             // Pass the image to the SLAM system
             // cout << "tframe = " << tframe << endl;
-            SLAM.TrackMonocular(im, tframe, vImuMeas); // TODO change to monocular_inertial
+            SLAM.TrackMonocular(im, tframe, vImuMeas, vPressureMeas); // TODO change to monocular_inertial
 
 #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
@@ -307,4 +357,47 @@ void LoadIMU(const string &strImuPath, vector<double> &vTimeStamps, vector<cv::P
             vGyro.push_back(cv::Point3f(data[1], data[2], data[3]));
         }
     }
+}
+
+void LoadPressure(const string &strPressurePath, vector<double> &vTimeStamps, vector<double> &vDepth)
+{
+    ifstream fPressure;
+    fPressure.open(strPressurePath.c_str());
+
+    // Reserve memory for the vectors (based on expected file size)
+    vTimeStamps.reserve(5000);
+    vDepth.reserve(5000);
+
+    // Read the pressure data line by line
+    while (!fPressure.eof())
+    {
+        string s;
+        getline(fPressure, s);
+
+        // Skip empty lines or comments
+        if (s.empty() || s[0] == '#')
+            continue;
+
+        stringstream ss(s);
+        double data[2]; // One for timestamp, one for depth
+        int count = 0;
+
+        // Read comma-separated values
+        size_t pos = 0;
+        while ((pos = s.find(',')) != string::npos)
+        {
+            string item = s.substr(0, pos);
+            data[count++] = stod(item); // Convert string to double
+            s.erase(0, pos + 1);
+        }
+
+        // The last value after the last comma
+        data[1] = stod(s);
+
+        // Push the timestamp and depth to respective vectors
+        vTimeStamps.push_back(data[0] / 1e9); // Convert timestamp to seconds
+        vDepth.push_back(data[1]);
+    }
+
+    fPressure.close();
 }
