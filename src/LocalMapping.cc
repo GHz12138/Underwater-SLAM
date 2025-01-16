@@ -1370,16 +1370,13 @@ namespace ORB_SLAM3
             mbg = mpCurrentKeyFrame->GetGyroBias().cast<double>();
             mba = mpCurrentKeyFrame->GetAccBias().cast<double>();
         }
-
+        mScale = 1.0;
         // code by ghz get IMU  scale initial number
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
-            mScale = 1.0;
-            Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
-            
+            mScale = 2.0;
+            // Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
         }
-
-        mScale = 1.0;
 
         mInitTime = mpTracker->mLastFrame.mTimeStamp - vpKF.front()->mTimeStamp;
 

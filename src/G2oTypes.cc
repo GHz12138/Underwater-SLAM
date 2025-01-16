@@ -611,8 +611,7 @@ namespace ORB_SLAM3
         setInformation(Info);
     }
 
-    EdgeDepthGS::EdgeDepthGS(const double &dz)
-        : mdZ(dz) // 初始化 const 成员 dt
+    EdgeDepthGS::EdgeDepthGS()
     {
         resize(4);
 
@@ -660,7 +659,7 @@ namespace ORB_SLAM3
         const double s = VS->estimate();
         const Eigen::RowVector3d e3 = Eigen::RowVector3d::UnitZ();
 
-        const double ep = VS->estimate() * e3 * VGDir->estimate().Rwg * (VP2->estimate().twb - VP1->estimate().twb) - mdZ;
+        const double ep = VS->estimate() * e3 * VGDir->estimate().Rgw * (VP2->estimate().twb - VP1->estimate().twb) - _measurement;
 
         _error << ep;
     }
@@ -748,41 +747,41 @@ namespace ORB_SLAM3
         const VertexPose *VP2 = static_cast<const VertexPose *>(_vertices[1]);
         const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[2]);
         const VertexScale *VS = static_cast<const VertexScale *>(_vertices[3]);
-
+    
         const Eigen::Matrix3d Rwb1 = VP1->estimate().Rwb;
         const Eigen::Matrix3d Rbw1 = Rwb1.transpose();
         const Eigen::Matrix3d Rwb2 = VP2->estimate().Rwb;
-        const Eigen::Matrix3d Rwg = VGDir->estimate().Rwg;
+        const Eigen::Matrix3d Rgw = VGDir->estimate().Rwg.transpose();
         Eigen::MatrixXd Gm = Eigen::MatrixXd::Zero(3, 2);
         Gm(0, 0) = 1;
         Gm(1, 1) = 1;
 
         const Eigen::RowVector3d e3 = Eigen::RowVector3d::UnitZ();
         const double s = VS->estimate();
-        const Eigen::MatrixXd dGdTheta = Rwg * Gm;
+        
 
         // Jacobians wrt Pose 1
         _jacobianOplus[0].setZero();
 
         // translation
-        _jacobianOplus[0].block<1, 3>(0, 3) = s * e3 * Rwg * Rwb2;
+        _jacobianOplus[0].block<1, 3>(0, 3) = s * e3 * Rgw * Rwb2;
 
         // Jacobians wrt Pose 2
         _jacobianOplus[1].setZero();
 
         // translation
-        _jacobianOplus[1].block<1, 3>(0, 9) = -s * e3 * Rwg * Rwb1;
+        _jacobianOplus[1].block<1, 3>(0, 9) = -s * e3 * Rgw * Rwb1;
 
         // Jacobians wrt GDir
         // 如果有深度计外参这个地方要加上
         _jacobianOplus[2].setZero();
 
-        _jacobianOplus[2].block<1, 2>(0, 12) = -s * e3 * Rwg * Sophus::SO3d::hat(VP2->estimate().twb - VP1->estimate().twb) * Gm;
+        _jacobianOplus[2].block<1, 2>(0, 12) = s * e3 * Rgw * Sophus::SO3d::hat(VP2->estimate().twb - VP1->estimate().twb) * Gm;
 
         // Jacobians wrt scale
         _jacobianOplus[3].setZero();
 
-        _jacobianOplus[3].block<1, 1>(0, 14) = e3 * Rwg * (VP2->estimate().twb - VP1->estimate().twb);
+        _jacobianOplus[3].block<1, 1>(0, 14) = e3 * Rgw * (VP2->estimate().twb - VP1->estimate().twb);
     }
 
     EdgePriorPoseImu::EdgePriorPoseImu(ConstraintPoseImu *c)
@@ -928,29 +927,54 @@ namespace ORB_SLAM3
 
     void EdgeScaleDepth::computeError()
     {
-        const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
-        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
+        
+        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[0]);
 
-        const Eigen::Matrix3d Rwg = VGDir->estimate().Rwg;
+
         Eigen::Vector3d dP = Rwg * (Pj - Pi);
         double rDepth = VS->estimate() * abs((double)dP(2)) - _measurement;
-
-        std::cout << "VS = " << VS->estimate() << std::endl;
-        std::cout << "dP3 = " << (double)dP(2) << std::endl;
-        std::cout << "dZ = " << VS->estimate() * abs((double)dP(2)) << std::endl;
-        std::cout << "rDepth: " << rDepth << std::endl;
 
         _error(0, 0) = rDepth;
     }
 
     void EdgeScaleDepth::linearizeOplus()
     {
-        const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
-        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
-        const Eigen::Matrix3d Rwg = VGDir->estimate().Rwg;
-
+        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[0]);
+        
         // 计算dP（误差）
         Eigen::Vector3d dP = Rwg * (Pj - Pi);
+
+        // 计算与 VertexScale 相关的雅可比矩阵 (1x1)
+        _jacobianOplusXi(0, 0) = abs(dP(2));
+
+    }
+
+
+    void EdgeScaleGdirDepth::computeError()
+    {
+        const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
+        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
+
+        const Eigen::Matrix3d Rgw = VGDir->estimate().Rwg.transpose();
+        Eigen::Vector3d dP = Rgw * (Pj - Pi);
+        double rDepth = VS->estimate() * (double)dP(2) - _measurement;
+
+        // std::cout << "Rwg= " << "\n" << Rwg << std::endl;
+        // std::cout << "VS = " << VS->estimate() << std::endl;
+        std::cout << "dP = " << (double)dP(2) << std::endl;
+        std::cout << "rDepth= " << rDepth << std::endl;
+        std::cout << "VS = " << VS->estimate() << std::endl;
+        _error(0, 0) = rDepth;
+    }
+
+    void EdgeScaleGdirDepth::linearizeOplus()
+    {
+        const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
+        const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
+        const Eigen::Matrix3d Rgw = VGDir->estimate().Rwg.transpose();
+
+        // 计算dP（误差）
+        Eigen::Vector3d dP = Rgw * (Pj - Pi);
 
         // 初始化雅可比矩阵
         _jacobianOplusXi = Eigen::Matrix<double, 1, 2>::Zero(); // 对应VertexGDir
@@ -958,21 +982,21 @@ namespace ORB_SLAM3
 
         // 计算与 VertexGDir 相关的雅可比矩阵 (1x2)
         Eigen::MatrixXd Gm = Eigen::MatrixXd::Zero(3, 2);
-        Gm(0, 1) = -IMU::GRAVITY_VALUE;
-        Gm(1, 0) = IMU::GRAVITY_VALUE;
+        Gm(0, 0) = 1;
+        Gm(1, 1) = 1;
         const Eigen::RowVector3d e3 = Eigen::RowVector3d::UnitZ();
 
+        // std::cout << "VS = " << VS->estimate() << std::endl;
+        // std::cout << "Rwg = " << "\n" << Rwg << std::endl;
+        // std::cout << "Pj - Pi = "<< Pj - Pi <<  "\n" << Sophus::SO3d::hat(Pj - Pi) << std::endl;
         // 计算针对 VertexGDir 的雅可比矩阵 (1x2)
-        _jacobianOplusXi.block<1, 2>(0, 0) = -VS->estimate() * e3 * Rwg * Sophus::SO3d::hat(Pj - Pi) * Gm;
+        _jacobianOplusXi.block<1, 2>(0, 0) = VS->estimate() * e3  * Sophus::SO3d::hat(dP) * Gm;
 
         // 计算与 VertexScale 相关的雅可比矩阵 (1x1)
         _jacobianOplusXj(0, 0) = dP(2);
 
         // 打印_jacobianOplusXi和_jacobianOplusXj
-        std::cout << "_jacobianOplusXi:\n"
-                  << _jacobianOplusXi << std::endl;
-        std::cout << "_jacobianOplusXj:\n"
-                  << _jacobianOplusXj << std::endl;
+        std::cout << "jacobian: \n" << _jacobianOplusXi(0,0) << "," << _jacobianOplusXi(0,1) << "," << _jacobianOplusXj << std::endl;
     }
 
 }

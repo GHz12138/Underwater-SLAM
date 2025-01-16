@@ -3231,10 +3231,11 @@ namespace ORB_SLAM3
 
                 if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
                 {
-                    // code by ghz
                     double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
-                    if (dz > 0.001)
+                    if (abs(dz) > 0.001)
                     {
+                        // code by ghz
+
                         // std::cout << "The i = " << i + 1 << " in " << vpKFs.size() << ", The Releative Depth dZ = " << dz << std::endl;
                         // EdgeDepthGS *ez = new EdgeDepthGS(dz);
                         // ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP1));
@@ -3242,6 +3243,21 @@ namespace ORB_SLAM3
                         // ez->setVertex(2, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
                         // ez->setVertex(3, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
                         // optimizer.addEdge(ez);
+
+                        EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
+
+                        ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
+                        ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
+                        std::cout << "dz= " << dz << std::endl;
+                        ez->setMeasurement(dz);
+                        ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
+                        ez->Pj = pKFi->GetCameraCenter().cast<double>();
+
+                        // Set information matrix (for covariance)
+                        Eigen::Matrix<double, 1, 1> InvCovDepth;
+                        InvCovDepth(0) = 1 / (0.02 * 0.02); // Example covariance
+                        ez->setInformation(InvCovDepth);
+                        optimizer.addEdge(ez);
                     }
                 }
             }
@@ -3250,7 +3266,7 @@ namespace ORB_SLAM3
         // Compute error for different scales
         std::set<g2o::HyperGraph::Edge *> setEdges = optimizer.edges();
 
-        optimizer.setVerbose(false);
+        optimizer.setVerbose(true);
         optimizer.initializeOptimization();
         optimizer.optimize(its);
 
@@ -3588,14 +3604,13 @@ namespace ORB_SLAM3
         VGDir->setId(0);
         VGDir->setFixed(false);
         optimizer.addVertex(VGDir);
-        
-        VertexScale *VS = new VertexScale(2);
+
+        VertexScale *VS = new VertexScale(scale);
         VS->setId(1);
         VS->setFixed(false);
         optimizer.addVertex(VS);
 
         std::cout << "****************************" << std::endl;
-        std::cout << "Added VertexScale with ID 0" << std::endl;
 
         // Add edges
         int count_edges = 0;
@@ -3612,21 +3627,18 @@ namespace ORB_SLAM3
                     double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
                     if (abs(dz) > 0.001)
                     {
-                        EdgeScaleDepth *ez = new EdgeScaleDepth();
+                        EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
                         count_edges++;
-                        
+
                         ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
                         ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
 
-                        ez->setMeasurement(dz);
+                        ez->setMeasurement(abs(dz));
                         ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
                         ez->Pj = pKFi->GetCameraCenter().cast<double>();
 
-
-                        std::cout << "VS estimate = " << VS->estimate() << std::endl;
-                        std::cout << "dz = " << dz << std::endl;
-                        Eigen::Vector3d dP = Rwg * (ez->Pj - ez->Pi);
-                        std::cout << "dP = " << (double)dP(2) << std::endl;
+                        Eigen::Vector3d dP = Rwg.transpose() * (ez->Pj - ez->Pi);
+                        std::cout << "dz= " << dz << ", " << "dP= " << (double)dP(2) << std::endl;
 
                         // Set information matrix (for covariance)
                         Eigen::Matrix<double, 1, 1> InvCovDepth;
@@ -3641,24 +3653,29 @@ namespace ORB_SLAM3
 
                         // Add edge to optimizer
                         optimizer.addEdge(ez);
-                        std::cout << "Current keyframe: " << pKFi->mTimeStamp << ", " << "Depth:" << pKFi->mpKFDepth->depth << ", Previous keyframe: " << pKFi->mPrevKF->mTimeStamp << ", " << "Depth:" << pKFi->mPrevKF->mpKFDepth->depth << std::endl;
+                        // std::cout << "Current keyframe: " << pKFi->mTimeStamp << ", " << "Depth:" << pKFi->mpKFDepth->depth << ", Previous keyframe: " << pKFi->mPrevKF->mTimeStamp << ", " << "Depth:" << pKFi->mPrevKF->mpKFDepth->depth << std::endl;
                     }
                 }
             }
         }
 
         std::cout << "Total edges added: " << count_edges << std::endl;
-
-        // Perform optimization
-        optimizer.setVerbose(true);
-        optimizer.initializeOptimization(); // Make sure we call this after adding vertices and edges
-        optimizer.optimize(2);
-
-        // Recover optimized scale
-        scale = VS->estimate();
-        Rwg = VGDir->estimate().Rwg;
-        std::cout << "OptimizeInitialScale after " << its << " iterations: mScale = " << scale << std::endl;
-        std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg << std::endl;
+        if (count_edges > 3)
+        {
+            // Perform optimization
+            optimizer.setVerbose(true);
+            optimizer.initializeOptimization(); // Make sure we call this after adding vertices and edges
+            optimizer.optimize(5);
+            // Recover optimized scale
+            scale = VS->estimate();
+            Rwg = VGDir->estimate().Rwg;
+            std::cout << "OptimizeInitialScale after " << its << " iterations: mScale = " << scale << std::endl;
+            // std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg.eulerAngles(2,1,0) << std::endl;
+        }
+        else
+        {
+            std::cout << "Not enough edges to optimize scale" << std::endl;
+        }
     }
 
     void Optimizer::LocalBundleAdjustment(KeyFrame *pMainKF, vector<KeyFrame *> vpAdjustKF, vector<KeyFrame *> vpFixedKF, bool *pbStopFlag)

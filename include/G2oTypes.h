@@ -671,7 +671,7 @@ namespace ORB_SLAM3
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-        EdgeDepthGS(const double &dz);
+        EdgeDepthGS();
 
         virtual bool read(std::istream &is) { return false; }
         virtual bool write(std::ostream &os) const { return false; }
@@ -679,7 +679,6 @@ namespace ORB_SLAM3
         void computeError();
         virtual void linearizeOplus();
 
-        double mdZ;
 
         Eigen::Matrix<double, 15, 15> GetHessian()
         {
@@ -693,12 +692,34 @@ namespace ORB_SLAM3
         }
     };
 
-    class EdgeScaleDepth : public g2o::BaseBinaryEdge<1, double, VertexGDir, VertexScale>
+    class EdgeScaleDepth : public g2o::BaseUnaryEdge<1, double, VertexScale>
     {
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-        EdgeScaleDepth() : BaseBinaryEdge<1, double, VertexGDir, VertexScale>() {}
+        EdgeScaleDepth() : BaseUnaryEdge<1, double, VertexScale>() {}
+
+        bool read(std::istream &is) { return true; }
+
+        bool write(std::ostream &os) const { return true; }
+
+        void computeError();
+
+        virtual void linearizeOplus();
+
+        // Matrix3d GravityRot;
+        Eigen::Vector3d Pi;
+        Eigen::Vector3d Pj;
+        Eigen::Matrix3d Rwg;
+
+    };
+
+    class EdgeScaleGdirDepth : public g2o::BaseBinaryEdge<1, double, VertexGDir, VertexScale>
+    {
+    public:
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+        EdgeScaleGdirDepth() : BaseBinaryEdge<1, double, VertexGDir, VertexScale>() {}
 
         bool read(std::istream &is) { return true; }
 

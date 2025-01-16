@@ -36,7 +36,7 @@
             "name": "(gdb) 附加",
             "type": "cppdbg",
             "request": "attach",
-            "program": "/ORB_SLAM3/Examples/ROS/ORB_SLAM3/Mono_Inertial_Depth",
+            "program": "/ORB_SLAM3/Examples/Monocular-Inertial/mono_inertial_depth",
             "MIMode": "gdb",
             "setupCommands": [
                 {
