@@ -954,16 +954,18 @@ namespace ORB_SLAM3
     {
         const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
         const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
-
+        Eigen::Vector3d Tcp(0,0,-0.258);
         const Eigen::Matrix3d Rgw = VGDir->estimate().Rwg.transpose();
+        Eigen::Vector3d Tcd = Rgw * (Rwj - Rwi) * Tcp;
         Eigen::Vector3d dP = Rgw * (Pj - Pi);
-        double rDepth = VS->estimate() * (double)dP(2) - _measurement;
+
+        double rDepth = VS->estimate() * (double)dP(2) + (double)Tcd(2)  - _measurement;
 
         // std::cout << "Rwg= " << "\n" << Rwg << std::endl;
         // std::cout << "VS = " << VS->estimate() << std::endl;
-        std::cout << "dP = " << (double)dP(2) << std::endl;
-        std::cout << "rDepth= " << rDepth << std::endl;
-        std::cout << "VS = " << VS->estimate() << std::endl;
+        // std::cout << "dP = " << (double)dP(2) << std::endl;
+        // std::cout << "rDepth= " << rDepth << std::endl;
+        // std::cout << "VS = " << VS->estimate() << std::endl;
         _error(0, 0) = rDepth;
     }
 
@@ -995,8 +997,8 @@ namespace ORB_SLAM3
         // 计算与 VertexScale 相关的雅可比矩阵 (1x1)
         _jacobianOplusXj(0, 0) = dP(2);
 
-        // 打印_jacobianOplusXi和_jacobianOplusXj
-        std::cout << "jacobian: \n" << _jacobianOplusXi(0,0) << "," << _jacobianOplusXi(0,1) << "," << _jacobianOplusXj << std::endl;
+        // // 打印_jacobianOplusXi和_jacobianOplusXj
+        // std::cout << "jacobian: \n" << _jacobianOplusXi(0,0) << "," << _jacobianOplusXi(0,1) << "," << _jacobianOplusXj << std::endl;
     }
 
 }

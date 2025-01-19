@@ -43,19 +43,32 @@ IMU.T_b_c1: !!opencv-matrix
            0.01711187,  0.9997828,  0.01189665, -0.01915984,
            0.0, 0.0, 0.0, 1.]
 
-# # IMU noise
-# IMU.NoiseGyro: 0.001 #1.6968e-04
-# IMU.NoiseAcc: 0.02 #2.0e-3
-# IMU.GyroWalk: 5.0e-5
-# IMU.AccWalk: 1.0e-3 # 3e-03
-# IMU.Frequency: 200.0
 
-# # 01 IMU noise
-IMU.NoiseGyro: 6.e-4 # 2.44e-4 #1e-3 # rad/s^0.5
-IMU.NoiseAcc: 6.e-4 # 1.47e-3 #1e-2 # m/s^1.5
-IMU.GyroWalk: 5.e-5 # rad/s^1.5
-IMU.AccWalk: 6.e-5 # m/s^2.5
+# Transformation from camera to body-frame (imu)
+Pressure.T_c1_p: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: f
+   data: [ 0.0,
+           0.0,
+          -0.334]
+
+
+
+
+# IMU noise
+IMU.NoiseGyro: 0.001 #1.6968e-04
+IMU.NoiseAcc: 0.02 #2.0e-3
+IMU.GyroWalk: 5.0e-5
+IMU.AccWalk: 1.0e-3 # 3e-03
 IMU.Frequency: 200.0
+
+# # # 01 IMU noise
+# IMU.NoiseGyro: 6.e-4 # 2.44e-4 #1e-3 # rad/s^0.5
+# IMU.NoiseAcc: 6.e-4 # 1.47e-3 #1e-2 # m/s^1.5
+# IMU.GyroWalk: 5.e-5 # rad/s^1.5
+# IMU.AccWalk: 6.e-5 # m/s^2.5
+# IMU.Frequency: 200.0
 
 # # # 03 IMU noise
 # IMU.NoiseGyro: 0.001 #1.6968e-04

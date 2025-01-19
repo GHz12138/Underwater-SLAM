@@ -41,21 +41,35 @@ IMU.T_b_c1: !!opencv-matrix
              0.03426217, -0.99932882,  0.01296171, -0.0267952, 
              0.,          0.,          0.,          1.        ]
 
-
+Pressure.T_c1_p: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: f
+   data: [ 0.0,
+           0.0, 
+          -0.258]
 
   
-# IMU noise (Use those from VINS-mono)
+# IMU noise 
+# IMU.NoiseGyro: 3e-3 # 2.44e-4 #1e-3 # rad/s^0.5
+# IMU.NoiseAcc: 5e-2 # 1.47e-3 #1e-2 # m/s^1.5
+# IMU.GyroWalk: 1e-6 # rad/s^1.5
+# IMU.AccWalk: 1e-4 # m/s^2.5
+# IMU.Frequency: 200.0
+
+
 IMU.NoiseGyro: 3e-3 # 2.44e-4 #1e-3 # rad/s^0.5
 IMU.NoiseAcc: 5e-2 # 1.47e-3 #1e-2 # m/s^1.5
-IMU.GyroWalk: 1e-6 # rad/s^1.5
-IMU.AccWalk: 1e-4 # m/s^2.5
+IMU.GyroWalk: 1e-4 # rad/s^1.5
+IMU.AccWalk: 15e-4 # m/s^2.5
 IMU.Frequency: 200.0
 
-# IMU.NoiseGyro: 0.0003 # 0.004 (VINS) # 0.00016 (TUM) # 0.00016    # rad/s^0.5 
-# IMU.NoiseAcc: 0.005 # 0.04 (VINS) # 0.0028 (TUM) # 0.0028     # m/s^1.5
-# IMU.GyroWalk: 0.00001 # 0.000022 (VINS and TUM) rad/s^1.5
-# IMU.AccWalk: 0.00015 # 0.0004 (VINS) # 0.00086 # 0.00086    # m/s^2.5
-# IMU.Frequency: 200.0
+
+# Pressure sensor noise
+Pressure.Noise: 0.01
+Pressure.Frequency: 15.0
+
+
 
 
 #--------------------------------------------------------------------------------------------

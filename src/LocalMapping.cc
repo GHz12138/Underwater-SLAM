@@ -65,9 +65,12 @@ namespace ORB_SLAM3
         while (1)
         {
             // Tracking will see that Local Mapping is busy
+            // Step 1 告诉Tracking，LocalMapping正处于繁忙状态，请不要给我发送关键帧打扰我
+            // LocalMapping线程处理的关键帧都是Tracking线程发过来的，Tracking处理好了就
             SetAcceptKeyFrames(false);
 
             // Check if there are keyframes in the queue
+            // 等待处理的关键帧列表不为空 并且imu正常
             if (CheckNewKeyFrames() && !mbBadImu)
             {
 #ifdef REGISTER_TIMES
@@ -77,6 +80,8 @@ namespace ORB_SLAM3
                 std::chrono::steady_clock::time_point time_StartProcessKF = std::chrono::steady_clock::now();
 #endif
                 // BoW conversion and insertion in Map
+                //* Step 2 处理列表中的关键帧，包括计算BoW、更新观测、描述子、共视图，插入到地图等
+                // BoW用于实现回环，描述子是特征点的描述子
                 ProcessNewKeyFrame();
 
 #ifdef REGISTER_TIMES
@@ -88,6 +93,7 @@ namespace ORB_SLAM3
 #endif
 
                 // Check recent MapPoints
+                //* Step 3 根据地图点的观测情况剔除质量不好的地图点
                 MapPointCulling();
 #ifdef REGISTER_TIMES
                 std::chrono::steady_clock::time_point time_EndMPCulling = std::chrono::steady_clock::now();
@@ -97,13 +103,18 @@ namespace ORB_SLAM3
 #endif
 
                 // Triangulate new MapPoints
+                //* Step 4 当前关键帧与相邻关键帧通过三角化产生新的地图点，使得跟踪更稳
                 CreateNewMapPoints();
 
+                // 注意orbslam2中放在了函数SearchInNeighbors（用到了mbAbortBA）后面，应该放这里更合适
                 mbAbortBA = false;
 
                 if (!CheckNewKeyFrames())
                 {
                     // Find more matches in neighbor keyframes and fuse point duplications
+                    //*  Step 5 检查并融合当前关键帧与相邻关键帧帧（两级相邻）中重复的地图点
+                    // 先完成相邻关键帧与当前关键帧的地图点的融合（在相邻关键帧中查找当前关键帧的地图点），
+                    // 再完成当前关键帧与相邻关键帧的地图点的融合（在当前关键帧中查找当前相邻关键帧的地图点）
                     SearchInNeighbors();
                 }
 
@@ -120,21 +131,25 @@ namespace ORB_SLAM3
                 int num_MPs_BA = 0;
                 int num_edges_BA = 0;
 
+                // 已经处理完队列中的最后的一个关键帧，并且闭环检测没有请求停止LocalMapping
                 if (!CheckNewKeyFrames() && !stopRequested())
                 {
                     if (mpAtlas->KeyFramesInMap() > 2)
                     {
-
+                        // Step 6.1 处于IMU模式并且当前关键帧所在的地图已经完成IMU初始化
                         if (mbInertial && mpCurrentKeyFrame->GetMap()->isImuInitialized())
-                        { // 计算当前帧与上一帧，上一帧与上上一帧的距离之和
+                        { 
+                            // 计算上一关键帧到当前关键帧相机光心的距离 + 上上关键帧到上一关键帧相机光心的距离
                             float dist = (mpCurrentKeyFrame->mPrevKF->GetCameraCenter() - mpCurrentKeyFrame->GetCameraCenter()).norm() +
                                          (mpCurrentKeyFrame->mPrevKF->mPrevKF->GetCameraCenter() - mpCurrentKeyFrame->mPrevKF->GetCameraCenter()).norm();
-
-                            if (dist > 0.05)
+                            // std::cout << "dist=" << dist << std::endl;
+                            // 如果距离大于5厘米，记录当前KF和上一KF时间戳的差，累加到mTinit
+                            if (dist > 0.05 || mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
                                 // 累积上一帧到当前帧的时间差
                                 mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp;
                             // cout << "mTinit2=" << mTinit << endl;
-                            if (!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
+                            // 当前关键帧所在的地图尚未完成IMU BA2（IMU第三阶段初始化）
+                            if (!mpCurrentKeyFrame->GetMap()->GetIniertialBA2() && mpTracker->mSensor != System::IMU_MONOCULAR_DEPTH)
                             {
                                 // 如果累计时间差小于10s 并且距离小于2厘米，认为运动幅度太小，不足以初始化IMU，将mbBadImu设置为true
                                 if ((mTinit < 10.f) && (dist < 0.02))
@@ -1374,8 +1389,8 @@ namespace ORB_SLAM3
         // code by ghz get IMU  scale initial number
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
-            mScale = 2.0;
-            // Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
+            mScale = 1.0;
+            Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
         }
 
         mInitTime = mpTracker->mLastFrame.mTimeStamp - vpKF.front()->mTimeStamp;

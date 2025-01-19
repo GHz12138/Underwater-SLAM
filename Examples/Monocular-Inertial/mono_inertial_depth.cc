@@ -229,7 +229,6 @@ int main(int argc, char *argv[])
             //                 << ", Depth: " << std::fixed << std::setprecision(6) << depthData.depth << std::endl;
             //     }
             // }
-            
 
             // // 关闭文件
             // outfile.close();
@@ -283,18 +282,23 @@ int main(int argc, char *argv[])
     SLAM.Shutdown();
 
     // Save camera trajectory
-    if (bFileName)
-    {
-        const string kf_file = "kf_" + string(argv[argc - 1]) + ".txt";
-        const string f_file = "f_" + string(argv[argc - 1]) + ".txt";
-        SLAM.SaveTrajectoryEuRoC(f_file);
-        SLAM.SaveKeyFrameTrajectoryEuRoC(kf_file);
-    }
-    else
-    {
-        SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
-        SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
-    }
+    SLAM.SaveKeyFrameTrajectoryTUM("ORB-SLAM3-KeyFrameTrajectory.txt");
+    // Save camera trajectory
+    SLAM.SaveTrajectoryTUM("ORB-SLAM3-FrameTrajectory.txt");
+
+    // // Save camera trajectory
+    // if (bFileName)
+    // {
+    //     const string kf_file = "kf_" + string(argv[argc - 1]) + ".txt";
+    //     const string f_file = "f_" + string(argv[argc - 1]) + ".txt";
+    //     SLAM.SaveTrajectoryEuRoC(f_file);
+    //     SLAM.SaveKeyFrameTrajectoryEuRoC(kf_file);
+    // }
+    // else
+    // {
+    //     SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+    //     SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+    // }
 
     return 0;
 }

@@ -3187,8 +3187,7 @@ namespace ORB_SLAM3
         for (size_t i = 0; i < vpKFs.size(); i++)
         {
             KeyFrame *pKFi = vpKFs[i];
-            // if (!pKFi->mPrevKF)
-            //     std::cout << "Not KF measurement in InertialOptimization" << std::endl;
+
             if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
             {
                 if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
@@ -3229,36 +3228,89 @@ namespace ORB_SLAM3
                 vppUsedKF.push_back(make_pair(pKFi->mPrevKF, pKFi));
                 optimizer.addEdge(ei);
 
+            }
+        }
+
+        double totalErr = 0.0;
+        int count = 0;
+        double avgErr = 0;
+
+        for (size_t i = 0; i < vpKFs.size(); i++)
+        {
+            KeyFrame *pKFi = vpKFs[i];
+            if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
+            {
+                if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
+                    continue;
+
                 if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
                 {
                     double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
-                    if (abs(dz) > 0.001)
-                    {
-                        // code by ghz
 
-                        // std::cout << "The i = " << i + 1 << " in " << vpKFs.size() << ", The Releative Depth dZ = " << dz << std::endl;
-                        // EdgeDepthGS *ez = new EdgeDepthGS(dz);
-                        // ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP1));
-                        // ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VP2));
-                        // ez->setVertex(2, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
-                        // ez->setVertex(3, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
-                        // optimizer.addEdge(ez);
+                    Eigen::Vector3d dP = Rwg.transpose() * (pKFi->GetImuPosition().cast<double>() - pKFi->mPrevKF->GetImuPosition().cast<double>());
 
-                        EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
+                    double err = abs((double)dP(2) - dz);
 
-                        ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
-                        ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
-                        std::cout << "dz= " << dz << std::endl;
-                        ez->setMeasurement(dz);
-                        ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
-                        ez->Pj = pKFi->GetCameraCenter().cast<double>();
+                    totalErr += err;
+                    count++;
+                }
+            }
+        }
 
-                        // Set information matrix (for covariance)
-                        Eigen::Matrix<double, 1, 1> InvCovDepth;
-                        InvCovDepth(0) = 1 / (0.02 * 0.02); // Example covariance
-                        ez->setInformation(InvCovDepth);
-                        optimizer.addEdge(ez);
-                    }
+        if (count > 0)
+        {
+            avgErr = totalErr / count;
+            std::cout << "Average err: " << avgErr << std::endl;
+        }
+        else
+        {
+            std::cout << "No valid KeyFrames found." << std::endl;
+        }
+
+        // Add edges
+        int count_edges = 0;
+        for (size_t i = 0; i < vpKFs.size(); i++)
+        {
+            KeyFrame *pKFi = vpKFs[i];
+            if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
+            {
+                if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
+                    continue;
+
+                if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
+                {
+                    double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
+                    EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
+                    count_edges++;
+
+                    ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
+                    ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
+
+                    ez->setMeasurement(dz);
+                    ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
+                    ez->Pj = pKFi->GetCameraCenter().cast<double>();
+                    ez->Rwi = pKFi->mPrevKF->GetPoseInverse().rotationMatrix().cast<double>();
+                    ez->Rwj = pKFi->GetPoseInverse().rotationMatrix().cast<double>();
+                    Eigen::Vector3d Tcp(0, 0, -0.258);
+                    Eigen::Vector3d dP = Rwg.transpose() * (ez->Pj - ez->Pi) + Rwg.transpose() * (ez->Rwj - ez->Rwi) * Tcp;
+                    std::cout << "dz= " << dz << ", " << "dP= " << (double)dP(2) << std::endl;
+
+                    // Set information matrix (for covariance)
+                    Eigen::Matrix<double, 1, 1> InvCovDepth;
+                    InvCovDepth(0) = 1 / (0.01 * 0.01); // Example covariance
+                    ez->setInformation(InvCovDepth);
+
+                    // Set robust kernel (Huber)
+                    // 设置一个鲁棒核函数
+                    g2o::RobustKernelCauchy *robustKernel = new g2o::RobustKernelCauchy();
+                    ez->setRobustKernel(robustKernel);
+                    robustKernel->setDelta(0.05);
+                    g2o::RobustKernelCauchy *rk = new g2o::RobustKernelCauchy;
+                    ez->setRobustKernel(rk);
+                    rk->setDelta(2*avgErr);
+
+                    // Add edge to optimizer
+                    optimizer.addEdge(ez);
                 }
             }
         }
@@ -3266,7 +3318,7 @@ namespace ORB_SLAM3
         // Compute error for different scales
         std::set<g2o::HyperGraph::Edge *> setEdges = optimizer.edges();
 
-        optimizer.setVerbose(true);
+        optimizer.setVerbose(false);
         optimizer.initializeOptimization();
         optimizer.optimize(its);
 
@@ -3281,9 +3333,11 @@ namespace ORB_SLAM3
         bg << VG->estimate();
         ba << VA->estimate();
         scale = VS->estimate();
-
         IMU::Bias b(vb[3], vb[4], vb[5], vb[0], vb[1], vb[2]);
         Rwg = VGDir->estimate().Rwg;
+
+        std::cout << "OptimizeInitialScale after " << its << " iterations: mScale = " << scale << std::endl;
+        std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg.eulerAngles(2, 1, 0).transpose() << std::endl;
 
         // Keyframes velocities and biases
         const int N = vpKFs.size();
@@ -3596,7 +3650,7 @@ namespace ORB_SLAM3
 
         linearSolver = new g2o::LinearSolverEigen<g2o::BlockSolverX::PoseMatrixType>();
         g2o::BlockSolverX *solver_ptr = new g2o::BlockSolverX(linearSolver);
-        g2o::OptimizationAlgorithmGaussNewton *solver = new g2o::OptimizationAlgorithmGaussNewton(solver_ptr);
+        g2o::OptimizationAlgorithmLevenberg *solver = new g2o::OptimizationAlgorithmLevenberg(solver_ptr);
         optimizer.setAlgorithm(solver);
 
         // Gravity and scale
@@ -3612,6 +3666,42 @@ namespace ORB_SLAM3
 
         std::cout << "****************************" << std::endl;
 
+        double totalErr = 0.0;
+        int count = 0;
+        double avgErr = 0;
+
+        for (size_t i = 0; i < vpKFs.size(); i++)
+        {
+            KeyFrame *pKFi = vpKFs[i];
+            if (pKFi->mPrevKF && pKFi->mnId <= maxKFid)
+            {
+                if (pKFi->isBad() || pKFi->mPrevKF->mnId > maxKFid)
+                    continue;
+
+                if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
+                {
+                    double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
+
+                    Eigen::Vector3d dP = Rwg.transpose() * (pKFi->GetImuPosition().cast<double>() - pKFi->mPrevKF->GetImuPosition().cast<double>());
+
+                    double err = abs((double)dP(2) - dz);
+
+                    totalErr += err;
+                    count++;
+                }
+            }
+        }
+
+        if (count > 0)
+        {
+            avgErr = totalErr / count;
+            std::cout << "Average err: " << avgErr << std::endl;
+        }
+        else
+        {
+            std::cout << "No valid KeyFrames found." << std::endl;
+        }
+
         // Add edges
         int count_edges = 0;
         for (size_t i = 0; i < vpKFs.size(); i++)
@@ -3625,36 +3715,38 @@ namespace ORB_SLAM3
                 if (pKFi->mPrevKF->mpKFDepth && pKFi->mpKFDepth)
                 {
                     double dz = pKFi->mpKFDepth->depth - pKFi->mPrevKF->mpKFDepth->depth;
-                    if (abs(dz) > 0.001)
-                    {
-                        EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
-                        count_edges++;
+                    EdgeScaleGdirDepth *ez = new EdgeScaleGdirDepth();
+                    count_edges++;
 
-                        ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
-                        ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
+                    ez->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VGDir));
+                    ez->setVertex(1, dynamic_cast<g2o::OptimizableGraph::Vertex *>(VS));
 
-                        ez->setMeasurement(abs(dz));
-                        ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
-                        ez->Pj = pKFi->GetCameraCenter().cast<double>();
+                    ez->setMeasurement(dz);
+                    ez->Pi = pKFi->mPrevKF->GetCameraCenter().cast<double>();
+                    ez->Pj = pKFi->GetCameraCenter().cast<double>();
+                    ez->Rwi = pKFi->mPrevKF->GetPoseInverse().rotationMatrix().cast<double>();
+                    ez->Rwj = pKFi->GetPoseInverse().rotationMatrix().cast<double>();
+                    Eigen::Vector3d Tcp(0, 0, -0.258);
+                    Eigen::Vector3d dP = Rwg.transpose() * (ez->Pj - ez->Pi) + Rwg.transpose() * (ez->Rwj - ez->Rwi) * Tcp;
+                    std::cout << "dz= " << dz << ", " << "dP= " << (double)dP(2) << std::endl;
 
-                        Eigen::Vector3d dP = Rwg.transpose() * (ez->Pj - ez->Pi);
-                        std::cout << "dz= " << dz << ", " << "dP= " << (double)dP(2) << std::endl;
+                    // Set information matrix (for covariance)
+                    Eigen::Matrix<double, 1, 1> InvCovDepth;
+                    InvCovDepth(0) = 1 / (0.05 * 0.05); // Example covariance
+                    ez->setInformation(InvCovDepth);
 
-                        // Set information matrix (for covariance)
-                        Eigen::Matrix<double, 1, 1> InvCovDepth;
-                        InvCovDepth(0) = 1 / (0.01 * 0.01); // Example covariance
-                        ez->setInformation(InvCovDepth);
+                    // Set robust kernel (Huber)
+                    // 设置一个鲁棒核函数
+                    g2o::RobustKernelCauchy *robustKernel = new g2o::RobustKernelCauchy();
+                    ez->setRobustKernel(robustKernel);
+                    robustKernel->setDelta(avgErr);
+                    // g2o::RobustKernelCauchy *rk = new g2o::RobustKernelCauchy;
+                    // ez->setRobustKernel(rk);
+                    // rk->setDelta(0.05);
 
-                        // // Set robust kernel (Huber)
-                        // const float thHuberNavStateDepth = sqrt(5.991); // Huber threshold
-                        // g2o::RobustKernelHuber *rk = new g2o::RobustKernelHuber;
-                        // ez->setRobustKernel(rk);
-                        // rk->setDelta(thHuberNavStateDepth);
-
-                        // Add edge to optimizer
-                        optimizer.addEdge(ez);
-                        // std::cout << "Current keyframe: " << pKFi->mTimeStamp << ", " << "Depth:" << pKFi->mpKFDepth->depth << ", Previous keyframe: " << pKFi->mPrevKF->mTimeStamp << ", " << "Depth:" << pKFi->mPrevKF->mpKFDepth->depth << std::endl;
-                    }
+                    // Add edge to optimizer
+                    optimizer.addEdge(ez);
+                    // std::cout << "Current keyframe: " << pKFi->mTimeStamp << ", " << "Depth:" << pKFi->mpKFDepth->depth << ", Previous keyframe: " << pKFi->mPrevKF->mTimeStamp << ", " << "Depth:" << pKFi->mPrevKF->mpKFDepth->depth << std::endl;
                 }
             }
         }
@@ -3665,12 +3757,12 @@ namespace ORB_SLAM3
             // Perform optimization
             optimizer.setVerbose(true);
             optimizer.initializeOptimization(); // Make sure we call this after adding vertices and edges
-            optimizer.optimize(5);
+            optimizer.optimize(10);
             // Recover optimized scale
             scale = VS->estimate();
             Rwg = VGDir->estimate().Rwg;
             std::cout << "OptimizeInitialScale after " << its << " iterations: mScale = " << scale << std::endl;
-            // std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg.eulerAngles(2,1,0) << std::endl;
+            std::cout << "OptimizeInitialScale after " << its << " iterations: mRwg = " << Rwg.eulerAngles(2, 1, 0).transpose() << std::endl;
         }
         else
         {

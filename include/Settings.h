@@ -153,7 +153,8 @@ namespace ORB_SLAM3 {
         void readViewer(cv::FileStorage& fSettings);
         void readLoadAndSave(cv::FileStorage& fSettings);
         void readOtherParameters(cv::FileStorage& fSettings);
-
+        // code by ghz
+        void readPressure(cv::FileStorage& fSettings);
         void precomputeRectificationMaps();
 
         int sensor_;
@@ -192,6 +193,16 @@ namespace ORB_SLAM3 {
         float imuFrequency_;
         Sophus::SE3f Tbc_;
         bool insertKFsWhenLost_;
+
+        /*
+         * Pressure stuff
+         */
+        float noiseDepth_;
+        float pressureFrequency_;
+        Eigen::Vector3f Tcp_;
+        
+
+
 
         /*
          * RGBD stuff

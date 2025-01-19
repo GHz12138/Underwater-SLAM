@@ -732,6 +732,8 @@ namespace ORB_SLAM3
         // Matrix3d GravityRot;
         Eigen::Vector3d Pi;
         Eigen::Vector3d Pj;
+        Eigen::Matrix3d Rwi;
+        Eigen::Matrix3d Rwj;
 
     };
 
