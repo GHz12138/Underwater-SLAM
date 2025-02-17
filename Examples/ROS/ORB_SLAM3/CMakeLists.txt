@@ -116,12 +116,29 @@ target_link_libraries(Mono_Inertial_Depth
 ${LIBS}
 )
 
-
-# Node for stereo-inertial camera
-rosbuild_add_executable(Stereo_Inertial
-src/ros_stereo_inertial.cc
+# Node for monocular-inertial-sonar camera
+rosbuild_add_executable(Mono_Inertial_Sonar
+src/ros_mono_inertial_sonar.cc
 )
 
-target_link_libraries(Stereo_Inertial
+target_link_libraries(Mono_Inertial_Sonar
+${LIBS}
+)
+
+# # Node for stereo-inertial camera
+# rosbuild_add_executable(Stereo_Inertial
+# src/ros_stereo_inertial.cc
+# )
+
+# target_link_libraries(Stereo_Inertial
+# ${LIBS}
+# )
+
+# Node for stereo-inertial camera
+rosbuild_add_executable(Stereo_Inertial_Sonar
+src/ros_stereo_inertial_sonar.cc
+)
+
+target_link_libraries(Stereo_Inertial_Sonar
 ${LIBS}
 )

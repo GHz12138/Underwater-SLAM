@@ -276,7 +276,7 @@ namespace ORB_SLAM3
                 vdLBASync_ms.push_back(timeKFCulling_ms);
                 vdKFCullingSync_ms.push_back(timeKFCulling_ms);
 #endif
-
+                // 向回环线程添加已经处理的关键帧
                 mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
 
 #ifdef REGISTER_TIMES

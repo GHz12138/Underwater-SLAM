@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /ORB_SLAM3/Examples/ROS/msg/devel/setup.sh

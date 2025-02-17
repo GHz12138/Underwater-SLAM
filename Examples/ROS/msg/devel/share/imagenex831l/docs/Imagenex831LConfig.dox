@@ -1,0 +1,18 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~max_range" : \b [int] Max range in the request (byte 3). min: -2147483648, default: 60, max: 2147483647
+- \b "~step_direction" : \b [int] Step direction (byte 5). min: -2147483648, default: 0, max: 2147483647
+- \b "~start_gain" : \b [int] Start gain (1dB increment). min: 0, default: 20, max: 40
+- \b "~absorption" : \b [int] absorption in dB per m. min: 0, default: 17, max: 255
+- \b "~train_angle" : \b [int] Train angle, which is the offset for the sector width (degree),         steps of 3 degrees. min: 0, default: 120, max: 120
+- \b "~sector_width" : \b [int] Field of view covered by the sensor (degree), steps of 3 degrees. min: 0, default: 120, max: 120
+- \b "~step_size" : \b [int] Step size. min: -2147483648, default: 3, max: 2147483647
+- \b "~pulse" : \b [int] Pulse length in microseconds. min: 0, default: 10, max: 100
+- \b "~min_range" : \b [int] Min range in meters [0, 250]cm; value in cm. min: 0, default: 0, max: 250
+- \b "~pitch_roll_mode" : \b [int] Pitch roll mode. min: -2147483648, default: 0, max: 2147483647
+- \b "~profile_mode" : \b [int] Profile mode. min: -2147483648, default: 0, max: 2147483647
+- \b "~motor_mode" : \b [int] Motor mode. min: -2147483648, default: 0, max: 2147483647
+- \b "~frequency" : \b [int] Frequency (kHz), 5kHz step. min: 2150, default: 2250, max: 2350
+

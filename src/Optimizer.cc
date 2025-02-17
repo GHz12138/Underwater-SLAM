@@ -1121,36 +1121,58 @@ namespace ORB_SLAM3
         return nInitialCorrespondences - nBad;
     }
 
+    /**************************************以下为局部地图优化**************************************************************/
+
+    /**
+     * @brief Local Bundle Adjustment LocalMapping::Run() 使用，纯视觉
+     * @param pKF        KeyFrame
+     * @param pbStopFlag 是否停止优化的标志
+     * @param pMap       在优化后，更新状态时需要用到Map的互斥量mMutexMapUpdate
+     * @param 剩下的都是调试用的
+     *
+     * 总结下与ORBSLAM2的不同
+     * 前面操作基本一样，但优化时2代去掉了误差大的点又进行优化了，3代只是统计但没有去掉继续优化，而后都是将误差大的点干掉
+     */
     void Optimizer::LocalBundleAdjustment(KeyFrame *pKF, bool *pbStopFlag, Map *pMap, int &num_fixedKF, int &num_OptKF, int &num_MPs, int &num_edges)
     {
+        // 该优化函数用于LocalMapping线程的局部BA优化
         // Local KeyFrames: First Breath Search from Current Keyframe
         list<KeyFrame *> lLocalKeyFrames;
 
+        // 步骤1：将当前关键帧加入lLocalKeyFrames
         lLocalKeyFrames.push_back(pKF);
         pKF->mnBALocalForKF = pKF->mnId;
         Map *pCurrentMap = pKF->GetMap();
 
+        // 步骤2：找到关键帧连接的关键帧（一级相连），加入lLocalKeyFrames中
         const vector<KeyFrame *> vNeighKFs = pKF->GetVectorCovisibleKeyFrames();
         for (int i = 0, iend = vNeighKFs.size(); i < iend; i++)
         {
             KeyFrame *pKFi = vNeighKFs[i];
+            // 记录局部优化id，该数为不断变化，数值等于局部化的关键帧的id，该id用于防止重复添加
+            // 把参与局部BA的每一个关键帧的 mnBALocalForKF设置为当前关键帧的mnId，防止重复添加
             pKFi->mnBALocalForKF = pKF->mnId;
+            // 此关键帧包含在当前地图中，且是好帧，就放入要优化的容器内存储
             if (!pKFi->isBad() && pKFi->GetMap() == pCurrentMap)
                 lLocalKeyFrames.push_back(pKFi);
         }
 
         // Local MapPoints seen in Local KeyFrames
         num_fixedKF = 0;
+
+        // 步骤3：遍历lLocalKeyFrames中关键帧，将它们观测的MapPoints加入到lLocalMapPoints
         list<MapPoint *> lLocalMapPoints;
         set<MapPoint *> sNumObsMP;
         for (list<KeyFrame *>::iterator lit = lLocalKeyFrames.begin(), lend = lLocalKeyFrames.end(); lit != lend; lit++)
         {
             KeyFrame *pKFi = *lit;
+            // 此关键帧如果是当前地图的第一帧，那就固定不优化。
             if (pKFi->mnId == pMap->GetInitKFid())
             {
                 num_fixedKF = 1;
             }
             vector<MapPoint *> vpMPs = pKFi->GetMapPointMatches();
+            // 遍历这个关键帧观测到的每一个地图点，加入到lLocalMapPoints
             for (vector<MapPoint *>::iterator vit = vpMPs.begin(), vend = vpMPs.end(); vit != vend; vit++)
             {
                 MapPoint *pMP = *vit;
@@ -1168,6 +1190,7 @@ namespace ORB_SLAM3
         }
 
         // Fixed Keyframes. Keyframes that see Local MapPoints but that are not Local Keyframes
+        // 步骤4：得到能被局部MapPoints观测到，但不属于局部关键帧的关键帧，这些关键帧在局部BA优化时不优化
         list<KeyFrame *> lFixedCameras;
         for (list<MapPoint *>::iterator lit = lLocalMapPoints.begin(), lend = lLocalMapPoints.end(); lit != lend; lit++)
         {
@@ -1184,6 +1207,8 @@ namespace ORB_SLAM3
                 }
             }
         }
+        
+        // 步骤4.1：相比ORBSLAM2多出了判断固定关键帧的个数，最起码要两个固定的,如果实在没有就把lLocalKeyFrames中最早的KF固定，还是不够再加上第二早的KF固定
         num_fixedKF = lFixedCameras.size() + num_fixedKF;
 
         if (num_fixedKF == 0)
@@ -2410,8 +2435,9 @@ namespace ORB_SLAM3
         // 预计待优化的关键帧数，min函数是为了控制优化关键帧的数量
         const int Nd = std::min((int)pCurrentMap->KeyFramesInMap() - 2, maxOpt);
         const unsigned long maxKFid = pKF->mnId;
-
+        // 储存相邻时序的关键帧
         vector<KeyFrame *> vpOptimizableKFs;
+        // 储存共视关键帧
         const vector<KeyFrame *> vpNeighsKFs = pKF->GetVectorCovisibleKeyFrames();
         list<KeyFrame *> lpOptVisKFs;
 
@@ -2422,6 +2448,7 @@ namespace ORB_SLAM3
         {
             if (vpOptimizableKFs.back()->mPrevKF)
             {
+                // 获得这个元素的上一个关键帧
                 vpOptimizableKFs.push_back(vpOptimizableKFs.back()->mPrevKF);
                 vpOptimizableKFs.back()->mnBALocalForKF = pKF->mnId;
             }
@@ -2437,6 +2464,7 @@ namespace ORB_SLAM3
         list<MapPoint *> lLocalMapPoints;
         for (int i = 0; i < N; i++)
         {
+            // 获取相邻时序关键帧对应的地图点
             vector<MapPoint *> vpMPs = vpOptimizableKFs[i]->GetMapPointMatches();
             for (vector<MapPoint *>::iterator vit = vpMPs.begin(), vend = vpMPs.end(); vit != vend; vit++)
             {
@@ -2445,6 +2473,7 @@ namespace ORB_SLAM3
                     if (!pMP->isBad())
                         if (pMP->mnBALocalForKF != pKF->mnId)
                         {
+                            // 将地图点添加到lLocalMapPoints中
                             lLocalMapPoints.push_back(pMP);
                             pMP->mnBALocalForKF = pKF->mnId;
                         }
@@ -2452,7 +2481,8 @@ namespace ORB_SLAM3
         }
 
         // Fixed Keyframe: First frame previous KF to optimization window)
-        // Step 3. 固定一帧，为vpOptimizableKFs中最早的那一关键帧的上一关键帧，如果没有上一关键帧了就用最早的那一帧，毕竟目前得到的地图虽然有尺度但并不是绝对的位置
+        // Step 3. 固定关键帧，为vpOptimizableKFs中最早的那一关键帧的上一关键帧，如果没有上一关键帧了就用最早的那一帧，即当前vpOptimizableKFs的最后一个元素
+        // 储存固定的关键帧
         list<KeyFrame *> lFixedKeyFrames;
         if (vpOptimizableKFs.back()->mPrevKF)
         {
@@ -2474,13 +2504,16 @@ namespace ORB_SLAM3
         const int maxCovKF = 0;
         for (int i = 0, iend = vpNeighsKFs.size(); i < iend; i++)
         {
+            // lpOptVisKFs存储的关键帧是在vpNeighsKFs基础上筛选过的
             if (lpOptVisKFs.size() >= maxCovKF)
                 break;
 
             KeyFrame *pKFi = vpNeighsKFs[i];
+            // 如果某个共视关键帧的mnBALocalForKF或者mnBAFixedForKF已经是输入关键帧ID的话，就跳过它。否则就将这个共视关键帧的mnBALocalForKF设为当前帧ID。
             if (pKFi->mnBALocalForKF == pKF->mnId || pKFi->mnBAFixedForKF == pKF->mnId)
                 continue;
             pKFi->mnBALocalForKF = pKF->mnId;
+            // 判断共视关键帧的状态，如果状态OK且属于当前地图，就将迭代的这个共视关键帧添加到lpOptVisKFs中
             if (!pKFi->isBad() && pKFi->GetMap() == pCurrentMap)
             {
                 lpOptVisKFs.push_back(pKFi);
@@ -3300,11 +3333,7 @@ namespace ORB_SLAM3
                     InvCovDepth(0) = 1 / (0.01 * 0.01); // Example covariance
                     ez->setInformation(InvCovDepth);
 
-                    // Set robust kernel (Huber)
                     // 设置一个鲁棒核函数
-                    g2o::RobustKernelCauchy *robustKernel = new g2o::RobustKernelCauchy();
-                    ez->setRobustKernel(robustKernel);
-                    robustKernel->setDelta(0.05);
                     g2o::RobustKernelCauchy *rk = new g2o::RobustKernelCauchy;
                     ez->setRobustKernel(rk);
                     rk->setDelta(2*avgErr);

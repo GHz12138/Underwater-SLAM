@@ -1,0 +1,19 @@
+\subsubsection usage Usage
+\verbatim
+<node name="imagenex831l" pkg="imagenex831l" type="imagenex831l">
+  <param name="max_range" type="int" value="60" />
+  <param name="step_direction" type="int" value="0" />
+  <param name="start_gain" type="int" value="20" />
+  <param name="absorption" type="int" value="17" />
+  <param name="train_angle" type="int" value="120" />
+  <param name="sector_width" type="int" value="120" />
+  <param name="step_size" type="int" value="3" />
+  <param name="pulse" type="int" value="10" />
+  <param name="min_range" type="int" value="0" />
+  <param name="pitch_roll_mode" type="int" value="0" />
+  <param name="profile_mode" type="int" value="0" />
+  <param name="motor_mode" type="int" value="0" />
+  <param name="frequency" type="int" value="2250" />
+</node>
+\endverbatim
+

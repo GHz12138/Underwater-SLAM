@@ -488,7 +488,7 @@ protected:
     bool mbBad;    
 
     float mHalfBaseline; // Only for visualization
-
+    // 地图点所属于的地图
     Map* mpMap;
 
     // Backup variables for inertial
