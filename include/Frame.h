@@ -274,6 +274,12 @@ public:
 
     Pressure::DepthData* mpFrameDepth;
     
+    // code by ghz 普通帧间的声呐测量值
+    std::vector<Sonar::SonarData> mvSonarBetweenFrame;
+    // code by ghz 关键帧间的声呐测量值
+    std::vector<Sonar::SonarData> mvSonarBetweenKF;
+
+
     // Current and Next Frame id.
     static long unsigned int nNextId;
     long unsigned int mnId;

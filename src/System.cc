@@ -244,11 +244,11 @@ namespace ORB_SLAM3
         Verbose::SetTh(Verbose::VERBOSITY_QUIET);
     }
 
-    Sophus::SE3f System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp, const vector<IMU::Point> &vImuMeas, string filename)
+    Sophus::SE3f System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp, const vector<IMU::Point> &vImuMeas, const vector<Sonar::SonarData> &vSonarMeas, string filename)
     {
-        if (mSensor != STEREO && mSensor != IMU_STEREO)
+        if (mSensor != STEREO && mSensor != IMU_STEREO && mSensor != IMU_STEREO_SONAR)
         {
-            cerr << "ERROR: you called TrackStereo but input sensor was not set to Stereo nor Stereo-Inertial." << endl;
+            cerr << "ERROR: you called TrackStereo but input sensor was not set to Stereo nor Stereo-Inertial or Stereo-Inertial-Sonar." << endl;
             exit(-1);
         }
 
@@ -314,9 +314,17 @@ namespace ORB_SLAM3
             }
         }
 
-        if (mSensor == System::IMU_STEREO)
+        // if (mSensor == System::IMU_STEREO)
+        //     for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
+        //         mpTracker->GrabImuData(vImuMeas[i_imu]);
+        if (mSensor == System::IMU_STEREO || mSensor == System::IMU_STEREO_SONAR)
+        {
             for (size_t i_imu = 0; i_imu < vImuMeas.size(); i_imu++)
                 mpTracker->GrabImuData(vImuMeas[i_imu]);
+            if (!vSonarMeas.empty())
+                for (size_t i = 0; i < vSonarMeas.size(); i++)
+                    mpTracker->GrabSonarData(vSonarMeas[i]);
+        }
 
         // std::cout << "start GrabImageStereo" << std::endl;
         Sophus::SE3f Tcw = mpTracker->GrabImageStereo(imLeftToFeed, imRightToFeed, timestamp, filename);
@@ -693,7 +701,7 @@ namespace ORB_SLAM3
 
         f.close();
     }
-   
+
     void System::SaveTrajectoryEuRoC(const string &filename)
     {
 

@@ -79,6 +79,9 @@ public:
     // Eigen::Vector3f CaculateGdir();
     void GrabDepthData(const Pressure::DepthData &PressMeasurement);
 
+    void GrabSonarData(const Sonar::SonarData &SonarMeasurement);
+
+
     void SetLocalMapper(LocalMapping* pLocalMapper);
     void SetLoopClosing(LoopClosing* pLoopClosing);
     void SetViewer(Viewer* pViewer);
@@ -234,7 +237,12 @@ protected:
     // Perform depth from last frame
     void DepthFromLastFrame();
 
+    void writeDepthDataToFile(const Frame &frame, const std::vector<Pressure::DepthData> &depthData);
+
     void GetFrameDepth();
+
+    // Perform sonar meas from last frame
+    void SonarFromLastFrame();
 
     // Reset IMU biases and compute frame velocity
     void ResetFrameIMU();
@@ -249,6 +257,9 @@ protected:
 
     // Queue of Pressure measurements between frames
     std::list<Pressure::DepthData> mlQueueDepthData;
+
+    // Queue of Sonar measurements between frames
+    std::list<Sonar::SonarData> mlQueueSonarData;
    
     // // code by ghz Queue of IMU acc measurements between frames for initialize
     // std::list<IMU::Point> mlImuaccData;
@@ -265,6 +276,12 @@ protected:
     std::vector<Pressure::DepthData> mvDepthFromLastFrame;
     std::mutex mMutexDepthQueue;
 
+    // Vector of Sonar measurement from last keyframe
+    std::vector<Sonar::SonarData> mvSonarFromLastKF;
+
+    // Vector of Sonar measurements from previous to current frame
+    std::vector<Sonar::SonarData> mvSonarFromLastFrame;
+    std::mutex mMutexSonarQueue;
 
     // Imu calibration parameters
     IMU::Calib *mpImuCalib;

@@ -1389,8 +1389,8 @@ namespace ORB_SLAM3
         // code by ghz get IMU  scale initial number
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
-            mScale = 1.0;
-            Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
+            mScale = 3.0;
+            // Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
         }
 
         mInitTime = mpTracker->mLastFrame.mTimeStamp - vpKF.front()->mTimeStamp;

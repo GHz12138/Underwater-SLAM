@@ -313,6 +313,7 @@ void ImageGrabber::SyncWithImu()
           if (range < 4.5 && max > 10)
           {
             vSonarMeas.push_back(ORB_SLAM3::Sonar::SonarData(t, range, heading));
+            // std::cout << "TimeStamp: " << t << ", Range: " << range << ", Heading: " << heading << std::endl;
           }
 
           // 弹出队列中的当前数据帧

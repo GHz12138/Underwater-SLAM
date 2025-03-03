@@ -3330,7 +3330,7 @@ namespace ORB_SLAM3
 
                     // Set information matrix (for covariance)
                     Eigen::Matrix<double, 1, 1> InvCovDepth;
-                    InvCovDepth(0) = 1 / (0.01 * 0.01); // Example covariance
+                    InvCovDepth(0) = 1 / (0.05 * 0.05); // Example covariance
                     ez->setInformation(InvCovDepth);
 
                     // 设置一个鲁棒核函数
@@ -3669,7 +3669,7 @@ namespace ORB_SLAM3
 
     void Optimizer::OptimizeInitialScale(Map *pMap, Eigen::Matrix3d &Rwg, double &scale)
     {
-        int its = 10;
+        int its = 100;
         long unsigned int maxKFid = pMap->GetMaxKFid();
         const vector<KeyFrame *> vpKFs = pMap->GetAllKeyFrames();
 
@@ -3761,7 +3761,7 @@ namespace ORB_SLAM3
 
                     // Set information matrix (for covariance)
                     Eigen::Matrix<double, 1, 1> InvCovDepth;
-                    InvCovDepth(0) = 1 / (0.05 * 0.05); // Example covariance
+                    InvCovDepth(0) = 1 / (0.02 * 0.02); // Example covariance
                     ez->setInformation(InvCovDepth);
 
                     // Set robust kernel (Huber)
@@ -3786,7 +3786,7 @@ namespace ORB_SLAM3
             // Perform optimization
             optimizer.setVerbose(true);
             optimizer.initializeOptimization(); // Make sure we call this after adding vertices and edges
-            optimizer.optimize(10);
+            optimizer.optimize(its);
             // Recover optimized scale
             scale = VS->estimate();
             Rwg = VGDir->estimate().Rwg;
