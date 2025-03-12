@@ -954,9 +954,9 @@ namespace ORB_SLAM3
     {
         const VertexGDir *VGDir = static_cast<const VertexGDir *>(_vertices[0]);
         const VertexScale *VS = static_cast<const VertexScale *>(_vertices[1]);
-        Eigen::Vector3d Tcp(0,0,-0.258);
+        
         const Eigen::Matrix3d Rgw = VGDir->estimate().Rwg.transpose();
-        Eigen::Vector3d Tcd = Rgw * (Rwj - Rwi) * Tcp;
+        Eigen::Vector3d Tcd = Rgw * (Rwj - Rwi) * tcp;
         Eigen::Vector3d dP = Rgw * (Pj - Pi);
 
         double rDepth = VS->estimate() * (double)dP(2) + (double)Tcd(2)  - _measurement;
@@ -989,10 +989,10 @@ namespace ORB_SLAM3
         const Eigen::RowVector3d e3 = Eigen::RowVector3d::UnitZ();
 
         // std::cout << "VS = " << VS->estimate() << std::endl;
-        // std::cout << "Rwg = " << "\n" << Rwg << std::endl;
+        // std::cout << "Rwg = " << "\n" << Rgw << std::endl;
         // std::cout << "Pj - Pi = "<< Pj - Pi <<  "\n" << Sophus::SO3d::hat(Pj - Pi) << std::endl;
         // 计算针对 VertexGDir 的雅可比矩阵 (1x2)
-        _jacobianOplusXi.block<1, 2>(0, 0) = VS->estimate() * e3  * Sophus::SO3d::hat(dP) * Gm;
+        _jacobianOplusXi.block<1, 2>(0, 0) = -e3*Rgw*Sophus::SO3d::hat((Rwj-Rwi)*tcp+VS->estimate()*(Pj - Pi)) * Gm;
 
         // 计算与 VertexScale 相关的雅可比矩阵 (1x1)
         _jacobianOplusXj(0, 0) = dP(2);

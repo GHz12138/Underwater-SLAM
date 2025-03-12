@@ -265,7 +265,7 @@ namespace ORB_SLAM3
                                  (mTinit > 65.0f && mTinit < 65.5f) ||
                                  (mTinit > 75.0f && mTinit < 75.5f)))
                             {
-                                if (mbMonocular)
+                                if (mbMonocular && mpTracker->mSensor != System::IMU_MONOCULAR_DEPTH)
                                     ScaleRefinement();
                             }
                         }
@@ -1389,7 +1389,7 @@ namespace ORB_SLAM3
         // code by ghz get IMU  scale initial number
         if (mpTracker->mSensor == System::IMU_MONOCULAR_DEPTH)
         {
-            mScale = 3.0;
+            mScale = 1.5;
             // Optimizer::OptimizeInitialScale(mpAtlas->GetCurrentMap(), mRwg, mScale);
         }
 
@@ -1403,7 +1403,7 @@ namespace ORB_SLAM3
 
         if (mScale < 1e-1)
         {
-            cout << "scale too small" << endl;
+            cout << "scale too small2222" << endl;
             bInitializing = false;
             return;
         }
@@ -1609,7 +1609,7 @@ namespace ORB_SLAM3
 
         if (mScale < 1e-1) // 1e-1
         {
-            cout << "scale too small" << endl;
+            cout << "scale too small in InitializeIMU" << endl;
             bInitializing = false;
             return;
         }

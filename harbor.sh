@@ -1,1 +1,1 @@
-./Examples/Monocular-Inertial/mono_inertial_depth Vocabulary/ORBvoc.txt Examples/Monocular-Inertial/harbor.yaml /mnt/Aqualoc/Harbor_sites_sequences/harbor_sequence_01_raw_data/ /mnt/Aqualoc/Harbor_sites_sequences/harbor_sequence_01_raw_data/Times.txt
+./Examples/Monocular-Inertial/mono_inertial_depth Vocabulary/ORBvoc.txt Examples/Monocular-Inertial/harbor.yaml /mnt/Aqualoc/Harbor_sites_sequences/harbor_sequence_03_raw_data/ /mnt/Aqualoc/Harbor_sites_sequences/harbor_sequence_03_raw_data/Times.txt

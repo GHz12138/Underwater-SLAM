@@ -728,7 +728,8 @@ namespace ORB_SLAM3
         void computeError();
 
         virtual void linearizeOplus();
-
+        // 外参
+        Eigen::Vector3d tcp = Eigen::Vector3d(0.0, 0.0, -0.258);
         // Matrix3d GravityRot;
         Eigen::Vector3d Pi;
         Eigen::Vector3d Pj;
